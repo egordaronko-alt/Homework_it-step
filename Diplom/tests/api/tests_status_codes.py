@@ -3,7 +3,7 @@ import pytest
 import allure
 
 
-@allure.feature("Тесты API")
+@allure.feature("Тесты api")
 @allure.story("Проверка статус кода")
 class TestApiActivities():
     @pytest.mark.parametrize('status_code, url, name_of_site', [

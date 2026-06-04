@@ -31,6 +31,19 @@ async def run_api_test(update: Update, context: ContextTypes.DEFAULT_TYPE):
     result = await execute_command('pytest -s -v tests/api/ --alluredir=./results', update)
 
     short_result = '\n'. join([line for line in result.split('\n') if "FAILD" in line or "ERROR" in line])
+    await update.message.reply_text(f"Результат тeстов\n{short_result[:3000]}" if short_result else  "Все тесты прошли успешно")
+
+async def run_ui_test(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text('Запуск тестов ui')
+    results_dir = Path("./results")
+    results_dir.mkdir(exist_ok=True)
+
+    for file in results_dir.glob("*"):
+        file.unlink()
+
+    result = await execute_command('pytest -s -v tests/ui/ --alluredir=./results', update)
+
+    short_result = '\n'. join([line for line in result.split('\n') if "FAILD" in line or "ERROR" in line])
     await update.message.reply_text(f"Результат тстов\n{short_result[:3000]}" if short_result else  "Все тесты прошли успешно")
 
 
@@ -46,7 +59,8 @@ def main() -> None:
     application = Application.builder().token("8866805088:AAGzHZ4BlsgCnTuv7Ztpcp4SENosK-AlV4k").build()
     application.add_handler(CommandHandler("test2", help_command2))
     application.add_handler(CommandHandler("test1", help_command1))
-    application.add_handler(CommandHandler("run_api_test", run_api_test))
+    application.add_handler(CommandHandler("run_ui_tests", run_ui_test))
+    application.add_handler(CommandHandler("run_api_tests", run_api_test))
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
