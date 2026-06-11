@@ -57,7 +57,17 @@ import time
 
 from Diplom.locators.main_locators import MainPage
 
-
 def test_belgee(driver):
     page = MainPage(driver)
+    page.accept_cookie.wait_to_be_clickable()
+    page.accept_cookie.click()
+    page.models.click()
+    print(page.model_S50.get_text())
+    print(page.model_X50.get_text())
+    print(page.model_x50plus.get_text())
+    print(page.model_x70.get_text())
+    print(page.model_x80PHEV.get_text())
+
+
     print(page.btn_catalog.get_text())
+    print(page.text_of_footer.get_text())

@@ -141,86 +141,86 @@ class WebElement(object):
             return element
 
 
-def _set_value(self, web_driver, value, clear=True):
-    """ Установить значение для элемента ввода. """
+    def _set_value(self, web_driver, value, clear=True):
+        """ Установить значение для элемента ввода. """
 
-    element = self.find()
+        element = self.find()
 
-    if clear:
-        element.clear()
+        if clear:
+            element.clear()
 
-    element.send_keys(value)
-
-
-def click(self, hold_seconds=0, x_offset=1, y_offset=1):
-    """ Подождать и нажать на элемент. """
-
-    element = self.wait_to_be_clickable()
-
-    if element:
-        action = ActionChains(self._web_driver)
-        action.move_to_element_with_offset(element, x_offset, y_offset). \
-            pause(hold_seconds).click(on_element=element).perform()
-    else:
-        msg = 'Element with locator {0} not found'
-        raise AttributeError(msg.format(self._locator))
-
-    if self._wait_after_click:
-        self._page.wait_page_loaded()
+        element.send_keys(value)
 
 
-def right_mouse_click(self, x_offset=0, y_offset=0, hold_seconds=0):
-    """ Нажать на элемент правой кнопкой мыши. """
+    def click(self, hold_seconds=0, x_offset=1, y_offset=1):
+        """ Подождать и нажать на элемент. """
 
-    element = self.wait_to_be_clickable()
+        element = self.wait_to_be_clickable()
 
-    if element:
-        action = ActionChains(self._web_driver)
-        action.move_to_element_with_offset(element, x_offset, y_offset). \
-            pause(hold_seconds).context_click(on_element=element).perform()
-    else:
-        msg = 'Element with locator {0} not found'
-        raise AttributeError(msg.format(self._locator))
+        if element:
+            action = ActionChains(self._web_driver)
+            action.move_to_element_with_offset(element, x_offset, y_offset). \
+                pause(hold_seconds).click(on_element=element).perform()
+        else:
+            msg = 'Element with locator {0} not found'
+            raise AttributeError(msg.format(self._locator))
 
-
-def highlight_and_make_screenshot(self, file_name='element.png'):
-    """ Выделите элемент и сделайте снимок экрана всей страницы.. """
-
-    element = self.find()
-
-    # Прокрутите страницу до элемента:
-    self._web_driver.execute_script("arguments[0].scrollIntoView();", element)
-
-    # Добавьте красную рамку к стилю:
-    self._web_driver.execute_script("arguments[0].style.border='3px solid red'", element)
-
-    # Сделать скрин страницы:
-    self._web_driver.save_screenshot(file_name)
+        if self._wait_after_click:
+            self._page.wait_page_loaded()
 
 
-def scroll_to_element(self):
-    """ Прокрутка к элементу. """
+    def right_mouse_click(self, x_offset=0, y_offset=0, hold_seconds=0):
+        """ Нажать на элемент правой кнопкой мыши. """
 
-    element = self.find()
+        element = self.wait_to_be_clickable()
 
-    # Прокрутите страницу до элемента:
-    # Вариант №1 для перехода к элементу:
-    # self._web_driver.execute_script("arguments[0].scrollIntoView();", element)
-
-    # Вариант №2 для перехода к элементу:
-    try:
-        element.send_keys(Keys.DOWN)
-    except Exception as e:
-        pass  # Просто проигнорим ошибку, если мы не можем отправить ключи элементу
+        if element:
+            action = ActionChains(self._web_driver)
+            action.move_to_element_with_offset(element, x_offset, y_offset). \
+                pause(hold_seconds).context_click(on_element=element).perform()
+        else:
+            msg = 'Element with locator {0} not found'
+            raise AttributeError(msg.format(self._locator))
 
 
-def delete(self):
-    """ Удалить элемент. """
+    def highlight_and_make_screenshot(self, file_name='element.png'):
+        """ Выделите элемент и сделайте снимок экрана всей страницы.. """
 
-    element = self.find()
+        element = self.find()
 
-    # Удалить элемент:
-    self._web_driver.execute_script("arguments[0].remove();", element)
+        # Прокрутите страницу до элемента:
+        self._web_driver.execute_script("arguments[0].scrollIntoView();", element)
+
+        # Добавьте красную рамку к стилю:
+        self._web_driver.execute_script("arguments[0].style.border='3px solid red'", element)
+
+        # Сделать скрин страницы:
+        self._web_driver.save_screenshot(file_name)
+
+
+    def scroll_to_element(self):
+        """ Прокрутка к элементу. """
+
+        element = self.find()
+
+        # Прокрутите страницу до элемента:
+        # Вариант №1 для перехода к элементу:
+        # self._web_driver.execute_script("arguments[0].scrollIntoView();", element)
+
+        # Вариант №2 для перехода к элементу:
+        try:
+            element.send_keys(Keys.DOWN)
+        except Exception as e:
+            pass  # Просто проигнорим ошибку, если мы не можем отправить ключи элементу
+
+
+    def delete(self):
+        """ Удалить элемент. """
+
+        element = self.find()
+
+        # Удалить элемент:
+        self._web_driver.execute_script("arguments[0].remove();", element)
 
 
 class ManyWebElements(WebElement):
