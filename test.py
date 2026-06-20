@@ -38,6 +38,7 @@
 # driver.find_element(By.XPATH, '//button[@id="submit"]').click()
 # time.sleep(2)
 # driver.quit()
+from Diplom.locators.main_locators import MainPage
 
 # import time
 # from selenium import webdriver
@@ -226,28 +227,106 @@
 # driver.refresh()
 # time.sleep(5)
 
-import os
-import time
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-import pickle
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# import os
+# import time
+# from selenium import webdriver
+# from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.by import By
+# import pickle
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+#
+# service = Service(ChromeDriverManager().install())
+# driver = webdriver.Chrome(service=service)
+# wait = WebDriverWait(driver, 10, poll_frequency=0.1)
+#
+# driver.get("https://demoqa.com/selectable")
+#
+#
+# Cras_justo_odio = ("xpath", "//li[contains(@class, 'mt-2') and text()='Cras justo odio']")
+# Morbi_leo_risus = ("xpath", "//li[contains(@class, 'mt-2') and text()='Morbi leo risus']")
+# LIST = ("xpath", "//button[@data-rr-ui-event-key='list']")
+# GRID = ("xpath", "//button[@data-rr-ui-event-key='grid']")
+# ONE = ("xpath", "//li[contains(@class, 'list-group') and text()='One']")
+# SIX = ("xpath", "//li[contains(@class, 'list-group') and text()='Six']")
+#
+# time.sleep(3)
+# before = driver.find_element(*Cras_justo_odio).get_attribute("class")
+# print("active" in before)
+# driver.find_element(*Cras_justo_odio).click()
+# after = driver.find_element(*Cras_justo_odio).get_attribute("class")
+# print("active" in after)
+# driver.find_element(*Morbi_leo_risus).click()
+# print("active" in driver.find_element(*Morbi_leo_risus).get_attribute("class"))
+# time.sleep(3)
+# driver.find_element(*GRID).click()
+# driver.find_element(*ONE).click()
+# driver.find_element(*SIX).click()
+# print("active" in driver.find_element(*ONE).get_attribute("class"))
+# assert "active" in driver.find_element(*SIX).get_attribute("class")
+# print("active" in driver.find_element(*SIX).get_attribute("class"))
+# time.sleep(3)
 
-service = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=service)
-wait = WebDriverWait(driver, 10, poll_frequency=0.1)
+# import time
+# from selenium import webdriver
+# from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+#
+# options = webdriver.ChromeOptions()
+# options.add_argument("--disable-blink-features=AutomationControlled")
+# service = Service(ChromeDriverManager().install())
+# driver = webdriver.Chrome(service=service, options=options)
+# wait = WebDriverWait(driver, 5, poll_frequency=1)
+#
+# links = ['https://hyperskill.org/login', 'https://stepik.org/', 'https://www.ozon.ru/']
+# LOCATOR = ("xpath", "//header//a[@href]")
+#
+# for _ in range(len(links)-1):
+#     driver.switch_to.new_window("tab")
+#     time.sleep(3)
+#
+# wait.until(EC.number_of_windows_to_be(len(links)))
+# windows = driver.window_handles
+#
+# for i in range(len(windows)):
+#      driver.switch_to.window(windows[i])
+#      time.sleep(2)
+#      driver.get(links[i])
+#      time.sleep(2)
+#
+# for i in range(len(windows)):
+#      driver.switch_to.window(windows[i])
+#      print(driver.title)
+#
+# for i in range(len(windows)):
+#      driver.switch_to.window(windows[i])
+#      wait.until(EC.presence_of_all_elements_located(LOCATOR))
+#      page_links = driver.find_elements(*LOCATOR)
+#      print(page_links[0].get_attribute("href"))
+#      page_links[0].click()
 
-driver.get("https://the-internet.herokuapp.com/checkboxes")
+# nums = {4, 5, 6, 7, 8, 9}
+# diff = 2
+# counter = 0
 
+# for i in range(len(nums) - 2):
+#      for j in range(i+1, len(nums) - 1):
+#           if nums[j] - nums[i] == diff:
+#                for k in range(j+1, len(nums)):
+#                     if nums[k] - nums[j] == diff:
+#                          counter += 1
+#                     elif nums[k] - nums[j] > diff:
+#                          break
+#           elif nums[j] - nums[i] > diff:
+#                break
+# print(counter)
 
-CHECKBOX = ("xpath", "(//input[@type='checkbox'])[1]")
-print(driver.find_element(*CHECKBOX).get_attribute("checked"))
-time.sleep(3)
-driver.find_element(*CHECKBOX).click()
-time.sleep(3)
-print(driver.find_element(*CHECKBOX).get_attribute("checked"))
+# for i in nums:
+#      if i + diff in nums and i + (2 * diff) in nums:
+#         counter += 1
+# print(counter)

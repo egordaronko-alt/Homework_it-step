@@ -6,7 +6,6 @@ from selenium.webdriver.chrome.options import Options
 def driver():
     chrome_options = Options()
     chrome_options.add_argument('--start-maximized')
-    chrome_options.add_argument('--incognito')
     # chrome_options.add_argument('--headless')
 
     driver = webdriver.Chrome(options=chrome_options)
