@@ -128,11 +128,16 @@ class WebPage(object):
 
                 assert ignore, 'JS error "{0}" on the page!'.format(log_message)
 
-    def wait_page_loaded(self, timeout=60, check_js_complete=True,
-                         check_page_changes=False, check_images=False,
+    def wait_page_loaded(self,
+                         timeout=60,
+                         check_js_complete=True,
+                         check_page_changes=False,
+                         check_images=False,
                          wait_for_element=None,
                          wait_for_xpath_to_disappear='',
-                         sleep_time=2):
+                         sleep_time=2,
+                         scroll_page=False):
+
         """ Эта функция ждет, пока страница не будет полностью загружена.
             Мы используем много разных способов определить, загружена страница или нет.:
             1) Проверить статус JS
@@ -164,13 +169,19 @@ class WebPage(object):
             if check_js_complete:
                 # Прокрутить вниз и подождите, пока страница загрузится:
                 try:
-                    self._web_driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
-                    page_loaded = self._web_driver.execute_script("return document.readyState == 'complete';")
+                    if scroll_page:
+                        self._web_driver.execute_script(
+                            'window.scrollTo(0, document.body.scrollHeight);'
+                        )
+                    page_loaded = self._web_driver.execute_script(
+                        "return document.readyState == 'complete';"
+                    )
                 except Exception as e:
                     pass
 
+
             if page_loaded and check_page_changes:
-                # Проверьть не изменился ли источник страницы
+                # Проверить не изменился ли источник страницы
                 new_source = ''
                 try:
                     new_source = self._web_driver.page_source
@@ -209,4 +220,7 @@ class WebPage(object):
                 double_check = True
 
         # Поднимать вверх (скролл):
-        self._web_driver.execute_script('window.scrollTo(document.body.scrollHeight, 0);')
+        if scroll_page:
+            self._web_driver.execute_script(
+                'window.scrollTo(document.body.scrollHeight, 0);'
+            )
