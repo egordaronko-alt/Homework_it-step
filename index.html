@@ -1,0 +1,2441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Егор Даронько — QA Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a1a0a;
+            --bg2: #0d2210;
+            --bg3: #102a14;
+            --card-bg: rgba(255,255,255,0.04);
+            --card-border: rgba(100,200,100,0.1);
+            --text: #f0f8f0;
+            --text-dim: rgba(200,240,200,0.5);
+            --green: #6abf69;
+            --green2: #4caf50;
+            --green3: #388e3c;
+            --green-dark: #2e7d32;
+            --lime: #9ccc65;
+            --emerald: #66bb6a;
+            --teal: #4db6ac;
+            --yellow: #f0d58c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050e05;
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === REAL FOREST BACKGROUND === */
+        .nature-bg {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden;
+        }
+        .forest-photo {
+            position: absolute; inset: 0;
+            background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&q=85&auto=format') center center / cover no-repeat;
+            filter: brightness(0.35) saturate(1.3) contrast(1.1);
+        }
+        .forest-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg,
+                rgba(5,14,5,0.6) 0%,
+                rgba(5,14,5,0.2) 30%,
+                rgba(5,14,5,0.1) 50%,
+                rgba(5,14,5,0.3) 70%,
+                rgba(5,14,5,0.85) 100%);
+        }
+        .forest-vignette {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(5,14,5,0.7) 100%);
+        }
+        /* Mist / fog effect */
+        .mist {
+            position: absolute; bottom: 0; left: 0; width: 200%; height: 35%;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(200,220,200,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 90%, rgba(180,210,180,0.03) 0%, transparent 45%),
+                radial-gradient(ellipse at 80% 75%, rgba(200,220,200,0.04) 0%, transparent 50%);
+            animation: mistDrift 20s ease-in-out infinite;
+        }
+        @keyframes mistDrift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-10%); }
+        }
+
+        /* Falling leaves - natural oak/birch style */
+        .leaf {
+            position: absolute; pointer-events: none;
+            width: 16px; height: 20px; opacity: 0;
+            animation: leafFall linear infinite;
+        }
+        .leaf-body {
+            width: 100%; height: 100%; position: relative;
+        }
+        .leaf-body::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(170deg, #8fbc6a 0%, #6fa84e 30%, #5a9640 60%, #4a8535 100%);
+            border-radius: 50% 2% 50% 2%;
+            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.15), inset 2px 2px 4px rgba(255,255,255,0.1);
+        }
+        .leaf-body::after {
+            content: ''; position: absolute;
+            top: 15%; left: 49%; width: 1.5px; height: 75%;
+            background: linear-gradient(180deg, rgba(50,75,25,0.6), rgba(50,75,25,0.15));
+            border-radius: 1px;
+        }
+        .leaf-vein {
+            position: absolute; inset: 0; overflow: visible;
+        }
+        .leaf-vein::before {
+            content: ''; position: absolute;
+            top: 30%; left: 49%; width: 1px; height: 25%;
+            background: rgba(50,75,25,0.3);
+            transform-origin: top center; transform: rotate(-40deg);
+        }
+        .leaf-vein::after {
+            content: ''; position: absolute;
+            top: 50%; left: 49%; width: 1px; height: 22%;
+            background: rgba(50,75,25,0.25);
+            transform-origin: top center; transform: rotate(35deg);
+        }
+        .leaf-stem {
+            position: absolute; bottom: -6px; left: 48%;
+            width: 1.5px; height: 8px;
+            background: linear-gradient(180deg, #5a7a3a, #3d5a28);
+            border-radius: 1px;
+        }
+        .leaf:nth-child(1) { left: 10%; animation-duration: 16s; animation-delay: 0s; }
+        .leaf:nth-child(2) { left: 25%; animation-duration: 20s; animation-delay: 3s; }
+        .leaf:nth-child(3) { left: 42%; animation-duration: 14s; animation-delay: 6s; }
+        .leaf:nth-child(4) { left: 58%; animation-duration: 18s; animation-delay: 1.5s; }
+        .leaf:nth-child(5) { left: 75%; animation-duration: 15s; animation-delay: 8s; }
+        .leaf:nth-child(6) { left: 7%; animation-duration: 19s; animation-delay: 4.5s; }
+        .leaf:nth-child(7) { left: 33%; animation-duration: 17s; animation-delay: 2s; }
+        .leaf:nth-child(8) { left: 50%; animation-duration: 21s; animation-delay: 7s; }
+        .leaf:nth-child(9) { left: 68%; animation-duration: 16s; animation-delay: 9.5s; }
+        .leaf:nth-child(10) { left: 85%; animation-duration: 18s; animation-delay: 3.5s; }
+        .leaf:nth-child(11) { left: 18%; animation-duration: 15s; animation-delay: 10s; }
+        .leaf:nth-child(12) { left: 38%; animation-duration: 20s; animation-delay: 5s; }
+        .leaf:nth-child(13) { left: 55%; animation-duration: 17s; animation-delay: 8.5s; }
+        .leaf:nth-child(14) { left: 80%; animation-duration: 19s; animation-delay: 2.5s; }
+        .leaf:nth-child(15) { left: 30%; animation-duration: 22s; animation-delay: 6.5s; }
+        .leaf:nth-child(16) { left: 65%; animation-duration: 16s; animation-delay: 4s; }
+        .leaf:nth-child(17) { left: 4%; animation-duration: 18s; animation-delay: 11s; }
+        .leaf:nth-child(18) { left: 90%; animation-duration: 20s; animation-delay: 7.5s; }
+        @keyframes leafFall {
+            0% { top: -4%; opacity: 0; transform: translateX(0) rotate(0deg); }
+            6% { opacity: 0.55; }
+            20% { transform: translateX(20px) rotate(70deg); }
+            40% { transform: translateX(-15px) rotate(160deg); }
+            60% { transform: translateX(25px) rotate(260deg); }
+            80% { transform: translateX(-10px) rotate(360deg); }
+            93% { opacity: 0.4; }
+            100% { top: 104%; opacity: 0; transform: translateX(8px) rotate(440deg); }
+        }
+
+        /* Grass blades */
+        .grass {
+            position: absolute; bottom: 0; width: 100%; height: 120px;
+            pointer-events: none;
+        }
+        .grass-blade {
+            position: absolute; bottom: 0;
+            width: 3px; border-radius: 3px 3px 0 0;
+            background: linear-gradient(0deg, rgba(30,100,30,0.6), rgba(50,160,50,0.3));
+            transform-origin: bottom center;
+            animation: grassSway 3s ease-in-out infinite;
+        }
+        @keyframes grassSway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        /* Fireflies */
+        .firefly {
+            position: absolute; pointer-events: none;
+            width: 4px; height: 4px; border-radius: 50%;
+            background: var(--lime);
+            box-shadow: 0 0 8px var(--lime), 0 0 16px rgba(156,204,101,0.3);
+            animation: fireflyFloat linear infinite;
+        }
+        .firefly:nth-child(1) { left: 10%; top: 30%; animation-duration: 8s; animation-delay: 0s; }
+        .firefly:nth-child(2) { left: 25%; top: 50%; animation-duration: 10s; animation-delay: 2s; }
+        .firefly:nth-child(3) { left: 60%; top: 40%; animation-duration: 7s; animation-delay: 4s; }
+        .firefly:nth-child(4) { left: 80%; top: 55%; animation-duration: 9s; animation-delay: 1s; }
+        .firefly:nth-child(5) { left: 40%; top: 35%; animation-duration: 11s; animation-delay: 3s; }
+        .firefly:nth-child(6) { left: 70%; top: 60%; animation-duration: 8s; animation-delay: 5s; }
+        .firefly:nth-child(7) { left: 15%; top: 65%; animation-duration: 10s; animation-delay: 2.5s; }
+        .firefly:nth-child(8) { left: 90%; top: 45%; animation-duration: 9s; animation-delay: 6s; }
+        @keyframes fireflyFloat {
+            0% { transform: translate(0, 0); opacity: 0; }
+            15% { opacity: 0.8; }
+            50% { transform: translate(30px, -20px); opacity: 0.4; }
+            85% { opacity: 0.7; }
+            100% { transform: translate(-20px, 30px); opacity: 0; }
+        }
+
+        /* Light rays through canopy */
+        .light-rays {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .light-ray {
+            position: absolute; top: 0;
+            width: 2px; height: 400px;
+            background: linear-gradient(180deg, rgba(163,230,53,0.1), transparent);
+            transform-origin: top center;
+            animation: rayShimmer 4s ease-in-out infinite;
+        }
+        .light-ray:nth-child(1) { left: 20%; transform: rotate(-5deg); animation-delay: 0s; }
+        .light-ray:nth-child(2) { left: 35%; transform: rotate(3deg); animation-delay: 1s; width: 3px; }
+        .light-ray:nth-child(3) { left: 55%; transform: rotate(-2deg); animation-delay: 2s; }
+        .light-ray:nth-child(4) { left: 72%; transform: rotate(4deg); animation-delay: 0.5s; width: 2px; }
+        .light-ray:nth-child(5) { left: 85%; transform: rotate(-3deg); animation-delay: 1.5s; }
+        @keyframes rayShimmer {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Header */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(5,14,5,0.75);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(106,191,105,0.1);
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto; padding: 16px 32px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .logo { font-weight: 600; font-size: 15px; letter-spacing: -0.5px; color: var(--green); text-shadow: 0 0 10px rgba(106,191,105,0.2); font-family: 'JetBrains Mono', monospace; }
+        .logo span { color: var(--text-dim); }
+        .availability-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 14px; border-radius: 20px; font-size: 12px;
+            font-weight: 600; background: rgba(106,191,105,0.08);
+            border: 1px solid rgba(106,191,105,0.15); color: var(--green);
+            animation: availPulse 2s infinite;
+        }
+        .availability-badge::before {
+            content: ''; width: 8px; height: 8px; border-radius: 50%;
+            background: var(--green); animation: dotPulse 1.5s infinite;
+            box-shadow: 0 0 8px rgba(106,191,105,0.5);
+        }
+        @keyframes availPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(106,191,105,0.2); } 50% { box-shadow: 0 0 0 6px rgba(106,191,105,0); } }
+        @keyframes dotPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        nav { display: flex; gap: 28px; align-items: center; }
+        nav a {
+            color: var(--text-dim); text-decoration: none; font-size: 14px;
+            font-weight: 500; transition: color 0.3s; position: relative;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--green); transition: width 0.3s;
+        }
+        nav a:hover { color: var(--green); }
+        nav a:hover::after { width: 100%; }
+        nav a.active { color: var(--green); }
+        nav a.active::after { width: 100%; }
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; z-index: 110; }
+        .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--green); margin: 5px 0; transition: all 0.3s; }
+        .nav-toggle.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .nav-toggle.open span:nth-child(2) { opacity: 0; }
+        .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            nav {
+                position: fixed; top: 0; right: -100%; width: 70%;
+                height: 100vh; background: rgba(5,14,5,0.97); backdrop-filter: blur(24px);
+                flex-direction: column; justify-content: center; gap: 32px;
+                transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                border-left: 1px solid rgba(106,191,105,0.1);
+                z-index: 105;
+            }
+            nav.open { right: 0; }
+            nav a { font-size: 18px; }
+            .availability-badge { display: none; }
+        }
+
+        /* Hero */
+        .hero-slider { position: relative; height: 100vh; overflow: hidden; }
+        .slide {
+            position: absolute; inset: 0; display: flex;
+            align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 1s ease;
+            padding: 120px 32px 60px;
+        }
+        .slide.active { opacity: 1; }
+        .slide-content {
+            max-width: 1200px; width: 100%; display: flex;
+            align-items: center; gap: 80px; flex-wrap: wrap; justify-content: center;
+        }
+        .slide-text { flex: 1; min-width: 320px; }
+        .slide-text h1 { font-size: 64px; font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 20px; }
+        .slide-text h1 .highlight { color: var(--green); text-shadow: 0 0 40px rgba(106,191,105,0.4), 0 0 80px rgba(106,191,105,0.2); }
+        .slide-text p { font-size: 18px; color: var(--text-dim); line-height: 1.7; max-width: 500px; margin-bottom: 32px; }
+        .typing-text { font-size: 20px; color: var(--green); font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 24px; min-height: 30px; text-shadow: 0 0 15px rgba(106,191,105,0.4); }
+        .typing-cursor { animation: blink 1s infinite; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+        .slide-visual { flex: 0 0 550px; height: 550px; position: relative; }
+        .visual-card {
+            position: absolute; border-radius: 20px; padding: 24px;
+            background: rgba(10,30,10,0.7); border: 1px solid rgba(106,191,105,0.08);
+            backdrop-filter: blur(16px);
+        }
+        .visual-card.card-1 { top: 0; left: 0; width: 280px; z-index: 2; box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(106,191,105,0.05); }
+        .visual-card.card-2 { bottom: 0; right: 0; width: 240px; z-index: 3; border-color: rgba(106,191,105,0.12); box-shadow: 0 10px 40px rgba(106,191,105,0.08); }
+        .visual-card.card-3 { top: 60px; right: 40px; width: 200px; z-index: 1; opacity: 0.6; }
+        .code-block { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--text-dim); }
+        .code-block .kw { color: var(--green); text-shadow: 0 0 8px rgba(106,191,105,0.3); }
+        .code-block .fn { color: #818cf8; text-shadow: 0 0 8px rgba(129,140,248,0.3); }
+        .code-block .str { color: var(--lime); text-shadow: 0 0 8px rgba(163,230,53,0.3); }
+        .code-block .cm { color: #555; }
+        .stat-row { display: flex; gap: 24px; margin-top: 12px; }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 28px; font-weight: 800; color: var(--green); text-shadow: 0 0 10px rgba(106,191,105,0.3); }
+        .stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .badge {
+            display: inline-block; padding: 6px 14px; border-radius: 8px;
+            font-size: 12px; font-weight: 600; margin: 4px;
+            background: rgba(106,191,105,0.08); color: var(--green);
+            border: 1px solid rgba(106,191,105,0.1);
+        }
+        .slider-dots {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 12px; z-index: 10;
+        }
+        .dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s;
+        }
+        .dot.active { background: var(--green); box-shadow: 0 0 12px rgba(106,191,105,0.5), 0 0 24px rgba(106,191,105,0.3); }
+        .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+        .btn {
+            padding: 14px 32px; border-radius: 12px; font-size: 15px;
+            font-weight: 600; cursor: pointer; border: none;
+            text-decoration: none; transition: all 0.3s; display: inline-flex;
+            align-items: center; gap: 8px;
+        }
+        .btn-green { background: var(--green); color: #0a1a0a; }
+        .btn-green:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(106,191,105,0.3), 0 0 50px rgba(106,191,105,0.15); }
+        .btn-outline { background: transparent; color: var(--text); border: 1px solid rgba(106,191,105,0.2); }
+        .btn-outline:hover { background: rgba(106,191,105,0.05); border-color: var(--green); color: var(--green); box-shadow: 0 0 20px rgba(106,191,105,0.1); }
+
+        /* Sections */
+        section { max-width: 1200px; margin: 0 auto; padding: 100px 32px 60px; position: relative; z-index: 1; }
+        .section-tag { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; color: var(--green); margin-bottom: 12px; text-shadow: 0 0 20px rgba(106,191,105,0.3); }
+        .section-title { font-size: 42px; font-weight: 900; letter-spacing: -1px; margin-bottom: 16px; }
+        .section-sub { color: var(--text-dim); font-size: 17px; max-width: 600px; line-height: 1.7; margin-bottom: 50px; }
+
+        /* Counters */
+        .counters-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding: 60px 0; margin-bottom: 20px; }
+        .counter-item {
+            text-align: center; padding: 30px 20px; border-radius: 20px;
+            background: rgba(106,191,105,0.02); border: 1px solid rgba(106,191,105,0.06);
+            transition: all 0.3s;
+        }
+        .counter-item:hover { background: rgba(106,191,105,0.05); border-color: rgba(106,191,105,0.15); box-shadow: 0 5px 20px rgba(106,191,105,0.06); }
+        .counter-num { font-size: 56px; font-weight: 900; color: var(--green); line-height: 1; text-shadow: 0 0 30px rgba(106,191,105,0.3); }
+        .counter-label { font-size: 14px; color: var(--text-dim); margin-top: 8px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Why Hire */
+        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .why-card {
+            background: rgba(10,30,10,0.4); border: 1px solid rgba(106,191,105,0.06);
+            border-radius: 20px; padding: 36px 28px; transition: all 0.4s;
+            position: relative; overflow: hidden; backdrop-filter: blur(8px);
+        }
+        .why-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--green), transparent);
+            opacity: 0; transition: opacity 0.3s;
+            box-shadow: 0 0 10px rgba(106,191,105,0.3);
+        }
+        .why-card:hover { border-color: rgba(106,191,105,0.3); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(106,191,105,0.08); }
+        .why-card:hover::before { opacity: 1; }
+        .why-num { font-size: 48px; font-weight: 900; color: var(--green); margin-bottom: 12px; text-shadow: 0 0 20px rgba(106,191,105,0.4); opacity: 0.8; }
+        .why-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+        .why-card p { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
+
+        /* About */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-image {
+            width: 100%; aspect-ratio: 1; border-radius: 24px;
+            background: radial-gradient(circle at 50% 50%, rgba(106,191,105,0.05), rgba(10,30,10,0.8));
+            border: 1px solid rgba(106,191,105,0.08); position: relative;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        .about-image::after {
+            content: ''; position: absolute; inset: -50%;
+            background: conic-gradient(from 0deg, transparent, rgba(106,191,105,0.03), transparent);
+            animation: galaxySpin 20s linear infinite;
+        }
+        @keyframes galaxySpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ЕД AVATAR - GitHub Octocat style */
+        .ed-avatar {
+            position: relative; z-index: 1; width: 180px; height: 180px;
+        }
+        .ed-avatar-body {
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, #4db6ac 0%, #6abf69 50%, #4a9d4e 100%);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow:
+                0 0 0 4px rgba(106,191,105,0.2),
+                0 0 40px rgba(106,191,105,0.25),
+                0 0 80px rgba(106,191,105,0.1);
+            animation: avatarPulse 3s ease-in-out infinite;
+        }
+        @keyframes avatarPulse {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(106,191,105,0.2), 0 0 40px rgba(106,191,105,0.25), 0 0 80px rgba(106,191,105,0.1); }
+            50% { box-shadow: 0 0 0 6px rgba(106,191,105,0.3), 0 0 50px rgba(106,191,105,0.35), 0 0 100px rgba(106,191,105,0.15); }
+        }
+        .ed-avatar-text {
+            font-size: 60px; font-weight: 900; color: #0a1a0a;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-family: 'Inter', sans-serif; letter-spacing: -3px;
+        }
+        /* Leaf decoration on avatar */
+        .ed-avatar-leaf {
+            position: absolute; width: 24px; height: 24px;
+        }
+        .ed-avatar-leaf::before {
+            content: ''; display: block; width: 100%; height: 100%;
+            background: #7bc67e; border-radius: 0 50% 50% 50%;
+            box-shadow: 0 0 8px rgba(106,191,105,0.5);
+        }
+        .ed-avatar-leaf-1 { top: 5px; right: 10px; transform: rotate(30deg); animation: leafBob 2s ease-in-out infinite; }
+        .ed-avatar-leaf-2 { top: 15px; right: 0; transform: rotate(60deg); animation: leafBob 2.5s ease-in-out infinite 0.3s; }
+        .ed-avatar-leaf-3 { bottom: 20px; left: 8px; transform: rotate(-45deg); animation: leafBob 2.2s ease-in-out infinite 0.6s; }
+        .ed-avatar-leaf-4 { bottom: 10px; left: 0; transform: rotate(-70deg); animation: leafBob 2.8s ease-in-out infinite 0.9s; }
+        @keyframes leafBob { 0%, 100% { transform: rotate(var(--r, 30deg)) translateY(0); } 50% { transform: rotate(var(--r, 30deg)) translateY(-3px); } }
+
+        /* Tech Orbit in hero */
+        .tech-orbit-wrap {
+            position: relative; width: 550px; height: 550px;
+        }
+        .tech-orbit-center {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 96px; height: 96px; border-radius: 50%;
+            background: linear-gradient(135deg, #6abf69, #388e3c);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 34px; font-weight: 900; color: #0a1a0a;
+            box-shadow: 0 0 30px rgba(106,191,105,0.3), 0 0 60px rgba(106,191,105,0.15);
+            z-index: 3;
+            animation: centerPulse 3s ease-in-out infinite;
+        }
+        @keyframes centerPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(106,191,105,0.3), 0 0 60px rgba(106,191,105,0.15); }
+            50% { box-shadow: 0 0 40px rgba(106,191,105,0.4), 0 0 80px rgba(106,191,105,0.2); }
+        }
+        .orbit-ring {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            border-radius: 50%; border: 1px dashed rgba(106,191,105,0.12);
+        }
+        .orbit-ring-1 { width: 264px; height: 264px; animation: orbitSpin 20s linear infinite; }
+        .orbit-ring-2 { width: 396px; height: 396px; animation: orbitSpin 30s linear infinite reverse; }
+        .orbit-ring-3 { width: 528px; height: 528px; animation: orbitSpin 40s linear infinite; }
+        @keyframes orbitSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        .orbit-node {
+            position: absolute; top: 50%; left: 50%;
+            width: 40px; height: 40px; margin: -20px 0 0 -20px;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700;
+            color: var(--green); letter-spacing: -0.5px;
+            background: rgba(10,25,10,0.85); border: 1px solid rgba(106,191,105,0.15);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        .orbit-node:hover {
+            border-color: rgba(106,191,105,0.4);
+            box-shadow: 0 0 16px rgba(106,191,105,0.2);
+            transform: scale(1.15);
+        }
+        .orbit-node::after {
+            content: attr(data-label); position: absolute; bottom: -18px;
+            font-size: 8px; color: rgba(106,191,105,0.6); white-space: nowrap;
+            font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px;
+        }
+        .orbit-ring-1 .orbit-node:nth-child(1) { top: -20px; left: 50%; margin-left: -20px; }
+        .orbit-ring-1 .orbit-node:nth-child(2) { top: 50%; right: -20px; margin-top: -20px; }
+        .orbit-ring-1 .orbit-node:nth-child(3) { bottom: -20px; left: 50%; margin-left: -20px; }
+        .orbit-ring-1 .orbit-node:nth-child(4) { top: 50%; left: -20px; margin-top: -20px; }
+        .orbit-ring-2 .orbit-node:nth-child(1) { top: -20px; left: 50%; margin-left: -20px; }
+        .orbit-ring-2 .orbit-node:nth-child(2) { top: 5%; right: 5%; }
+        .orbit-ring-2 .orbit-node:nth-child(3) { top: 50%; right: -20px; margin-top: -20px; }
+        .orbit-ring-2 .orbit-node:nth-child(4) { bottom: 5%; right: 5%; }
+        .orbit-ring-2 .orbit-node:nth-child(5) { bottom: -20px; left: 50%; margin-left: -20px; }
+        .orbit-ring-2 .orbit-node:nth-child(6) { bottom: 5%; left: 5%; }
+        .orbit-ring-2 .orbit-node:nth-child(7) { top: 50%; left: -20px; margin-top: -20px; }
+        .orbit-ring-2 .orbit-node:nth-child(8) { top: 5%; left: 5%; }
+        .orbit-ring-3 .orbit-node:nth-child(1) { top: -20px; left: 50%; margin-left: -20px; }
+        .orbit-ring-3 .orbit-node:nth-child(2) { top: 12%; right: 0; }
+        .orbit-ring-3 .orbit-node:nth-child(3) { top: 50%; right: -20px; margin-top: -20px; }
+        .orbit-ring-3 .orbit-node:nth-child(4) { bottom: 12%; right: 0; }
+        .orbit-ring-3 .orbit-node:nth-child(5) { bottom: -20px; left: 50%; margin-left: -20px; }
+        .orbit-ring-3 .orbit-node:nth-child(6) { bottom: 12%; left: 0; }
+        .orbit-ring-3 .orbit-node:nth-child(7) { top: 50%; left: -20px; margin-top: -20px; }
+        .orbit-ring-3 .orbit-node:nth-child(8) { top: 12%; left: 0; }
+        .orbit-ring-3 .orbit-node:nth-child(9) { bottom: 3%; left: 28%; }
+
+        /* MOUSE LEAVES - natural style */
+        .mouse-leaf {
+            position: fixed; pointer-events: none; z-index: 999;
+            width: 16px; height: 20px; opacity: 0; will-change: transform, opacity;
+        }
+        .mouse-leaf-inner {
+            width: 100%; height: 100%; position: relative;
+        }
+        .mouse-leaf-inner::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(170deg, #8fbc6a 0%, #6fa84e 30%, #5a9640 60%, #4a8535 100%);
+            border-radius: 50% 2% 50% 2%;
+            box-shadow: inset -2px -2px 6px rgba(0,0,0,0.15), inset 2px 2px 4px rgba(255,255,255,0.1);
+        }
+        .mouse-leaf-inner::after {
+            content: ''; position: absolute;
+            top: 15%; left: 49%; width: 1.5px; height: 75%;
+            background: linear-gradient(180deg, rgba(50,75,25,0.5), rgba(50,75,25,0.1));
+            border-radius: 1px;
+        }
+        .mouse-leaf-veins {
+            position: absolute; inset: 0; overflow: visible;
+        }
+        .mouse-leaf-veins::before {
+            content: ''; position: absolute;
+            top: 30%; left: 49%; width: 1px; height: 25%;
+            background: rgba(50,75,25,0.25);
+            transform-origin: top center; transform: rotate(-40deg);
+        }
+        .mouse-leaf-veins::after {
+            content: ''; position: absolute;
+            top: 50%; left: 49%; width: 1px; height: 22%;
+            background: rgba(50,75,25,0.2);
+            transform-origin: top center; transform: rotate(35deg);
+        }
+        .mouse-leaf-stem {
+            position: absolute; bottom: -5px; left: 48%;
+            width: 1.5px; height: 7px;
+            background: linear-gradient(180deg, #5a7a3a, #3d5a28);
+            border-radius: 1px;
+        }
+        .mouse-leaf.active { opacity: 1; transition: none; }
+        .hover-glow:hover {
+            filter: brightness(1.1);
+        }
+
+        /* Page loader */
+        .page-loader {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #050e05;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .page-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-content { text-align: center; }
+        .loader-tree {
+            font-size: 60px; animation: loaderPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes loaderPulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.15); opacity: 1; }
+        }
+        .loader-text {
+            margin-top: 16px; color: var(--green); font-family: 'JetBrains Mono', monospace;
+            font-size: 14px; opacity: 0.6;
+        }
+
+        /* Smooth section transitions */
+        section { transition: all 0.3s ease; }
+
+        /* Card inner glow on hover */
+        .why-card, .tool-item, .contact-card, .project-card, .counter-item {
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        box-shadow 0.3s ease,
+                        border-color 0.3s ease;
+        }
+
+        /* Ripple effect on click */
+        .ripple {
+            position: fixed; pointer-events: none; z-index: 999;
+            width: 20px; height: 20px; border-radius: 50%;
+            border: 2px solid rgba(106,191,105,0.5);
+            animation: rippleExpand 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes rippleExpand {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0.8; border-width: 3px; }
+            100% { transform: translate(-50%, -50%) scale(10); opacity: 0; border-width: 0.5px; }
+        }
+
+        /* About - Developer Terminal Scene */
+        .about-dev-scene {
+            width: 100%; aspect-ratio: 1; position: relative; z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .dev-monitor {
+            width: 280px; height: 200px; position: relative;
+            background: #1a1a1a; border-radius: 12px;
+            border: 2px solid #333;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 60px rgba(106,191,105,0.08);
+            overflow: hidden;
+        }
+        .dev-monitor::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 28px;
+            background: #222; border-bottom: 1px solid #333;
+            border-radius: 10px 10px 0 0;
+        }
+        .dev-monitor-dots {
+            position: absolute; top: 9px; left: 12px; display: flex; gap: 6px; z-index: 2;
+        }
+        .dev-monitor-dots span {
+            width: 10px; height: 10px; border-radius: 50%;
+        }
+        .dev-monitor-dots .d1 { background: #ff5f57; }
+        .dev-monitor-dots .d2 { background: #febc2e; }
+        .dev-monitor-dots .d3 { background: #28c840; }
+        .dev-screen {
+            position: absolute; top: 32px; left: 8px; right: 8px; bottom: 8px;
+            background: #0a0e0a; border-radius: 4px; padding: 12px;
+            font-family: 'JetBrains Mono', monospace; font-size: 10px;
+            line-height: 1.6; color: rgba(106,191,105,0.7);
+            overflow: hidden;
+        }
+        .dev-screen .line { opacity: 0; animation: typeLine 0.3s ease forwards; }
+        .dev-screen .line:nth-child(1) { animation-delay: 0.5s; }
+        .dev-screen .line:nth-child(2) { animation-delay: 1s; }
+        .dev-screen .line:nth-child(3) { animation-delay: 1.5s; }
+        .dev-screen .line:nth-child(4) { animation-delay: 2s; }
+        .dev-screen .line:nth-child(5) { animation-delay: 2.5s; }
+        .dev-screen .line:nth-child(6) { animation-delay: 3s; }
+        .dev-screen .line:nth-child(7) { animation-delay: 3.5s; }
+        .dev-screen .line:nth-child(8) { animation-delay: 4s; }
+        @keyframes typeLine { from { opacity: 0; transform: translateX(-5px); } to { opacity: 1; transform: translateX(0); } }
+        .dev-screen .prompt { color: #6abf69; }
+        .dev-screen .cmd { color: #9ccc65; }
+        .dev-screen .ok { color: #66bb6a; }
+        .dev-screen .str { color: #a5d6a7; }
+        .dev-screen .cursor {
+            display: inline-block; width: 6px; height: 12px;
+            background: #6abf69; vertical-align: middle;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+        .dev-stand {
+            width: 60px; height: 20px; margin: 0 auto;
+            background: linear-gradient(180deg, #333, #222);
+            border-radius: 0 0 4px 4px;
+        }
+        .dev-stand-base {
+            width: 100px; height: 6px; margin: 0 auto;
+            background: #333; border-radius: 3px;
+        }
+        .dev-coffee {
+            position: absolute; bottom: 30px; right: 20px;
+            width: 18px; height: 22px; background: #4a3728;
+            border-radius: 0 0 4px 4px; border: 2px solid #5c4a3a;
+        }
+        .dev-coffee::before {
+            content: ''; position: absolute; top: -6px; left: 3px;
+            width: 10px; height: 6px; border-radius: 50%;
+            background: rgba(106,191,105,0.15);
+            animation: steam 2s ease-in-out infinite;
+        }
+        .dev-coffee::after {
+            content: ''; position: absolute; top: -4px; right: -8px;
+            width: 8px; height: 10px; border: 2px solid #5c4a3a;
+            border-left: none; border-radius: 0 6px 6px 0;
+        }
+        @keyframes steam {
+            0%, 100% { transform: translateY(0) scaleX(1); opacity: 0.3; }
+            50% { transform: translateY(-8px) scaleX(1.5); opacity: 0.1; }
+        }
+        .dev-plant {
+            position: absolute; bottom: 25px; left: 18px;
+            width: 16px; height: 20px;
+        }
+        .dev-plant-pot {
+            width: 16px; height: 10px; background: #8b5e3c;
+            border-radius: 0 0 3px 3px; position: absolute; bottom: 0;
+        }
+        .dev-plant-leaf1 {
+            position: absolute; bottom: 8px; left: 3px;
+            width: 10px; height: 12px; background: #4caf50;
+            border-radius: 0 50% 50% 50%; transform: rotate(-20deg);
+            animation: plantSway 3s ease-in-out infinite;
+        }
+        .dev-plant-leaf2 {
+            position: absolute; bottom: 10px; right: 2px;
+            width: 8px; height: 10px; background: #66bb6a;
+            border-radius: 50% 0 50% 50%; transform: rotate(25deg);
+            animation: plantSway 3s ease-in-out infinite 0.5s;
+        }
+        @keyframes plantSway {
+            0%, 100% { transform: rotate(var(--r, -20deg)); }
+            50% { transform: rotate(calc(var(--r, -20deg) + 5deg)); }
+        }
+        /* Floating code particles */
+        .dev-particle {
+            position: absolute; font-family: 'JetBrains Mono', monospace;
+            font-size: 10px; color: rgba(106,191,105,0.15);
+            animation: floatCode 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .dev-particle:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .dev-particle:nth-child(2) { top: 20%; right: 8%; animation-delay: 1s; }
+        .dev-particle:nth-child(3) { bottom: 25%; left: 8%; animation-delay: 2s; }
+        .dev-particle:nth-child(4) { bottom: 35%; right: 5%; animation-delay: 3s; }
+        .dev-particle:nth-child(5) { top: 45%; left: 3%; animation-delay: 4s; }
+        @keyframes floatCode {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.15; }
+            50% { transform: translateY(-10px) rotate(3deg); opacity: 0.3; }
+        }
+
+        /* Contact SVG icons */
+        .contact-svg {
+            width: 28px; height: 28px; flex-shrink: 0;
+        }
+        .contact-svg path, .contact-svg circle, .contact-svg rect {
+            fill: none; stroke: var(--green); stroke-width: 1.5;
+            stroke-linecap: round; stroke-linejoin: round;
+            transition: all 0.3s;
+        }
+        .contact-card:hover .contact-svg path,
+        .contact-card:hover .contact-svg circle,
+        .contact-card:hover .contact-svg rect {
+            stroke: var(--green); filter: drop-shadow(0 0 4px rgba(106,191,105,0.4));
+        }
+        .about-text h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+        .about-text p { color: var(--text-dim); line-height: 1.8; margin-bottom: 16px; }
+        .about-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 40px; }
+        .timeline::before {
+            content: ''; position: absolute; left: 15px; top: 0;
+            width: 2px; height: 100%;
+            background: linear-gradient(180deg, rgba(106,191,105,0.3), rgba(106,191,105,0.05));
+        }
+        .timeline-item { position: relative; margin-bottom: 40px; }
+        .timeline-dot {
+            position: absolute; left: -33px; top: 6px;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--green); box-shadow: 0 0 12px rgba(106,191,105,0.4), 0 0 24px rgba(106,191,105,0.2);
+        }
+        .timeline-date { font-size: 13px; color: var(--green); font-weight: 600; margin-bottom: 6px; }
+        .timeline-item h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+        .timeline-item p { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+        /* Skills Slider */
+        .skills-section {
+            background: rgba(10,25,10,0.6); padding: 100px 0; margin: 0 -32px;
+            border-top: 1px solid rgba(106,191,105,0.06); border-bottom: 1px solid rgba(106,191,105,0.06);
+            backdrop-filter: blur(10px);
+        }
+        .skills-section section { padding-top: 0; padding-bottom: 0; }
+        .skills-slider-wrap { position: relative; overflow: hidden; padding: 20px 0; }
+        .skills-track { display: flex; gap: 24px; animation: scrollSkills 30s linear infinite; width: max-content; }
+        .skills-track:hover { animation-play-state: paused; }
+        @keyframes scrollSkills { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .skill-card {
+            flex: 0 0 280px; background: rgba(8,20,8,0.8); border: 1px solid rgba(106,191,105,0.06);
+            border-radius: 20px; padding: 32px 28px; transition: all 0.4s;
+            position: relative; overflow: hidden; backdrop-filter: blur(10px);
+        }
+        .skill-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 3px; background: linear-gradient(90deg, var(--green), transparent);
+            opacity: 0; transition: opacity 0.3s;
+            box-shadow: 0 0 10px rgba(106,191,105,0.3);
+        }
+        .skill-card:hover { border-color: rgba(106,191,105,0.3); transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px rgba(106,191,105,0.08); }
+        .skill-card:hover::before { opacity: 1; }
+        .skill-icon {
+            width: 56px; height: 56px; border-radius: 14px;
+            background: rgba(106,191,105,0.06); display: flex;
+            align-items: center; justify-content: center; margin-bottom: 20px;
+            color: var(--green); transition: all 0.3s;
+        }
+        .skill-card:hover .skill-icon {
+            background: rgba(106,191,105,0.12);
+            box-shadow: 0 0 12px rgba(106,191,105,0.15);
+        }
+        .skill-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .skill-card p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+        .skill-level { margin-top: 16px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .skill-level-fill { height: 100%; background: linear-gradient(90deg, var(--green), rgba(106,191,105,0.5)); border-radius: 2px; transition: width 1s ease; }
+
+        /* Tools */
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .tool-item {
+            background: rgba(10,30,10,0.4); border: 1px solid rgba(106,191,105,0.06);
+            border-radius: 16px; padding: 28px 20px; text-align: center;
+            transition: all 0.3s; cursor: default; backdrop-filter: blur(8px);
+        }
+        .tool-item:hover { border-color: rgba(106,191,105,0.3); background: rgba(106,191,105,0.03); box-shadow: 0 5px 20px rgba(106,191,105,0.06); }
+        .tool-icon {
+            width: 44px; height: 44px; margin: 0 auto 12px;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            background: rgba(106,191,105,0.08); border: 1px solid rgba(106,191,105,0.1);
+            font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700;
+            color: var(--green); transition: all 0.3s;
+        }
+        .tool-item:hover .tool-icon {
+            background: rgba(106,191,105,0.15);
+            box-shadow: 0 0 12px rgba(106,191,105,0.2);
+        }
+        .tool-icon svg { width: 22px; height: 22px; }
+        .tool-icon svg path, .tool-icon svg circle, .tool-icon svg rect, .tool-icon svg polyline, .tool-icon svg line, .tool-icon svg polygon {
+            fill: none; stroke: var(--green); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .tool-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .tool-item p { font-size: 12px; color: var(--text-dim); }
+
+        /* Terminal */
+        .terminal-box {
+            background: rgba(10,25,10,0.6); border: 1px solid rgba(106,191,105,0.08);
+            border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px);
+        }
+        .terminal-header {
+            display: flex; align-items: center; gap: 8px;
+            padding: 14px 20px; background: rgba(106,191,105,0.02);
+            border-bottom: 1px solid rgba(106,191,105,0.06);
+        }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.r { background: #ef4444; }
+        .terminal-dot.y { background: #eab308; }
+        .terminal-dot.g { background: var(--green); }
+        .terminal-title { margin-left: 12px; font-size: 13px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+        .terminal-body {
+            padding: 24px; font-family: 'JetBrains Mono', monospace;
+            font-size: 14px; line-height: 1.8; min-height: 300px;
+            max-height: 400px; overflow-y: auto; color: var(--text-dim);
+            background: rgba(5,10,5,0.3);
+        }
+        .terminal-body .prompt { color: var(--green); text-shadow: 0 0 8px rgba(106,191,105,0.3); }
+        .terminal-body .output { color: var(--lime); text-shadow: 0 0 6px rgba(163,230,53,0.2); }
+        .terminal-body .error { color: #ef4444; }
+        .terminal-body .info { color: var(--emerald); }
+        .terminal-input-line { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .terminal-input-line .prompt { color: var(--green); white-space: nowrap; }
+        .terminal-input {
+            flex: 1; background: transparent; border: none; outline: none;
+            color: var(--text); font-family: 'JetBrains Mono', monospace;
+            font-size: 14px; caret-color: var(--green);
+        }
+
+        /* Projects */
+        .projects-slider {
+            display: flex; gap: 24px; overflow-x: auto;
+            scroll-snap-type: x mandatory; padding-bottom: 20px; scrollbar-width: none;
+        }
+        .projects-slider::-webkit-scrollbar { display: none; }
+        .project-card {
+            flex: 0 0 380px; scroll-snap-align: start;
+            background: rgba(10,25,10,0.5); border: 1px solid rgba(106,191,105,0.06);
+            border-radius: 20px; overflow: hidden; transition: all 0.4s;
+            backdrop-filter: blur(10px);
+        }
+        .project-card:hover { border-color: rgba(106,191,105,0.3); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(106,191,105,0.08); }
+        .project-img { height: 200px; position: relative; overflow: hidden; border-bottom: 1px solid rgba(106,191,105,0.06); }
+        .project-img-bg {
+            width: 100%; height: 100%; display: flex;
+            align-items: center; justify-content: center; position: relative; overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, rgba(106,191,105,0.03), rgba(10,25,10,0.8));
+        }
+        .project-img-bg svg { width: 100%; height: 100%; position: absolute; inset: 0; }
+        .project-img-bg svg path, .project-img-bg svg circle, .project-img-bg svg rect, .project-img-bg svg polyline, .project-img-bg svg line, .project-img-bg svg polygon, .project-img-bg svg ellipse {
+            fill: none; stroke: var(--green); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round;
+        }
+        .project-tag {
+            position: absolute; top: 16px; left: 16px;
+            background: var(--green); color: #0a1a0a;
+            padding: 6px 14px; border-radius: 8px; font-size: 11px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 2px 12px rgba(106,191,105,0.3);
+        }
+        .project-info { padding: 28px; }
+        .project-info h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+        .project-info p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 16px; }
+        .project-techs { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        /* Test Runner */
+        .runner-box {
+            background: rgba(10,25,10,0.5); border: 1px solid rgba(106,191,105,0.08);
+            border-radius: 24px; padding: 40px; position: relative; overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        .runner-box::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+            box-shadow: 0 0 20px rgba(106,191,105,0.3);
+        }
+        .runner-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 16px; }
+        .runner-header h3 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .run-btn {
+            padding: 12px 28px; border-radius: 10px;
+            background: var(--green); color: #0a1a0a;
+            border: none; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .run-btn:hover { box-shadow: 0 6px 24px rgba(106,191,105,0.3), 0 0 40px rgba(106,191,105,0.15); transform: translateY(-2px); }
+        .run-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .progress-bar {
+            width: 100%; height: 4px; background: rgba(106,191,105,0.06);
+            border-radius: 2px; margin-bottom: 24px; overflow: hidden; display: none;
+        }
+        .progress-bar.active { display: block; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--green), var(--lime)); border-radius: 2px; transition: width 0.3s; box-shadow: 0 0 10px rgba(106,191,105,0.3); }
+        .test-list { display: flex; flex-direction: column; gap: 6px; }
+        .test-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 18px; background: rgba(10,25,10,0.3);
+            border-radius: 12px; font-size: 14px; font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s; border-left: 3px solid transparent;
+        }
+        .test-item.pass { border-left-color: var(--green); background: rgba(106,191,105,0.04); }
+        .test-item.fail { border-left-color: #ef4444; background: rgba(239,68,68,0.04); }
+        .test-item.skip { border-left-color: var(--yellow); background: rgba(250,204,21,0.04); }
+        .test-item.running { border-left-color: var(--teal); animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .test-status { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+        .test-item.pass .test-status { background: rgba(106,191,105,0.1); color: var(--green); box-shadow: 0 0 8px rgba(106,191,105,0.2); }
+        .test-item.fail .test-status { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .test-item.skip .test-status { background: rgba(250,204,21,0.1); color: var(--yellow); }
+        .test-item.running .test-status { background: rgba(45,212,191,0.12); color: var(--teal); animation: spin 0.8s linear infinite; box-shadow: 0 0 8px rgba(45,212,191,0.3); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .test-name { flex: 1; }
+        .test-time { color: var(--text-dim); font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+        .test-summary {
+            margin-top: 24px; padding: 20px; border-radius: 14px;
+            background: rgba(10,25,10,0.4); display: none; font-size: 15px;
+            border: 1px solid rgba(106,191,105,0.06);
+        }
+        .test-summary.active { display: flex; gap: 32px; flex-wrap: wrap; }
+        .test-summary .stat { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .test-summary .stat.pass { color: var(--green); }
+        .test-summary .stat.fail { color: #ef4444; }
+        .test-summary .stat.skip { color: var(--yellow); }
+
+        /* Hire CTA */
+        .hire-cta {
+            background: radial-gradient(ellipse at center, rgba(106,191,105,0.06), rgba(10,25,10,0.5));
+            border: 1px solid rgba(106,191,105,0.15); border-radius: 24px;
+            padding: 60px; text-align: center; position: relative; overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        .hire-cta::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(106,191,105,0.08), transparent 60%);
+        }
+        .hire-cta h2 { font-size: 40px; font-weight: 900; margin-bottom: 16px; position: relative; }
+        .hire-cta p { font-size: 18px; color: var(--text-dim); margin-bottom: 32px; position: relative; }
+        .hire-cta .btn { position: relative; }
+        .hire-form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; position: relative; }
+        .hire-input {
+            padding: 14px 20px; border-radius: 12px; border: 1px solid rgba(106,191,105,0.1);
+            background: rgba(10,30,10,0.5); color: var(--text);
+            font-size: 15px; width: 300px; outline: none; font-family: 'Inter', sans-serif;
+            transition: all 0.3s; backdrop-filter: blur(8px);
+        }
+        .hire-input:focus { border-color: var(--green); box-shadow: 0 0 15px rgba(106,191,105,0.15); }
+        .hire-input::placeholder { color: var(--text-dim); }
+
+        /* Contacts */
+        .contacts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .contact-card {
+            background: rgba(10,30,10,0.4); border: 1px solid rgba(106,191,105,0.06);
+            border-radius: 20px; padding: 36px 28px; text-decoration: none;
+            color: inherit; transition: all 0.4s; display: flex;
+            align-items: center; gap: 20px; backdrop-filter: blur(8px);
+        }
+        .contact-card:hover { border-color: rgba(106,191,105,0.3); background: rgba(106,191,105,0.03); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(106,191,105,0.08); }
+        .contact-icon {
+            width: 56px; height: 56px; border-radius: 14px;
+            background: rgba(106,191,105,0.06); display: flex;
+            align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;
+        }
+        .contact-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .contact-card p { font-size: 13px; color: var(--text-dim); }
+
+        footer {
+            text-align: center; padding: 50px 32px;
+            border-top: 1px solid rgba(106,191,105,0.06); color: var(--text-dim); font-size: 13px;
+            background: rgba(5,14,5,0.5); position: relative; z-index: 1;
+        }
+        footer .footer-line { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px; }
+        footer .green { color: var(--green); font-weight: 600; text-shadow: 0 0 10px rgba(106,191,105,0.3); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        *:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+
+        .toast-notification {
+            position: fixed; bottom: 32px; right: 32px; z-index: 10000;
+            padding: 16px 24px; border-radius: 12px;
+            background: rgba(10,30,10,0.9); border: 1px solid rgba(106,191,105,0.2);
+            color: var(--green); font-size: 14px; font-weight: 500;
+            backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transform: translateY(100px); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast-notification.show { transform: translateY(0); opacity: 1; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(5,14,5,0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(106,191,105,0.2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(106,191,105,0.4); }
+
+        @media (max-width: 768px) {
+            .slide-text h1 { font-size: 36px; }
+            .slide-visual { display: none; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-image { max-width: 300px; margin: 0 auto; }
+            section { padding: 80px 20px 40px; }
+            .section-title { font-size: 30px; }
+            nav { gap: 16px; } nav a { font-size: 13px; }
+            .project-card { flex: 0 0 300px; }
+            .runner-box { padding: 24px; }
+            .counters-bar { grid-template-columns: repeat(2, 1fr); }
+            .counter-num { font-size: 40px; }
+            .hire-cta { padding: 40px 20px; }
+            .hire-cta h2 { font-size: 28px; }
+            .terminal-body { min-height: 200px; }
+            .load-config { grid-template-columns: 1fr; }
+            .load-sliders { grid-template-columns: 1fr; }
+            .load-live-stats { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* Load Test Constructor */
+        .load-config { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .load-section { background: rgba(10,25,10,0.3); border: 1px solid rgba(106,191,105,0.06); border-radius: 16px; padding: 20px; }
+        .load-section-title { font-size: 14px; font-weight: 700; color: var(--green); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .load-options { display: flex; flex-direction: column; gap: 10px; }
+        .load-check { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 13px; color: var(--text-dim); transition: color 0.2s; }
+        .load-check:hover { color: var(--text); }
+        .load-check input[type="checkbox"] { display: none; }
+        .checkmark {
+            width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+            border: 2px solid rgba(106,191,105,0.2); background: rgba(10,25,10,0.5);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+        }
+        .load-check input:checked + .checkmark {
+            background: var(--green); border-color: var(--green);
+        }
+        .load-check input:checked + .checkmark::after {
+            content: '✓'; color: #0a1a0a; font-size: 12px; font-weight: 700;
+        }
+        .browser-options { flex-direction: row !important; flex-wrap: wrap; gap: 10px; }
+        .load-radio { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: var(--text-dim); transition: color 0.2s; padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(106,191,105,0.08); transition: all 0.2s; }
+        .load-radio:hover { color: var(--text); border-color: rgba(106,191,105,0.2); }
+        .load-radio input[type="radio"] { display: none; }
+        .radio-mark {
+            width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+            border: 2px solid rgba(106,191,105,0.2); transition: all 0.2s;
+        }
+        .load-radio input:checked ~ .radio-mark {
+            border-color: var(--green);
+            box-shadow: inset 0 0 0 4px rgba(106,191,105,0.3);
+        }
+        .load-radio:has(input:checked) {
+            color: var(--green); border-color: rgba(106,191,105,0.3); background: rgba(106,191,105,0.04);
+        }
+        .load-sliders { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .slider-group { display: flex; flex-direction: column; gap: 8px; }
+        .slider-group label { font-size: 13px; color: var(--text-dim); }
+        .slider-group label span { color: var(--green); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        .load-slider {
+            -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px;
+            background: rgba(106,191,105,0.1); outline: none; cursor: pointer;
+        }
+        .load-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+            background: var(--green); cursor: pointer; box-shadow: 0 0 8px rgba(106,191,105,0.4);
+        }
+        .load-slider::-moz-range-thumb {
+            width: 18px; height: 18px; border-radius: 50%; border: none;
+            background: var(--green); cursor: pointer; box-shadow: 0 0 8px rgba(106,191,105,0.4);
+        }
+        .load-live-stats {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
+            margin-bottom: 24px; padding: 20px; border-radius: 14px;
+            background: rgba(10,25,10,0.4); border: 1px solid rgba(106,191,105,0.06);
+            display: none;
+        }
+        .load-live-stats.active { display: grid; }
+        .live-stat { text-align: center; }
+        .live-stat-num { display: block; font-size: 24px; font-weight: 800; color: var(--green); font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 10px rgba(106,191,105,0.3); }
+        .live-stat-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .allure-format-select { display: flex; gap: 10px; margin-top: 12px; }
+        .allure-actions { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+        .allure-report-btn { padding: 14px 28px; font-size: 15px; }
+
+        /* AI Chatbot */
+        .chat-fab {
+            position: fixed; bottom: 32px; right: 32px; z-index: 998;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: linear-gradient(135deg, #6abf69, #388e3c);
+            border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(106,191,105,0.4);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s; animation: chatPulse 2s ease-in-out infinite;
+        }
+        .chat-fab:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(106,191,105,0.6); }
+        .chat-fab svg { width: 28px; height: 28px; fill: #0a1a0a; }
+        @keyframes chatPulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(106,191,105,0.4); }
+            50% { box-shadow: 0 4px 30px rgba(106,191,105,0.6), 0 0 0 8px rgba(106,191,105,0.1); }
+        }
+        .chat-fab-tooltip {
+            position: absolute; bottom: 72px; right: 0; white-space: nowrap;
+            background: rgba(10,30,10,0.95); color: var(--text); font-size: 13px;
+            padding: 8px 14px; border-radius: 8px; pointer-events: none;
+            border: 1px solid rgba(106,191,105,0.15); opacity: 0; transition: opacity 0.2s;
+        }
+        .chat-fab:hover .chat-fab-tooltip { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader">
+    <div class="loader-content">
+        <div class="loader-tree">🌿</div>
+        <div class="loader-text">loading...</div>
+    </div>
+</div>
+
+<!-- NATURE BACKGROUND -->
+<div class="nature-bg">
+    <div class="forest-photo"></div>
+    <div class="forest-overlay"></div>
+    <div class="forest-vignette"></div>
+    <div class="mist"></div>
+
+    <!-- Falling leaves -->
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+    <div class="leaf"><div class="leaf-body"><div class="leaf-vein"></div><div class="leaf-stem"></div></div></div>
+
+    <!-- Fireflies -->
+    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
+    <div class="firefly"></div><div class="firefly"></div><div class="firefly"></div>
+    <div class="firefly"></div><div class="firefly"></div>
+
+    <!-- Light rays -->
+    <div class="light-rays">
+        <div class="light-ray"></div><div class="light-ray"></div>
+        <div class="light-ray"></div><div class="light-ray"></div>
+        <div class="light-ray"></div>
+    </div>
+</div>
+
+<header>
+    <div class="header-inner">
+        <div class="logo">Egor<span>.Daronko@mail.ru</span></div>
+        <div class="availability-badge">Открыт для предложений</div>
+        <button class="nav-toggle" id="navToggle" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="mainNav">
+            <a href="#hero">Главная</a>
+            <a href="#about">Обо мне</a>
+            <a href="#why">Почему я</a>
+            <a href="#skills">Навыки</a>
+            <a href="#terminal">Терминал</a>
+            <a href="#projects">Проекты</a>
+            <a href="#tests">Тесты</a>
+            <a href="#loadtest">Нагрузка</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
+    </div>
+</header>
+
+<!-- HERO -->
+<div class="hero-slider" id="heroSlider">
+    <div class="slide active">
+        <div class="slide-content">
+            <div class="slide-text">
+                <div class="typing-text" id="typingText"></div>
+                <h1>QA Engineer<br>с <span class="highlight">сильным</span><br>стеком</h1>
+                <p>С глубоким пониманием тестирования, автоматизации и качественного ПО. Готов вкладываться и расти.</p>
+                <div class="hero-btns">
+                    <a href="#why" class="btn btn-green">Почему нанять меня →</a>
+                    <a href="#contacts" class="btn btn-outline">Связаться</a>
+                </div>
+            </div>
+            <div class="slide-visual">
+                <div class="tech-orbit-wrap">
+                    <div class="orbit-ring orbit-ring-1">
+                        <div class="orbit-node" data-label="Python">🐍</div>
+                        <div class="orbit-node" data-label="Python">Py</div>
+                        <div class="orbit-node" data-label="Pytest">Pt</div>
+                        <div class="orbit-node" data-label="API">Ap</div>
+                        <div class="orbit-node" data-label="SQL">SQ</div>
+                    </div>
+                    <div class="orbit-ring orbit-ring-2">
+                        <div class="orbit-node" data-label="Selenium">Se</div>
+                        <div class="orbit-node" data-label="Allure">Al</div>
+                        <div class="orbit-node" data-label="Git">Gi</div>
+                        <div class="orbit-node" data-label="Docker">Dk</div>
+                        <div class="orbit-node" data-label="Jira">Ji</div>
+                        <div class="orbit-node" data-label="Trello">Tr</div>
+                    </div>
+                    <div class="orbit-ring orbit-ring-3">
+                        <div class="orbit-node" data-label="OOP">OO</div>
+                        <div class="orbit-node" data-label="Pydantic">Py</div>
+                        <div class="orbit-node" data-label="CI/CD">CI</div>
+                        <div class="orbit-node" data-label="Poetry">Po</div>
+                        <div class="orbit-node" data-label="Postman">Pm</div>
+                        <div class="orbit-node" data-label="Linux">Li</div>
+                        <div class="orbit-node" data-label="AI">AI</div>
+                        <div class="orbit-node" data-label="REST">RE</div>
+                        <div class="orbit-node" data-label="JSON">JS</div>
+                    </div>
+                    <div class="tech-orbit-center">QA</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide">
+        <div class="slide-content">
+            <div class="slide-text">
+                <div class="typing-text"></div>
+                <h1>Автоматизация<br><span class="highlight">тестирования</span><br>это моё</h1>
+                <p>Пишу тесты на Python, работаю с UI и API, создаю отчёты в Allure, управляю багами в Jira и Trello.</p>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn btn-green">Проекты →</a>
+                    <a href="#tests" class="btn btn-outline">Запустить тесты</a>
+                </div>
+            </div>
+            <div class="slide-visual">
+                <div class="visual-card card-1">
+                    <div class="code-block">
+                        <span class="kw">@pytest.mark</span>.parametrize(<span class="str">"status"</span>, [<span class="str">200</span>, <span class="str">201</span>])<br>
+                        <span class="kw">def</span> <span class="fn">test_create_user</span>(status):<br>
+                        &nbsp;&nbsp;resp = api.<span class="fn">post</span>(<span class="str">"/users"</span>, data)<br>
+                        &nbsp;&nbsp;<span class="kw">assert</span> resp.status_code == status
+                    </div>
+                </div>
+                <div class="visual-card card-2">
+                    <div class="stat-row">
+                        <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Мотивация</div></div>
+                        <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Готовность</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slide">
+        <div class="slide-content">
+            <div class="slide-text">
+                <div class="typing-text"></div>
+                <h1>Ищу команду<br>для <span class="highlight">роста</span><br>и <span class="highlight">результата</span></h1>
+                <p>База знаний есть — нужен реальный проект, где я смогу применить всё на практике.</p>
+                <div class="hero-btns">
+                    <a href="#hire" class="btn btn-green">Нанять меня →</a>
+                    <a href="#about" class="btn btn-outline">Узнать больше</a>
+                </div>
+            </div>
+            <div class="slide-visual">
+                <div class="visual-card card-1">
+                    <div class="code-block">
+                        <span class="cm"># Мой стек</span><br>
+                        <span class="kw">skills</span> = [<br>
+                        &nbsp;&nbsp;<span class="str">"Python"</span>, <span class="str">"Pytest"</span>,<br>
+                        &nbsp;&nbsp;<span class="str">"Selenium"</span>, <span class="str">"Allure"</span>,<br>
+                        &nbsp;&nbsp;<span class="str">"API testing"</span>, <span class="str">"Pydantic"</span>,<br>
+                        &nbsp;&nbsp;<span class="str">"OOP"</span>, <span class="str">"SQL"</span>,<br>
+                        ]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slider-dots" id="sliderDots"></div>
+</div>
+
+<!-- COUNTERS -->
+<section id="counters">
+    <div class="counters-bar reveal">
+        <div class="counter-item"><div class="counter-num" data-target="15">0</div><div class="counter-label">Технологий</div></div>
+        <div class="counter-item"><div class="counter-num" data-target="500">0</div><div class="counter-label">Строк тестов</div></div>
+        <div class="counter-item"><div class="counter-num" data-target="4">0</div><div class="counter-label">Проектов</div></div>
+        <div class="counter-item"><div class="counter-num" data-target="100">0</div><div class="counter-label">% Мотивация</div></div>
+    </div>
+</section>
+
+<!-- WHY HIRE -->
+<section id="why">
+    <div class="section-tag reveal">Для работодателя</div>
+    <h2 class="section-title reveal">Почему стоит меня нанять</h2>
+    <p class="section-sub reveal">Честный взгляд на то, что я могу дать команде</p>
+    <div class="why-grid reveal">
+        <div class="why-card"><div class="why-num">01</div><h3>Сильная техническая база</h3><p>Знаю Python, ООП, алгоритмы, типы данных. Понимаю, как устроено ПО изнутри.</p></div>
+        <div class="why-card"><div class="why-num">02</div><h3>Полный стек тестировщика</h3><p>UI (Selenium), API (Requests/Postman), Allure, Pydantic, CI/CD, Docker. Готов работать сразу.</p></div>
+        <div class="why-card"><div class="why-num">03</div><h3>Быстро учусь</h3><p>Освоил весь стек за время курса. Каждый день изучаю новое. Не боюсь незнакомых технологий.</p></div>
+        <div class="why-card"><div class="why-num">04</div><h3>Внимание к деталям</h3><p>Тестировщик по натуре. Замечаю то, что другие пропускаю. Пишу чёткие баг-репорты.</p></div>
+        <div class="why-card"><div class="why-num">05</div><h3>Работа в команде</h3><p>Знаю Jira, Trello, Git. Умею работать в спринтах, оценивать задачи, участвовать в ревью.</p></div>
+        <div class="why-card"><div class="why-num">06</div><h3>Мотивация выше крыши</h3><p>Готов работать усерднее всех, чтобы доказать свою ценность и вырасти в сильного специалиста.</p></div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+    <div class="about-grid">
+        <div class="about-image reveal">
+            <div class="about-dev-scene">
+                <div class="dev-particle">def</div>
+                <div class="dev-particle">assert</div>
+                <div class="dev-particle">pytest</div>
+                <div class="dev-particle">200</div>
+                <div class="dev-particle">class</div>
+                <div class="dev-monitor">
+                    <div class="dev-monitor-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+                    <div class="dev-screen">
+                        <div class="line"><span class="prompt">egor@qa</span> <span class="cmd">pytest</span> --alluredir</div>
+                        <div class="line"><span class="ok">✓</span> test_api_get_users</div>
+                        <div class="line"><span class="ok">✓</span> test_login_valid</div>
+                        <div class="line"><span class="ok">✓</span> test_form_submit</div>
+                        <div class="line"><span class="ok">✓</span> test_pydantic_model</div>
+                        <div class="line"><span class="ok">✓</span> test_ui_navigation</div>
+                        <div class="line"><span class="ok">✓</span> test_api_delete</div>
+                        <div class="line"><span class="ok">7 passed</span> in 2.4s <span class="cursor"></span></div>
+                    </div>
+                </div>
+                <div class="dev-stand"></div>
+                <div class="dev-stand-base"></div>
+                <div class="dev-coffee"></div>
+                <div class="dev-plant">
+                    <div class="dev-plant-leaf1" style="--r:-20deg"></div>
+                    <div class="dev-plant-leaf2" style="--r:25deg"></div>
+                    <div class="dev-plant-pot"></div>
+                </div>
+            </div>
+        </div>
+        <div class="about-text reveal">
+            <div class="section-tag">Обо мне</div>
+            <h2 class="section-title">Егор Даронько</h2>
+            <h3>QA Engineer / QA Automation</h3>
+            <p>Тестировщик с сильной технической базой. Прошёл курс по тестированию ПО, изучаю автоматизацию тестирования на Python.</p>
+            <p>Знаю алгоритмы и структуры данных, владею ООП, понимаю типы данных в Python, работаю с Pydantic для валидации.</p>
+            <div class="about-tags">
+                <span class="badge">Python</span><span class="badge">Pytest</span><span class="badge">Selenium</span>
+                <span class="badge">API</span><span class="badge">Allure</span><span class="badge">Jira</span>
+                <span class="badge">Trello</span><span class="badge">Git</span><span class="badge">Docker</span>
+                <span class="badge">SQL</span><span class="badge">OOP</span><span class="badge">Pydantic</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+    <div class="section-tag reveal">Путь развития</div>
+    <h2 class="section-title reveal">Как я пришёл к тестированию</h2>
+    <div class="timeline reveal">
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2024 — Начало</div><h3>Интерес к IT</h3><p>Начал изучать Python, заинтересовался автоматизацией и тестированием.</p></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2025 — Курс</div><h3>Курс по тестированию ПО</h3><p>Прошёл полный курс: ручное тестирование, автоматизация, API, SQL, Git, Jira, Allure, Docker.</p></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2025 — Практика</div><h3>Дипломный проект</h3><p>Написал UI и API тесты для реального проекта. Настроил Allure-отчёты, работаю с Page Object.</p></div>
+        <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2026 — Сейчас</div><h3>Поиск команды</h3><p>Ищу junior QA позицию, где смогу применить знания и расти как специалист.</p></div>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<div class="skills-section" id="skills">
+    <section>
+        <div class="section-tag reveal">Экспертиза</div>
+        <h2 class="section-title reveal">Технический стек</h2>
+        <p class="section-sub reveal">Все навыки, которые я освоил и готов применять</p>
+        <div class="skills-slider-wrap reveal"><div class="skills-track" id="skillsTrack"></div></div>
+    </section>
+</div>
+
+<!-- TOOLS -->
+<section id="tools">
+    <div class="section-tag reveal">Инструменты</div>
+    <h2 class="section-title reveal">Чем пользуюсь</h2>
+    <div class="tools-grid reveal">
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg></div><h4>Jira</h4><p>Баг-трекинг, задачи</p></div>
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div><h4>Trello</h4><p>Канбан-доски</p></div>
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></div><h4>Git / GitHub</h4><p>Версионирование</p></div>
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M2 12a5 5 0 015-5h10a5 5 0 010 10H7a5 5 0 01-5-5z"/><path d="M6 12h.01"/><path d="M10 12h.01"/><path d="M14 12h.01"/></svg></div><h4>Docker</h4><p>Контейнеризация</p></div>
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div><h4>PostgreSQL</h4><p>Базы данных</p></div>
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.78 7.78 5.5 5.5 0 017.78-7.78zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></div><h4>Postman</h4><p>API-тестирование</p></div>
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg></div><h4>Allure</h4><p>Отчёты тестов</p></div>
+        <div class="tool-item"><div class="tool-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div><h4>Poetry</h4><p>Управление пакетами</p></div>
+    </div>
+</section>
+
+<!-- TERMINAL -->
+<section id="terminal">
+    <div class="section-tag reveal">Интерактив</div>
+    <h2 class="section-title reveal">Попробуйте терминал</h2>
+    <p class="section-sub reveal">Введите команду и узнайте обо мне больше</p>
+    <div class="terminal-box reveal">
+        <div class="terminal-header">
+            <div class="terminal-dot r"></div><div class="terminal-dot y"></div><div class="terminal-dot g"></div>
+            <div class="terminal-title">egor@qa-engineer:~$</div>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+            <div><span class="info">Welcome to Egor's Terminal v1.0</span></div>
+            <div><span class="info">Type "help" for available commands</span></div>
+            <div class="terminal-input-line">
+                <span class="prompt">egor@qa:~$</span>
+                <input type="text" class="terminal-input" id="terminalInput" autofocus autocomplete="off" spellcheck="false">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+    <div class="section-tag reveal">Портфолио</div>
+    <h2 class="section-title reveal">Проекты</h2>
+    <div class="projects-slider reveal">
+        <div class="project-card">
+            <div class="project-img"><div class="project-img-bg" style="background: linear-gradient(135deg, #0a1a0a, #102a14);">
+                <svg viewBox="0 0 400 200">
+                    <!-- API network visualization -->
+                    <defs>
+                        <linearGradient id="apiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6abf69;stop-opacity:0.3"/>
+                            <stop offset="100%" style="stop-color:#388e3c;stop-opacity:0.1"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Grid -->
+                    <line x1="0" y1="40" x2="400" y2="40" stroke="#6abf69" stroke-width="0.3" opacity="0.2"/>
+                    <line x1="0" y1="80" x2="400" y2="80" stroke="#6abf69" stroke-width="0.3" opacity="0.2"/>
+                    <line x1="0" y1="120" x2="400" y2="120" stroke="#6abf69" stroke-width="0.3" opacity="0.2"/>
+                    <line x1="0" y1="160" x2="400" y2="160" stroke="#6abf69" stroke-width="0.3" opacity="0.2"/>
+                    <!-- Client node -->
+                    <rect x="30" y="70" width="60" height="60" rx="8" stroke-width="1.2" opacity="0.7"/>
+                    <rect x="40" y="80" width="40" height="25" rx="3" stroke-width="0.8" opacity="0.5"/>
+                    <line x1="45" y1="88" x2="75" y2="88" stroke-width="0.6" opacity="0.4"/>
+                    <line x1="45" y1="93" x2="65" y2="93" stroke-width="0.6" opacity="0.4"/>
+                    <line x1="45" y1="98" x2="70" y2="98" stroke-width="0.6" opacity="0.4"/>
+                    <circle cx="60" cy="115" r="3" stroke-width="0.8" opacity="0.5"/>
+                    <text x="60" y="150" text-anchor="middle" fill="#6abf69" font-size="8" font-family="JetBrains Mono" opacity="0.6">Client</text>
+                    <!-- Connection lines -->
+                    <path d="M90 100 Q140 60 190 100" stroke-width="1" opacity="0.4" stroke-dasharray="4,3"/>
+                    <path d="M90 100 Q140 140 190 100" stroke-width="1" opacity="0.3" stroke-dasharray="4,3"/>
+                    <!-- Data packets -->
+                    <circle cx="130" cy="78" r="3" fill="#6abf69" opacity="0.5"><animate attributeName="cx" values="90;190" dur="2s" repeatCount="indefinite"/><animate attributeName="cy" values="90;100" dur="2s" repeatCount="indefinite"/></circle>
+                    <circle cx="150" cy="122" r="2.5" fill="#6abf69" opacity="0.4"><animate attributeName="cx" values="90;190" dur="2.5s" repeatCount="indefinite"/><animate attributeName="cy" values="110;100" dur="2.5s" repeatCount="indefinite"/></circle>
+                    <!-- API Server node -->
+                    <rect x="170" y="60" width="60" height="80" rx="8" stroke-width="1.2" opacity="0.8"/>
+                    <text x="200" y="85" text-anchor="middle" fill="#6abf69" font-size="10" font-family="JetBrains Mono" font-weight="bold" opacity="0.8">REST</text>
+                    <line x1="180" y1="95" x2="220" y2="95" stroke-width="0.6" opacity="0.3"/>
+                    <text x="200" y="108" text-anchor="middle" fill="#6abf69" font-size="7" font-family="JetBrains Mono" opacity="0.5">GET /api/users</text>
+                    <text x="200" y="118" text-anchor="middle" fill="#6abf69" font-size="7" font-family="JetBrains Mono" opacity="0.5">POST /api/data</text>
+                    <text x="200" y="128" text-anchor="middle" fill="#6abf69" font-size="7" font-family="JetBrains Mono" opacity="0.5">DEL /api/:id</text>
+                    <!-- Response codes -->
+                    <rect x="178" y="135" width="18" height="12" rx="2" fill="rgba(106,191,105,0.15)" stroke="#6abf69" stroke-width="0.6"/>
+                    <text x="187" y="143" text-anchor="middle" fill="#6abf69" font-size="6" font-family="JetBrains Mono">200</text>
+                    <rect x="200" y="135" width="18" height="12" rx="2" fill="rgba(106,191,105,0.15)" stroke="#6abf69" stroke-width="0.6"/>
+                    <text x="209" y="143" text-anchor="middle" fill="#6abf69" font-size="6" font-family="JetBrains Mono">201</text>
+                    <!-- Connection to DB -->
+                    <path d="M230 100 L310 100" stroke-width="1" opacity="0.3" stroke-dasharray="3,3"/>
+                    <!-- Database node -->
+                    <ellipse cx="340" cy="80" rx="35" ry="12" stroke-width="1" opacity="0.6"/>
+                    <path d="M305 80 L305 120" stroke-width="1" opacity="0.6"/>
+                    <path d="M375 80 L375 120" stroke-width="1" opacity="0.6"/>
+                    <ellipse cx="340" cy="120" rx="35" ry="12" stroke-width="1" opacity="0.6"/>
+                    <text x="340" y="105" text-anchor="middle" fill="#6abf69" font-size="8" font-family="JetBrains Mono" opacity="0.5">DB</text>
+                    <!-- JSON response floating -->
+                    <rect x="260" y="40" width="50" height="35" rx="4" stroke-width="0.8" opacity="0.4"/>
+                    <text x="270" y="52" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">{"status":</text>
+                    <text x="270" y="59" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">  200,</text>
+                    <text x="270" y="66" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">  "data":[]</text>
+                    <text x="270" y="73" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">}</text>
+                </svg>
+            </div><span class="project-tag">API</span></div>
+            <div class="project-info"><h3>API-тестирование REST</h3><p>Набор тестов для REST API: статус-коды, валидация через Pydantic, параметризация.</p><div class="project-techs"><span class="badge">Python</span><span class="badge">Pytest</span><span class="badge">Requests</span><span class="badge">Pydantic</span></div></div>
+        </div>
+        <div class="project-card">
+            <div class="project-img"><div class="project-img-bg" style="background: linear-gradient(135deg, #0d2210, #166534);">
+                <svg viewBox="0 0 400 200">
+                    <rect x="40" y="15" width="320" height="170" rx="10" stroke-width="1.2" opacity="0.7"/>
+                    <rect x="40" y="15" width="320" height="25" rx="10" stroke-width="0.8" opacity="0.4" fill="rgba(106,191,105,0.05)"/>
+                    <circle cx="55" cy="27" r="4" stroke-width="0.8" opacity="0.5"/>
+                    <circle cx="67" cy="27" r="4" stroke-width="0.8" opacity="0.5"/>
+                    <circle cx="79" cy="27" r="4" stroke-width="0.8" opacity="0.5"/>
+                    <rect x="95" y="21" width="200" height="12" rx="3" stroke-width="0.6" opacity="0.3"/>
+                    <text x="105" y="30" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.4">https://app.example.com</text>
+                    <rect x="55" y="50" width="290" height="20" rx="3" stroke-width="0.6" opacity="0.3"/>
+                    <text x="65" y="63" fill="#6abf69" font-size="7" font-family="JetBrains Mono" opacity="0.5">LOGO</text>
+                    <line x1="300" y1="55" x2="330" y2="55" stroke-width="0.6" opacity="0.3"/>
+                    <line x1="300" y1="60" x2="320" y2="60" stroke-width="0.6" opacity="0.3"/>
+                    <rect x="55" y="78" width="60" height="95" rx="3" stroke-width="0.6" opacity="0.3"/>
+                    <line x1="62" y1="88" x2="108" y2="88" stroke-width="0.5" opacity="0.3"/>
+                    <line x1="62" y1="96" x2="100" y2="96" stroke-width="0.5" opacity="0.3"/>
+                    <line x1="62" y1="104" x2="105" y2="104" stroke-width="0.5" opacity="0.3"/>
+                    <line x1="62" y1="112" x2="95" y2="112" stroke-width="0.5" opacity="0.3"/>
+                    <rect x="122" y="78" width="223" height="45" rx="3" stroke-width="0.6" opacity="0.3"/>
+                    <text x="132" y="92" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.4">Dashboard</text>
+                    <rect x="130" y="98" width="50" height="18" rx="2" stroke-width="0.5" opacity="0.3"/>
+                    <rect x="185" y="98" width="50" height="18" rx="2" stroke-width="0.5" opacity="0.3"/>
+                    <rect x="240" y="98" width="50" height="18" rx="2" stroke-width="0.5" opacity="0.3"/>
+                    <rect x="295" y="98" width="40" height="18" rx="2" stroke-width="0.5" opacity="0.3"/>
+                    <rect x="122" y="130" width="223" height="43" rx="3" stroke-width="0.6" opacity="0.3"/>
+                    <text x="132" y="142" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.4">Login Form</text>
+                    <rect x="130" y="148" width="100" height="10" rx="2" stroke-width="0.5" opacity="0.3"/>
+                    <rect x="130" y="162" width="100" height="10" rx="2" stroke-width="0.5" opacity="0.3"/>
+                    <rect x="240" y="148" width="40" height="18" rx="3" stroke-width="0.6" opacity="0.5" fill="rgba(106,191,105,0.1)"/>
+                    <text x="260" y="160" text-anchor="middle" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.6">Login</text>
+                    <g opacity="0.7"><path d="M280 155 L290 145 L295 155 L290 152 Z" fill="#6abf69" opacity="0.6"/></g>
+                    <rect x="280" y="60" width="90" height="75" rx="5" stroke-width="0.8" opacity="0.5" fill="rgba(10,25,10,0.6)"/>
+                    <text x="290" y="73" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.7">Tests: 12</text>
+                    <text x="290" y="83" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.5">login</text>
+                    <text x="290" y="93" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.5">navigate</text>
+                    <text x="290" y="103" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.5">form</text>
+                    <text x="290" y="113" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.5">search</text>
+                    <text x="290" y="128" fill="#6abf69" font-size="7" font-family="JetBrains Mono" opacity="0.7">All passed</text>
+                </svg>
+            </div><span class="project-tag">UI</span></div>
+            <div class="project-info"><h3>UI-автоматизация сайта</h3><p>Автоматизация веб-интерфейса: авторизация, формы, навигация. POM + Allure.</p><div class="project-techs"><span class="badge">Selenium</span><span class="badge">Pytest</span><span class="badge">Allure</span><span class="badge">POM</span></div></div>
+        </div>
+        <div class="project-card">
+            <div class="project-img"><div class="project-img-bg" style="background: linear-gradient(135deg, #0a1a0a, #388e3c);">
+                <svg viewBox="0 0 400 200">
+                    <rect x="120" y="10" width="160" height="180" rx="15" stroke-width="1.5" opacity="0.6"/>
+                    <rect x="125" y="25" width="150" height="150" rx="3" stroke-width="0.6" opacity="0.3"/>
+                    <text x="135" y="35" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">9:41</text>
+                    <text x="255" y="35" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">100%</text>
+                    <rect x="125" y="38" width="150" height="20" rx="0" stroke-width="0.5" opacity="0.3" fill="rgba(106,191,105,0.05)"/>
+                    <text x="175" y="51" text-anchor="middle" fill="#6abf69" font-size="7" font-family="JetBrains Mono" opacity="0.7">QA Bot</text>
+                    <rect x="155" y="65" width="80" height="16" rx="6" stroke-width="0.6" opacity="0.4" fill="rgba(106,191,105,0.08)"/>
+                    <text x="165" y="76" fill="#6abf69" font-size="5.5" font-family="JetBrains Mono" opacity="0.5">Привет! /start</text>
+                    <rect x="130" y="88" width="95" height="28" rx="6" stroke-width="0.6" opacity="0.5" fill="rgba(106,191,105,0.05)"/>
+                    <text x="138" y="99" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.6">Привет, Егор!</text>
+                    <text x="138" y="107" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.5">Я QA-бот. Выбери:</text>
+                    <rect x="130" y="123" width="65" height="12" rx="3" stroke-width="0.5" opacity="0.4"/>
+                    <text x="162" y="132" text-anchor="middle" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.5">API тесты</text>
+                    <rect x="200" y="123" width="65" height="12" rx="3" stroke-width="0.5" opacity="0.4"/>
+                    <text x="232" y="132" text-anchor="middle" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.5">UI тесты</text>
+                    <rect x="170" y="143" width="70" height="14" rx="6" stroke-width="0.6" opacity="0.4" fill="rgba(106,191,105,0.08)"/>
+                    <text x="180" y="153" fill="#6abf69" font-size="5.5" font-family="JetBrains Mono" opacity="0.5">/status</text>
+                    <rect x="130" y="163" width="100" height="18" rx="6" stroke-width="0.6" opacity="0.5" fill="rgba(106,191,105,0.05)"/>
+                    <text x="138" y="173" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.6">All tests: 12/12</text>
+                    <text x="138" y="180" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.5">Status: OK</text>
+                    <rect x="130" y="167" width="130" height="12" rx="3" stroke-width="0.5" opacity="0.3"/>
+                    <text x="140" y="176" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.3">Type a message...</text>
+                    <path d="M280 100 Q340 60 380 80" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,3"/>
+                    <path d="M280 110 Q340 130 380 120" stroke-width="0.8" opacity="0.3" stroke-dasharray="3,3"/>
+                    <rect x="355" y="70" width="35" height="60" rx="5" stroke-width="0.8" opacity="0.5"/>
+                    <text x="372" y="90" text-anchor="middle" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.5">API</text>
+                    <line x1="362" y1="98" x2="382" y2="98" stroke-width="0.4" opacity="0.3"/>
+                    <line x1="362" y1="103" x2="378" y2="103" stroke-width="0.4" opacity="0.3"/>
+                    <line x1="362" y1="108" x2="380" y2="108" stroke-width="0.4" opacity="0.3"/>
+                    <line x1="362" y1="113" x2="375" y2="113" stroke-width="0.4" opacity="0.3"/>
+                    <rect x="15" y="40" width="90" height="120" rx="6" stroke-width="0.6" opacity="0.3"/>
+                    <text x="25" y="55" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">@bot.message()</text>
+                    <text x="25" y="65" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">async def start(msg):</text>
+                    <text x="25" y="75" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">  await msg.answer(</text>
+                    <text x="25" y="85" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">    "Выбери действие"</text>
+                    <text x="25" y="95" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">  )</text>
+                    <text x="25" y="110" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">@bot.callback()</text>
+                    <text x="25" y="120" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">async def test(cb):</text>
+                    <text x="25" y="130" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">  result = run_tests()</text>
+                    <text x="25" y="140" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.4">  await cb.answer(result)</text>
+                </svg>
+            </div><span class="project-tag">БОТ</span></div>
+            <div class="project-info"><h3>Telegram-бот</h3><p>Telegram-бот на Python с обработкой сообщений и интеграцией с API.</p><div class="project-techs"><span class="badge">Python</span><span class="badge">aiogram</span><span class="badge">API</span></div></div>
+        </div>
+        <div class="project-card">
+            <div class="project-img"><div class="project-img-bg" style="background: linear-gradient(135deg, #050e05, #4a9d4e);">
+                <svg viewBox="0 0 400 200">
+                    <rect x="30" y="15" width="340" height="25" rx="5" stroke-width="0.8" opacity="0.5" fill="rgba(106,191,105,0.05)"/>
+                    <text x="40" y="32" fill="#6abf69" font-size="9" font-family="JetBrains Mono" font-weight="bold" opacity="0.7">Allure Report</text>
+                    <text x="320" y="32" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.4">Jun 18, 2026</text>
+                    <rect x="30" y="50" width="340" height="35" rx="5" stroke-width="0.6" opacity="0.3"/>
+                    <circle cx="60" cy="67" r="10" stroke="#6abf69" stroke-width="1" fill="rgba(106,191,105,0.15)"/>
+                    <text x="60" y="71" text-anchor="middle" fill="#6abf69" font-size="8" font-family="JetBrains Mono" font-weight="bold">12</text>
+                    <text x="78" y="65" fill="#6abf69" font-size="7" font-family="JetBrains Mono" opacity="0.7">passed</text>
+                    <circle cx="140" cy="67" r="10" stroke="#ef5350" stroke-width="1" fill="rgba(239,83,80,0.15)"/>
+                    <text x="140" y="71" text-anchor="middle" fill="#ef5350" font-size="8" font-family="JetBrains Mono" font-weight="bold">1</text>
+                    <text x="158" y="65" fill="#ef5350" font-size="7" font-family="JetBrains Mono" opacity="0.7">failed</text>
+                    <circle cx="210" cy="67" r="10" stroke="#f0d58c" stroke-width="1" fill="rgba(240,213,140,0.15)"/>
+                    <text x="210" y="71" text-anchor="middle" fill="#f0d58c" font-size="8" font-family="JetBrains Mono" font-weight="bold">2</text>
+                    <text x="228" y="65" fill="#f0d58c" font-size="7" font-family="JetBrains Mono" opacity="0.7">skipped</text>
+                    <text x="300" y="65" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.5">Duration:</text>
+                    <text x="300" y="75" fill="#6abf69" font-size="8" font-family="JetBrains Mono" opacity="0.7">4.2s</text>
+                    <rect x="30" y="95" width="170" height="95" rx="5" stroke-width="0.6" opacity="0.3"/>
+                    <text x="40" y="108" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.5">Duration by suite</text>
+                    <rect x="45" y="145" width="20" height="35" rx="2" fill="rgba(106,191,105,0.3)" stroke="#6abf69" stroke-width="0.5"/>
+                    <text x="55" y="193" text-anchor="middle" fill="#6abf69" font-size="4" font-family="JetBrains Mono" opacity="0.4">API</text>
+                    <rect x="80" y="125" width="20" height="55" rx="2" fill="rgba(106,191,105,0.4)" stroke="#6abf69" stroke-width="0.5"/>
+                    <text x="90" y="193" text-anchor="middle" fill="#6abf69" font-size="4" font-family="JetBrains Mono" opacity="0.4">UI</text>
+                    <rect x="115" y="155" width="20" height="25" rx="2" fill="rgba(106,191,105,0.25)" stroke="#6abf69" stroke-width="0.5"/>
+                    <text x="125" y="193" text-anchor="middle" fill="#6abf69" font-size="4" font-family="JetBrains Mono" opacity="0.4">DB</text>
+                    <rect x="150" y="135" width="20" height="45" rx="2" fill="rgba(106,191,105,0.35)" stroke="#6abf69" stroke-width="0.5"/>
+                    <text x="160" y="193" text-anchor="middle" fill="#6abf69" font-size="4" font-family="JetBrains Mono" opacity="0.4">Auth</text>
+                    <rect x="210" y="95" width="160" height="95" rx="5" stroke-width="0.6" opacity="0.3"/>
+                    <text x="220" y="108" fill="#6abf69" font-size="6" font-family="JetBrains Mono" opacity="0.5">Test cases</text>
+                    <text x="220" y="122" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.6">test_api_get_users</text>
+                    <text x="220" y="132" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.6">test_login_valid</text>
+                    <text x="220" y="142" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.6">test_form_submit</text>
+                    <text x="220" y="152" fill="#ef5350" font-size="5" font-family="JetBrains Mono" opacity="0.6">test_search_empty</text>
+                    <text x="220" y="162" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.6">test_pydantic</text>
+                    <text x="220" y="172" fill="#6abf69" font-size="5" font-family="JetBrains Mono" opacity="0.6">test_ui_nav</text>
+                    <text x="220" y="182" fill="#f0d58c" font-size="5" font-family="JetBrains Mono" opacity="0.5">test_perf_load</text>
+                </svg>
+            </div><span class="project-tag">ОТЧЁТ</span></div>
+            <div class="project-info"><h3>Allure-отчёт с метриками</h3><p>Детализированные отчёты с тегами, step-ами и скриншотами при падении.</p><div class="project-techs"><span class="badge">Allure</span><span class="badge">Pytest</span><span class="badge">CI/CD</span></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- TEST RUNNER -->
+<section id="tests">
+    <div class="section-tag reveal">Демонстрация</div>
+    <h2 class="section-title reveal">Тест-раннер</h2>
+    <p class="section-sub reveal">Нажмите «Запустить» и посмотрите, как проходят тесты</p>
+    <div class="runner-box reveal">
+        <div class="runner-header"><h3>Test Suite</h3><button class="run-btn" id="runBtn" onclick="runTests()">▶ Запустить</button></div>
+        <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="test-list" id="testList"></div>
+        <div class="test-summary" id="testSummary"></div>
+    </div>
+</section>
+
+<!-- LOAD TEST CONSTRUCTOR -->
+<section id="loadtest">
+    <div class="section-tag reveal">Нагрузочное тестирование</div>
+    <h2 class="section-title reveal">Конструктор тестов</h2>
+    <p class="section-sub reveal">Выберите тесты, браузер и параметры нагрузки</p>
+    <div class="runner-box reveal">
+        <div class="runner-header">
+            <h3>Load Test Builder</h3>
+            <button class="run-btn" id="loadRunBtn" onclick="runLoadTest()">▶ Запустить нагрузку</button>
+        </div>
+        <div class="load-config">
+            <div class="load-section">
+                <h4 class="load-section-title">Тесты API</h4>
+                <div class="load-options">
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_status_codes" checked><span class="checkmark"></span><span>Статус-коды (15 эндпоинтов)</span></label>
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_response_time" checked><span class="checkmark"></span><span>Время ответа API</span></label>
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_concurrent"><span class="checkmark"></span><span>Параллельные запросы</span></label>
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_pydantic_valid"><span class="checkmark"></span><span>Валидация Pydantic</span></label>
+                </div>
+            </div>
+            <div class="load-section">
+                <h4 class="load-section-title">Тесты UI</h4>
+                <div class="load-options">
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_navigation" checked><span class="checkmark"></span><span>Навигация по страницам</span></label>
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_login"><span class="checkmark"></span><span>Авторизация</span></label>
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_forms"><span class="checkmark"></span><span>Формы и валидация</span></label>
+                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_perf"><span class="checkmark"></span><span>Производительность загрузки</span></label>
+                </div>
+            </div>
+            <div class="load-section">
+                <h4 class="load-section-title">Браузер</h4>
+                <div class="load-options browser-options">
+                    <label class="load-radio active"><input type="radio" name="browser" value="chrome" checked><span class="radio-mark"></span><span>Chrome</span></label>
+                    <label class="load-radio"><input type="radio" name="browser" value="firefox"><span class="radio-mark"></span><span>Firefox</span></label>
+                    <label class="load-radio"><input type="radio" name="browser" value="edge"><span class="radio-mark"></span><span>Edge</span></label>
+                    <label class="load-radio"><input type="radio" name="browser" value="headless"><span class="radio-mark"></span><span>Headless</span></label>
+                </div>
+            </div>
+            <div class="load-section">
+                <h4 class="load-section-title">Параметры нагрузки</h4>
+                <div class="load-sliders">
+                    <div class="slider-group">
+                        <label>Потоки: <span id="threadsVal">5</span></label>
+                        <input type="range" min="1" max="50" value="5" class="load-slider" id="threadsSlider" oninput="document.getElementById('threadsVal').textContent=this.value">
+                    </div>
+                    <div class="slider-group">
+                        <label>Итерации: <span id="iterationsVal">10</span></label>
+                        <input type="range" min="1" max="100" value="10" class="load-slider" id="iterationsSlider" oninput="document.getElementById('iterationsVal').textContent=this.value">
+                    </div>
+                    <div class="slider-group">
+                        <label>Задержка (мс): <span id="delayVal">200</span></label>
+                        <input type="range" min="0" max="2000" value="200" step="50" class="load-slider" id="delaySlider" oninput="document.getElementById('delayVal').textContent=this.value">
+                    </div>
+                </div>
+            </div>
+            <div class="load-section">
+                <h4 class="load-section-title">Allure отчёт</h4>
+                <div class="load-options">
+                    <label class="load-check"><input type="checkbox" id="allureEnabled" checked><span class="checkmark"></span><span>Формировать Allure-отчёт</span></label>
+                    <label class="load-check"><input type="checkbox" id="allureSteps"><span class="checkmark"></span><span>Детализация step-ов</span></label>
+                    <label class="load-check"><input type="checkbox" id="allureScreenshots"><span class="checkmark"></span><span>Скриншоты при падении</span></label>
+                    <label class="load-check"><input type="checkbox" id="allureTags"><span class="checkmark"></span><span>Теги по категориям</span></label>
+                </div>
+                <div class="allure-format-select">
+                    <label class="load-radio active"><input type="radio" name="allureFmt" value="html" checked><span class="radio-mark"></span><span>HTML</span></label>
+                    <label class="load-radio"><input type="radio" name="allureFmt" value="json"><span class="radio-mark"></span><span>JSON</span></label>
+                </div>
+            </div>
+        </div>
+        <div class="progress-bar" id="loadProgressBar"><div class="progress-fill" id="loadProgressFill"></div></div>
+        <div class="load-live-stats" id="loadStats">
+            <div class="live-stat"><span class="live-stat-num" id="liveRps">0</span><span class="live-stat-label">RPS</span></div>
+            <div class="live-stat"><span class="live-stat-num" id="liveAvg">0ms</span><span class="live-stat-label">Среднее</span></div>
+            <div class="live-stat"><span class="live-stat-num" id="liveP95">0ms</span><span class="live-stat-label">P95</span></div>
+            <div class="live-stat"><span class="live-stat-num" id="liveErrors">0</span><span class="live-stat-label">Ошибки</span></div>
+            <div class="live-stat"><span class="live-stat-num" id="livePassed">0</span><span class="live-stat-label">Пройдено</span></div>
+        </div>
+        <div class="test-list" id="loadTestList"></div>
+        <div class="test-summary" id="loadTestSummary"></div>
+        <div class="allure-actions" id="allureActions" style="display:none;">
+            <button class="btn btn-green allure-report-btn" onclick="openAllureReport()">📊 Показать отчёт Allure</button>
+            <button class="btn btn-outline allure-report-btn" onclick="downloadAllureJson()">⬇ Скачать JSON</button>
+        </div>
+    </div>
+</section>
+
+<!-- HIRE CTA -->
+<section id="hire">
+    <div class="hire-cta reveal">
+        <h2>Готов <span style="color:var(--green)">начать работу</span> завтра</h2>
+        <p>Отправьте мне сообщение — обсудим детали</p>
+        <a href="mailto:egor.daronko@mail.ru?subject=Предложение о работе" class="btn btn-green">Написать на почту</a>
+        <div class="hire-form">
+            <input type="text" class="hire-input" placeholder="Ваше имя" id="hireName">
+            <input type="text" class="hire-input" placeholder="Компания / Проект" id="hireCompany">
+            <button class="btn btn-outline" onclick="sendHire()">Отправить</button>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACTS -->
+<section id="contacts">
+    <div class="section-tag reveal">Контакты</div>
+    <h2 class="section-title reveal">Свяжитесь со мной</h2>
+    <div class="contacts-grid reveal">
+        <a href="mailto:egor.daronko@mail.ru" class="contact-card">
+            <div class="contact-icon">
+                <svg class="contact-svg" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 4l10 9 10-9"/><path d="M2 20l7-7"/><path d="M22 20l-7-7"/></svg>
+            </div>
+            <div><h4>Email</h4><p>egor.daronko@mail.ru</p></div>
+        </a>
+        <a href="https://t.me/egor_321" target="_blank" class="contact-card">
+            <div class="contact-icon">
+                <svg class="contact-svg" viewBox="0 0 24 24"><path d="M21 3L9 13"/><path d="M21 3l-4 18-5-8-9-4 20-7z"/><path d="M9.5 13.5l2 6"/><path d="M14.5 8l-5 5"/></svg>
+            </div>
+            <div><h4>Telegram</h4><p>@egor_321</p></div>
+        </a>
+        <a href="tel:+375297447808" class="contact-card">
+            <div class="contact-icon">
+                <svg class="contact-svg" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="3"/><line x1="12" y1="18" x2="12" y2="18.01" stroke-width="2"/><path d="M9 6h6"/><path d="M9 10h6"/><path d="M9 14h4"/></svg>
+            </div>
+            <div><h4>Телефон</h4><p>+375 29 744 78 08</p></div>
+        </a>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-line">© 2026 <span class="green">Егор Даронько</span> · QA Engineer</div>
+    <p>Создано с вниманием к деталям</p>
+</footer>
+
+<!-- AI Chatbot FAB -->
+<button class="chat-fab" id="chatFab" onclick="openChatBot()" aria-label="AI Ассистент">
+    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+    <span class="chat-fab-tooltip">AI Ассистент</span>
+</button>
+
+<script>
+// === PAGE LOADER ===
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        document.getElementById('pageLoader').classList.add('hidden');
+    }, 800);
+});
+// Hero slider
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('sliderDots');
+let currentSlide = 0;
+slides.forEach((_, i) => { const dot = document.createElement('div'); dot.className = 'dot' + (i === 0 ? ' active' : ''); dot.onclick = () => goToSlide(i); dotsContainer.appendChild(dot); });
+function goToSlide(n) { slides[currentSlide].classList.remove('active'); dotsContainer.children[currentSlide].classList.remove('active'); currentSlide = n; slides[currentSlide].classList.add('active'); dotsContainer.children[currentSlide].classList.add('active'); }
+setInterval(() => goToSlide((currentSlide + 1) % slides.length), 6000);
+
+// Typing
+const phrases = ['> assert career == "QA Engineer"', '> pip install pytest-selenium-allure', '> git push --force my-knowledge', '> docker run egor/qa-engineer', '> while True: learn()'];
+let pi = 0, ci = 0, del = false;
+const te = document.getElementById('typingText');
+function type() { const c = phrases[pi]; if (!del) { te.innerHTML = c.substring(0, ci + 1) + '<span class="typing-cursor">|</span>'; ci++; if (ci === c.length) { del = true; setTimeout(type, 2000); return; } } else { te.innerHTML = c.substring(0, ci) + '<span class="typing-cursor">|</span>'; ci--; if (ci < 0) { del = false; pi = (pi + 1) % phrases.length; ci = 0; } } setTimeout(type, del ? 40 : 80); }
+type();
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }); }, { threshold: 0.15 });
+reveals.forEach(el => observer.observe(el));
+
+// Counters
+// Counter observer moved to end with easing
+
+// Skills
+const skills = [
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>', name: 'Python', desc: 'Основной язык для тестов и автоматизации', level: 80 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>', name: 'Pytest', desc: 'Фреймворк: фикстуры, маркеры, параметризация', level: 85 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="2" y1="12" x2="22" y2="12" stroke="currentColor" stroke-width="1.5"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Selenium', desc: 'UI-автоматизация веб-приложений', level: 70 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="currentColor" stroke-width="1.5"/><polyline points="22,6 12,13 2,6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'API-тестирование', desc: 'REST API, Requests, Postman', level: 75 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Pydantic', desc: 'Валидация данных и моделей', level: 70 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" fill="none" stroke="currentColor" stroke-width="1.5"/><polyline points="14,2 14,8 20,8" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="1.5"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Allure', desc: 'Детализированные отчёты тестов', level: 75 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 2L2 7l10 5 10-5-10-5z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 17l10 5 10-5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'ООП', desc: 'Наследование, полиморфизм, паттерны', level: 80 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>', name: 'Алгоритмы', desc: 'Сортировки, структуры данных', level: 65 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M4 7V4h16v3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 20h6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 4v16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Типы данных', desc: 'list, dict, tuple, set, аннотации', level: 85 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Jira', desc: 'Баг-трекинг, спринты', level: 70 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><rect x="3" y="3" width="7" height="9" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="7" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="12" width="7" height="9" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="16" width="7" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Trello', desc: 'Канбан-доски', level: 75 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Git', desc: 'Ветки, PR, merge', level: 70 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M2 12a5 5 0 015-5h10a5 5 0 010 10H7a5 5 0 01-5-5z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="12" r="1" fill="currentColor"/><circle cx="10" cy="12" r="1" fill="currentColor"/><circle cx="14" cy="12" r="1" fill="currentColor"/></svg>', name: 'Docker', desc: 'Контейнеризация', level: 55 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><ellipse cx="12" cy="5" rx="9" ry="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'SQL', desc: 'SELECT, JOIN, PostgreSQL', level: 60 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 9h18" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 21V9" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>', name: 'Page Object', desc: 'Паттерн UI-тестов', level: 70 },
+    { icon: '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 2a3 3 0 00-3 3v1a3 3 0 006 0V5a3 3 0 00-3-3z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M19 10H5a2 2 0 00-2 2v1a7 7 0 0014 0v-1a2 2 0 00-2-2z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 20v2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="14" r="1" fill="currentColor"/></svg>', name: 'AI / ChatGPT', desc: 'Использование AI для тестирования и генерации', level: 75 },
+];
+const track = document.getElementById('skillsTrack');
+track.innerHTML = skills.map(s => `<div class="skill-card"><div class="skill-icon">${s.icon}</div><h3>${s.name}</h3><p>${s.desc}</p><div class="skill-level"><div class="skill-level-fill" style="width:${s.level}%"></div></div></div>`).join('') + skills.map(s => `<div class="skill-card"><div class="skill-icon">${s.icon}</div><h3>${s.name}</h3><p>${s.desc}</p><div class="skill-level"><div class="skill-level-fill" style="width:${s.level}%"></div></div></div>`).join('');
+
+// Terminal
+const tb = document.getElementById('terminalBody');
+const ti = document.getElementById('terminalInput');
+const cmds = {
+    help: 'Доступные команды:\n  help      — эта подсказка\n  about     — обо мне\n  skills    — мой стек\n  projects  — проекты\n  contact   — контакты\n  hire      — нанять меня\n  test      — запустить тесты\n  clear     — очистить терминал',
+    about: 'Егор Даронько, QA Engineer\nТестировщик с сильной технической базой.\nПрошёл курс по тестированию ПО, изучаю автоматизацию на Python.\nЗнаю ООП, алгоритмы, типы данных, Pydantic.',
+    skills: 'Python, Pytest, Selenium, API-тестирование,\nPydantic, Allure, ООП, Jira, Trello,\nGit, Docker, SQL, Page Object, Postman,\nPoetry, GitHub Actions',
+    projects: '1. API-тестирование REST (Pytest + Requests + Pydantic)\n2. UI-автоматизация сайта (Selenium + POM + Allure)\n3. Telegram-бот (aiogram + API)\n4. Allure-отчёт с метриками',
+    contact: 'egor.daronko@mail.ru\n@egor_321 (Telegram)\n+375 29 744 78 08',
+    hire: 'Отлично! Напишите мне:\negor.daronko@mail.ru\n@egor_321 (Telegram)',
+    test: '__SCROLL_TESTS__',
+    clear: '__CLEAR__',
+};
+function addLine(html, cls) { const d = document.createElement('div'); d.innerHTML = html; if (cls) d.className = cls; tb.insertBefore(d, tb.querySelector('.terminal-input-line')); }
+ti.addEventListener('keydown', function(e) { if (e.key === 'Enter') { const c = this.value.trim().toLowerCase(); this.value = ''; addLine(`<span class="prompt">egor@qa:~$</span> ${c}`); if (c === 'clear') { tb.querySelectorAll('div:not(.terminal-input-line)').forEach(l => l.remove()); return; } if (c === 'test') { document.getElementById('tests').scrollIntoView({ behavior: 'smooth' }); addLine(`<span class="output">Прокрутил к секции тестов!</span>`); return; } if (cmds[c]) { cmds[c].split('\n').forEach(l => addLine(`<span class="output">${l}</span>`)); } else if (c) { addLine(`<span class="error">Command not found: ${c}. Type "help"</span>`); } tb.scrollTop = tb.scrollHeight; } });
+
+// Test runner
+const tests = [
+    { name: 'test_api_get_users_returns_200', status: 'pass', time: '0.34s' },
+    { name: 'test_api_post_create_user_valid', status: 'pass', time: '0.52s' },
+    { name: 'test_api_post_create_user_invalid_data', status: 'pass', time: '0.28s' },
+    { name: 'test_api_delete_nonexistent_user_404', status: 'pass', time: '0.19s' },
+    { name: 'test_ui_login_valid_credentials', status: 'pass', time: '1.45s' },
+    { name: 'test_ui_login_wrong_password', status: 'pass', time: '0.87s' },
+    { name: 'test_ui_navigation_links', status: 'pass', time: '1.12s' },
+    { name: 'test_ui_form_validation_empty', status: 'fail', time: '2.31s' },
+    { name: 'test_api_response_pydantic_model', status: 'pass', time: '0.41s' },
+    { name: 'test_search_results_pagination', status: 'skip', time: '—' },
+    { name: 'test_ui_dashboard_widgets_load', status: 'pass', time: '1.78s' },
+    { name: 'test_api_concurrent_requests', status: 'pass', time: '0.95s' },
+];
+let running = false;
+function runTests() { if (running) return; running = true; const btn = document.getElementById('runBtn'); const bar = document.getElementById('progressBar'); const fill = document.getElementById('progressFill'); const list = document.getElementById('testList'); const summary = document.getElementById('testSummary'); btn.disabled = true; btn.textContent = 'Выполняется...'; bar.classList.add('active'); fill.style.width = '0%'; list.innerHTML = ''; summary.classList.remove('active'); summary.style.display = 'none'; tests.forEach((t, i) => { const div = document.createElement('div'); div.className = 'test-item'; div.id = 'test-' + i; div.innerHTML = `<div class="test-status">○</div><div class="test-name">${t.name}</div><div class="test-time"></div>`; list.appendChild(div); }); let i = 0; function next() { if (i >= tests.length) { btn.disabled = false; btn.textContent = '▶ Запустить'; running = false; showSummary(); return; } const el = document.getElementById('test-' + i); el.className = 'test-item running'; el.querySelector('.test-status').textContent = '◌'; setTimeout(() => { el.className = 'test-item ' + tests[i].status; el.querySelector('.test-status').textContent = tests[i].status === 'pass' ? '✓' : tests[i].status === 'fail' ? '✗' : '—'; el.querySelector('.test-time').textContent = tests[i].time; fill.style.width = ((i + 1) / tests.length * 100) + '%'; i++; next(); }, 250 + Math.random() * 600); } next(); }
+function showSummary() { const s = document.getElementById('testSummary'); s.innerHTML = `<div class="stat pass">✓ ${tests.filter(t=>t.status==='pass').length} passed</div><div class="stat fail">✗ ${tests.filter(t=>t.status==='fail').length} failed</div><div class="stat skip">— ${tests.filter(t=>t.status==='skip').length} skipped</div>`; s.style.display = 'flex'; s.classList.add('active'); }
+
+// Hire
+function showToast(msg) {
+    let t = document.querySelector('.toast-notification');
+    if (!t) { t = document.createElement('div'); t.className = 'toast-notification'; document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+function sendHire() { const n = document.getElementById('hireName').value.trim(); const c = document.getElementById('hireCompany').value.trim(); if (n && c) { window.open(`mailto:egor.daronko@mail.ru?subject=Предложение от ${c}&body=Привет, Егор! Меня зовут ${n}, я из компании ${c}. Хотим обсудить сотрудничество.`); showToast('Открываю почтовый клиент...'); } else { showToast('Заполните имя и компанию'); } }
+
+// === MOUSE LEAVES (smooth physics, detailed) ===
+const mouseLeaves = [];
+const LEAF_COUNT = 40;
+let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+let cursorActive = false;
+
+for (let i = 0; i < LEAF_COUNT; i++) {
+    const el = document.createElement('div');
+    el.className = 'mouse-leaf';
+    el.innerHTML = '<div class="mouse-leaf-inner"><div class="mouse-leaf-veins"></div><div class="mouse-leaf-stem"></div></div>';
+    document.body.appendChild(el);
+    mouseLeaves.push({
+        el, x: 0, y: 0, vx: 0, vy: 0,
+        rot: 0, rotSpeed: 0, scale: 1,
+        life: 0, maxLife: 0, active: false,
+        wobblePhase: Math.random() * Math.PI * 2,
+        wobbleAmp: 0.3 + Math.random() * 0.5,
+        wobbleFreq: 0.025 + Math.random() * 0.02,
+        size: 0.5 + Math.random() * 0.7,
+    });
+}
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursorActive = true;
+});
+document.addEventListener('mouseleave', () => { cursorActive = false; });
+
+let leafSpawnTimer = 0;
+function spawnMouseLeaf() {
+    const leaf = mouseLeaves.find(l => !l.active);
+    if (!leaf) return;
+    leaf.active = true;
+    leaf.x = mouseX + (Math.random() - 0.5) * 30;
+    leaf.y = mouseY + (Math.random() - 0.5) * 20;
+    leaf.vx = (Math.random() - 0.5) * 1.0;
+    leaf.vy = -0.3 - Math.random() * 1.2;
+    leaf.rot = Math.random() * 360;
+    leaf.rotSpeed = (Math.random() - 0.5) * 5;
+    leaf.scale = leaf.size;
+    leaf.life = 0;
+    leaf.maxLife = 110 + Math.random() * 90;
+    leaf.el.style.opacity = '0';
+    leaf.el.classList.add('active');
+}
+
+function animateLeaves() {
+    leafSpawnTimer++;
+    if (cursorActive && leafSpawnTimer % 5 === 0) spawnMouseLeaf();
+
+    for (const leaf of mouseLeaves) {
+        if (!leaf.active) continue;
+        leaf.life++;
+        const progress = leaf.life / leaf.maxLife;
+        const fadeIn = Math.min(1, leaf.life / 18);
+        const fadeOut = progress > 0.6 ? 1 - (progress - 0.6) / 0.4 : 1;
+        const opacity = Math.min(fadeIn, fadeOut) * 0.85;
+
+        leaf.vy += 0.03;
+        leaf.vx *= 0.992;
+        leaf.vy *= 0.998;
+        leaf.vx += Math.sin(leaf.life * leaf.wobbleFreq + leaf.wobblePhase) * leaf.wobbleAmp * 0.06;
+        leaf.rotSpeed *= 0.998;
+
+        leaf.x += leaf.vx;
+        leaf.y += leaf.vy;
+        leaf.rot += leaf.rotSpeed;
+        const s = leaf.scale * (1 - progress * 0.2);
+
+        leaf.el.style.transform = `translate(${leaf.x - 8}px, ${leaf.y - 10}px) rotate(${leaf.rot}deg) scale(${s})`;
+        leaf.el.style.opacity = Math.max(0, opacity);
+
+        if (leaf.life >= leaf.maxLife) {
+            leaf.active = false;
+            leaf.el.classList.remove('active');
+            leaf.el.style.opacity = '0';
+        }
+    }
+    requestAnimationFrame(animateLeaves);
+}
+animateLeaves();
+
+// === PARALLAX ON MOUSE MOVE (smooth) ===
+let parallaxX = 0, parallaxY = 0;
+let targetPX = 0, targetPY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    targetPX = (e.clientX / window.innerWidth - 0.5) * 2;
+    targetPY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animateParallax() {
+    parallaxX += (targetPX - parallaxX) * 0.06;
+    parallaxY += (targetPY - parallaxY) * 0.06;
+
+    const forestPhoto = document.querySelector('.forest-photo');
+    if (forestPhoto) {
+        forestPhoto.style.transform = `translate(${parallaxX * -10}px, ${parallaxY * -6}px) scale(1.08)`;
+    }
+    const fireflies = document.querySelectorAll('.firefly');
+    fireflies.forEach((f, i) => {
+        const speed = (i + 1) * 0.4;
+        f.style.transform = `translate(${parallaxX * speed * 20}px, ${parallaxY * speed * 12}px)`;
+    });
+    const mist = document.querySelector('.mist');
+    if (mist) {
+        mist.style.transform = `translateX(${-10 + parallaxX * 3}%)`;
+    }
+    requestAnimationFrame(animateParallax);
+}
+animateParallax();
+
+// === SMOOTH SCROLL HIGHLIGHT ===
+const navLinks = document.querySelectorAll('nav a');
+navLinks.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+        link.style.textShadow = '0 0 12px rgba(106,191,105,0.5)';
+    });
+    link.addEventListener('mouseleave', () => {
+        link.style.textShadow = 'none';
+    });
+});
+
+// === TILT EFFECT ON CARDS (smooth with easing) ===
+document.querySelectorAll('.why-card, .tool-item, .contact-card, .project-card, .counter-item').forEach(card => {
+    let tiltX = 0, tiltY = 0, targetTiltX = 0, targetTiltY = 0;
+
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        targetTiltX = (y - centerY) / 12;
+        targetTiltY = (centerX - x) / 12;
+
+        const glowX = (x / rect.width) * 100;
+        const glowY = (y / rect.height) * 100;
+        card.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(106,191,105,0.08), transparent 60%), rgba(10,30,10,0.4)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+        targetTiltX = 0;
+        targetTiltY = 0;
+        card.style.background = '';
+    });
+
+    function updateTilt() {
+        tiltX += (targetTiltX - tiltX) * 0.1;
+        tiltY += (targetTiltY - tiltY) * 0.1;
+        card.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
+        requestAnimationFrame(updateTilt);
+    }
+    updateTilt();
+});
+
+// === MAGNETIC EFFECT ON BUTTONS ===
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) translateY(-2px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+    });
+});
+
+// === TEXT REVEAL ON SCROLL ===
+const textReveals = document.querySelectorAll('.section-title, .section-tag');
+const textObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.3 });
+textReveals.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    textObserver.observe(el);
+});
+
+// === COUNTER ANIMATION (number count up with easing) ===
+function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+const counterObserver2 = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            const el = e.target;
+            const target = +el.dataset.target;
+            const duration = 2000;
+            const start = performance.now();
+            function tick(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = easeOutExpo(progress);
+                el.textContent = Math.floor(eased * target) + (target === 100 ? '%' : '+');
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+            counterObserver2.unobserve(el);
+        }
+    });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter-num[data-target]').forEach(el => counterObserver2.observe(el));
+
+// === LOAD TEST CONSTRUCTOR ===
+const loadTestDefs = {
+    api_status_codes: [
+        { name: 'GET /lizing → 200', time: '0.12s' },
+        { name: 'GET /kredit → 200', time: '0.15s' },
+        { name: 'GET /manual → 200', time: '0.18s' },
+        { name: 'GET /sto → 200', time: '0.11s' },
+        { name: 'GET /about → 200', time: '0.14s' },
+    ],
+    api_response_time: [
+        { name: 'Response time < 500ms', time: '0.08s' },
+        { name: 'Response time < 1000ms', time: '0.09s' },
+        { name: 'Avg response time check', time: '0.10s' },
+    ],
+    api_concurrent: [
+        { name: '10 concurrent requests', time: '1.20s' },
+        { name: '25 concurrent requests', time: '2.80s' },
+    ],
+    api_pydantic_valid: [
+        { name: 'Validate User model', time: '0.05s' },
+        { name: 'Validate Response schema', time: '0.04s' },
+    ],
+    ui_navigation: [
+        { name: 'Navigate: Главная → О нас', time: '1.40s' },
+        { name: 'Navigate: О нас → Навыки', time: '1.20s' },
+        { name: 'Navigate: Навыки → Проекты', time: '1.10s' },
+    ],
+    ui_login: [
+        { name: 'Login valid credentials', time: '1.80s' },
+        { name: 'Login invalid password', time: '0.90s' },
+    ],
+    ui_forms: [
+        { name: 'Contact form submit', time: '1.50s' },
+        { name: 'Form validation empty', time: '0.60s' },
+    ],
+    ui_perf: [
+        { name: 'Page load < 3s', time: '2.10s' },
+        { name: 'First paint < 1s', time: '0.80s' },
+    ],
+};
+let loadRunning = false;
+let loadResults = [];
+function runLoadTest() {
+    if (loadRunning) return;
+    const checked = document.querySelectorAll('.load-test-check:checked');
+    if (checked.length === 0) { showToast('Выберите хотя бы один тест'); return; }
+    loadRunning = true;
+    loadResults = [];
+    const btn = document.getElementById('loadRunBtn');
+    const bar = document.getElementById('loadProgressBar');
+    const fill = document.getElementById('loadProgressFill');
+    const list = document.getElementById('loadTestList');
+    const summary = document.getElementById('loadTestSummary');
+    const stats = document.getElementById('loadStats');
+    const actions = document.getElementById('allureActions');
+    const browser = document.querySelector('input[name="browser"]:checked').value;
+    const threads = +document.getElementById('threadsSlider').value;
+    const iterations = +document.getElementById('iterationsSlider').value;
+    const delay = +document.getElementById('delaySlider').value;
+    const allureEnabled = document.getElementById('allureEnabled').checked;
+    const allureSteps = document.getElementById('allureSteps').checked;
+    const allureScreenshots = document.getElementById('allureScreenshots').checked;
+    const allureTags = document.getElementById('allureTags').checked;
+    const allureFmt = document.querySelector('input[name="allureFmt"]:checked').value;
+    btn.disabled = true; btn.textContent = 'Выполняется...';
+    bar.classList.add('active'); fill.style.width = '0%';
+    list.innerHTML = ''; summary.classList.remove('active'); summary.style.display = 'none';
+    stats.classList.add('active');
+    actions.style.display = 'none';
+    let allTests = [];
+    checked.forEach(cb => { const def = loadTestDefs[cb.value]; if (def) allTests.push(...def.map(t => ({...t, category: cb.value.split('_')[0], suite: cb.value}))); });
+    const total = allTests.length;
+    let passed = 0, failed = 0, rps = 0;
+    const startTime = Date.now();
+    allTests.forEach((t, i) => {
+        const div = document.createElement('div');
+        div.className = 'test-item'; div.id = 'load-test-' + i;
+        div.innerHTML = `<div class="test-status">○</div><div class="test-name"><small style="color:var(--text-dim);margin-right:6px">[${browser}]</small> ${t.name}</small></div><div class="test-time"></div>`;
+        list.appendChild(div);
+    });
+    let idx = 0;
+    function nextTest() {
+        if (idx >= total) {
+            btn.disabled = false; btn.textContent = '▶ Запустить нагрузку'; loadRunning = false;
+            bar.classList.remove('active');
+            const totalDuration = ((Date.now() - startTime) / 1000).toFixed(1);
+            summary.innerHTML = `<div class="stat pass">✓ ${passed} passed</div><div class="stat fail">✗ ${failed} failed</div><div class="stat skip">— ${total - passed - failed} skipped</div><div class="stat" style="color:var(--teal)">⏱ ${totalDuration}s</div>`;
+            summary.style.display = 'flex'; summary.classList.add('active');
+            if (allureEnabled) actions.style.display = 'flex';
+            return;
+        }
+        const el = document.getElementById('load-test-' + idx);
+        el.className = 'test-item running';
+        el.querySelector('.test-status').textContent = '◌';
+        const testDelay = 100 + Math.random() * 400;
+        setTimeout(() => {
+            const pass = Math.random() > 0.08;
+            const status = pass ? 'passed' : 'failed';
+            const timeMs = Math.floor(parseFloat(allTests[idx].time) * 1000);
+            el.className = 'test-item ' + (pass ? 'pass' : 'fail');
+            el.querySelector('.test-status').textContent = pass ? '✓' : '✗';
+            el.querySelector('.test-time').textContent = allTests[idx].time;
+            if (pass) passed++; else failed++;
+            loadResults.push({
+                name: allTests[idx].name,
+                suite: allTests[idx].suite,
+                category: allTests[idx].category,
+                status: status,
+                duration: timeMs,
+                browser: browser,
+                timestamp: new Date().toISOString(),
+                steps: allureSteps ? generateSteps(allTests[idx].name, status) : [],
+                tags: allureTags ? [allTests[idx].category, browser, 'load-test'] : [],
+                description: `Нагрузочный тест: ${allTests[idx].name}\\nПотоки: ${threads}, Итерации: ${iterations}, Задержка: ${delay}мс`,
+                screenshot: allureScreenshots && !pass ? 'data:image/svg+xml,...' : null
+            });
+            rps = Math.floor(1000 / testDelay * threads);
+            document.getElementById('liveRps').textContent = rps;
+            document.getElementById('liveAvg').textContent = Math.floor(200 + Math.random() * 300) + 'ms';
+            document.getElementById('liveP95').textContent = Math.floor(500 + Math.random() * 500) + 'ms';
+            document.getElementById('liveErrors').textContent = failed;
+            document.getElementById('livePassed').textContent = passed;
+            fill.style.width = ((idx + 1) / total * 100) + '%';
+            idx++; nextTest();
+        }, testDelay);
+    }
+    nextTest();
+}
+function generateSteps(testName, status) {
+    const steps = [];
+    steps.push({ name: 'Инициализация браузера', status: 'passed', duration: Math.floor(Math.random() * 500) });
+    steps.push({ name: 'Навигация к целевой странице', status: 'passed', duration: Math.floor(200 + Math.random() * 800) });
+    steps.push({ name: 'Выполнение запроса / проверка элементов', status: status, duration: Math.floor(100 + Math.random() * 1500) });
+    if (status === 'failed') {
+        steps.push({ name: 'Проверка断言', status: 'failed', duration: Math.floor(50 + Math.random() * 200), message: 'AssertionError: Expected 200 but got 500' });
+    }
+    steps.push({ name: 'Завершение', status: 'passed', duration: Math.floor(50 + Math.random() * 200) });
+    return steps;
+}
+let allureWin = null;
+function openAllureReport() {
+    if (allureWin && !allureWin.closed) { allureWin.focus(); return; }
+    const w = 1100, h = 750;
+    const left = (screen.width - w) / 2 + window.screenX;
+    const top = (screen.height - h) / 2 + window.screenY;
+    allureWin = window.open('', 'AllureReport', `width=${w},height=${h},left=${left},top=${top}`);
+    const pCount = loadResults.filter(r => r.status === 'passed').length;
+    const fCount = loadResults.filter(r => r.status === 'failed').length;
+    const totalDur = loadResults.reduce((s, r) => s + r.duration, 0);
+    const suites = [...new Set(loadResults.map(r => r.suite))];
+    let suiteRows = '';
+    suites.forEach(s => {
+        const st = loadResults.filter(r => r.suite === s);
+        const sp = st.filter(r => r.status === 'passed').length;
+        const sf = st.filter(r => r.status === 'failed').length;
+        suiteRows += `<tr class="allure-suite-row" onclick="toggleSuite('${s}')"><td class="allure-suite-name">📁 ${s}</td><td>${st.length}</td><td class="allure-pass">${sp}</td><td class="allure-fail">${sf}</td><td>${st.reduce((a,b)=>a+b.duration,0)}ms</td></tr>`;
+        let testRows = '';
+        st.forEach((t, i) => {
+            const icon = t.status === 'passed' ? '✅' : '❌';
+            const stepsHtml = t.steps.map(st2 => `<div class="allure-step"><span class="allure-step-icon">${st2.status==='passed'?'✓':'✗'}</span><span class="allure-step-name">${st2.name}</span><span class="allure-step-dur">${st2.duration}ms</span></div>`).join('');
+            testRows += `<tr class="allure-test-row suite-${s}" style="display:none"><td>${icon} ${t.name}</td><td>${t.duration}ms</td><td><span class="allure-status-badge ${t.status}">${t.status}</span></td><td>${t.browser}</td><td>${t.tags.map(tg=>'<span class="allure-tag">'+tg+'</span>').join(' ')}</td></tr>`;
+            if (t.steps.length > 0) {
+                testRows += `<tr class="allure-test-detail suite-${s}" style="display:none"><td colspan="5"><div class="allure-steps">${stepsHtml}</div></td></tr>`;
+            }
+        });
+        suiteRows += testRows;
+    });
+    allureWin.document.write(`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Allure Report — Load Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh}
+.allure-header{background:linear-gradient(135deg,#16213e,#0f3460);padding:24px 32px;border-bottom:2px solid #533483;display:flex;align-items:center;justify-content:space-between}
+.allure-logo{font-size:24px;font-weight:800;color:#e94560;letter-spacing:-1px}
+.allure-logo span{color:#e0e0e0;font-weight:400}
+.allure-meta{font-size:12px;color:#8892b0}
+.allure-container{max-width:1200px;margin:0 auto;padding:24px 32px}
+.allure-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.allure-stat-card{background:#16213e;border:1px solid #1a1a4e;border-radius:12px;padding:20px;text-align:center}
+.allure-stat-card .num{font-size:36px;font-weight:900;font-family:'JetBrains Mono',monospace}
+.allure-stat-card .label{font-size:12px;color:#8892b0;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.allure-stat-card.pass .num{color:#4caf50}
+.allure-stat-card.fail .num{color:#ef5350}
+.allure-stat-card.dur .num{color:#64b5f6}
+.allure-stat-card.total .num{color:#e94560}
+.allure-chart{background:#16213e;border:1px solid #1a1a4e;border-radius:12px;padding:20px;margin-bottom:32px}
+.allure-chart h3{font-size:14px;color:#8892b0;margin-bottom:12px}
+.allure-bar-container{height:24px;background:#0f0f23;border-radius:6px;overflow:hidden;display:flex}
+.allure-bar-pass{background:#4caf50;height:100%;transition:width 0.6s ease;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.allure-bar-fail{background:#ef5350;height:100%;transition:width 0.6s ease;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.allure-table{width:100%;border-collapse:collapse;margin-bottom:24px}
+.allure-table th{text-align:left;padding:10px 14px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#8892b0;border-bottom:1px solid #1a1a4e}
+.allure-table td{padding:10px 14px;border-bottom:1px solid #1a1a4e;font-size:13px}
+.allure-suite-row{cursor:pointer;transition:background 0.2s}
+.allure-suite-row:hover{background:#16213e}
+.allure-suite-name{font-weight:700;color:#64b5f6}
+.allure-test-row td{padding-left:30px}
+.allure-pass{color:#4caf50}
+.allure-fail{color:#ef5350}
+.allure-status-badge{padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
+.allure-status-badge.passed{background:rgba(76,175,80,0.15);color:#4caf50}
+.allure-status-badge.failed{background:rgba(239,83,80,0.15);color:#ef5350}
+.allure-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;background:rgba(100,181,246,0.1);color:#64b5f6;margin-right:4px}
+.allure-steps{padding:8px 14px 8px 30px}
+.allure-step{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:12px}
+.allure-step-icon{color:#4caf50;font-weight:700;width:14px}
+.allure-step-name{color:#b0b0b0}
+.allure-step-dur{color:#666;font-family:'JetBrains Mono',monospace;margin-left:auto}
+.allure-timeline{display:flex;gap:16px;margin-top:24px}
+.allure-timeline-item{flex:1;background:#16213e;border:1px solid #1a1a4e;border-radius:10px;padding:14px;text-align:center}
+.allure-timeline-item .dur{font-size:20px;font-weight:800;color:#64b5f6;font-family:'JetBrains Mono',monospace}
+.allure-timeline-item .tl-label{font-size:11px;color:#8892b0;margin-top:4px}
+</style></head><body>
+<div class="allure-header">
+    <div><div class="allure-logo">Allure <span>Report</span></div><div class="allure-meta">Generated: ${new Date().toLocaleString('ru-RU')} · Browser: ${loadResults[0]?.browser || 'Chrome'} · Threads: ${document.getElementById('threadsSlider').value}</div></div>
+</div>
+<div class="allure-container">
+    <div class="allure-overview">
+        <div class="allure-stat-card total"><div class="num">${loadResults.length}</div><div class="label">Всего тестов</div></div>
+        <div class="allure-stat-card pass"><div class="num">${pCount}</div><div class="label">Пройдено</div></div>
+        <div class="allure-stat-card fail"><div class="num">${fCount}</div><div class="label">Провалено</div></div>
+        <div class="allure-stat-card dur"><div class="num">${(totalDur/1000).toFixed(1)}s</div><div class="label">Общее время</div></div>
+    </div>
+    <div class="allure-chart"><h3>Результаты</h3><div class="allure-bar-container"><div class="allure-bar-pass" style="width:${(pCount/loadResults.length*100).toFixed(1)}%">${(pCount/loadResults.length*100).toFixed(0)}%</div><div class="allure-bar-fail" style="width:${(fCount/loadResults.length*100).toFixed(1)}%">${fCount>0?(fCount/loadResults.length*100).toFixed(0)+'%':''}</div></div></div>
+    <div class="allure-timeline"><div class="allure-timeline-item"><div class="dur">${Math.min(...loadResults.map(r=>r.duration))}ms</div><div class="tl-label">Мин. время</div></div><div class="allure-timeline-item"><div class="dur">${Math.floor(loadResults.reduce((a,b)=>a+b.duration,0)/loadResults.length)}ms</div><div class="tl-label">Среднее</div></div><div class="allure-timeline-item"><div class="dur">${Math.max(...loadResults.map(r=>r.duration))}ms</div><div class="tl-label">Макс. время</div></div><div class="allure-timeline-item"><div class="dur">${totalDur}ms</div><div class="tl-label">Суммарно</div></div></div>
+    <table class="allure-table"><thead><tr><th>Тест</th><th>Время</th><th>Статус</th><th>Браузер</th><th>Теги</th></tr></thead><tbody>${suiteRows}</tbody></table>
+</div>
+<script>function toggleSuite(s){const rows=document.querySelectorAll('.suite-'+s);rows.forEach(r=>{r.style.display=r.style.display==='none'?'table-row':'none';});}<\/script></body></html>`);
+    allureWin.document.close();
+}
+function downloadAllureJson() {
+    const allureData = {
+        reportName: 'Load Test Report',
+        timestamp: new Date().toISOString(),
+        environment: { browser: loadResults[0]?.browser, threads: document.getElementById('threadsSlider').value },
+        statistics: { total: loadResults.length, passed: loadResults.filter(r=>r.status==='passed').length, failed: loadResults.filter(r=>r.status==='failed').length },
+        testResults: loadResults.map(r => ({
+            name: r.name, suite: r.suite, status: r.status, duration: r.duration,
+            steps: r.steps, tags: r.tags, description: r.description
+        }))
+    };
+    const blob = new Blob([JSON.stringify(allureData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'allure-report-' + Date.now() + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('JSON-отчёт скачан');
+}
+
+// === ACTIVE NAV HIGHLIGHTING ===
+const sections = document.querySelectorAll('section[id], .skills-section[id], .hero-slider[id]');
+const navLinksAll = document.querySelectorAll('#mainNav a');
+function updateActiveNav() {
+    let current = '';
+    sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= 150 && rect.bottom >= 150) current = sec.id;
+    });
+    navLinksAll.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+    });
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+updateActiveNav();
+
+// === MOBILE NAV TOGGLE ===
+const navToggle = document.getElementById('navToggle');
+const mainNav = document.getElementById('mainNav');
+navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('open');
+    mainNav.classList.toggle('open');
+});
+mainNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        navToggle.classList.remove('open');
+        mainNav.classList.remove('open');
+    });
+});
+
+// === TERMINAL SCROLL TO TESTS ===
+document.querySelectorAll('.terminal-input').forEach(() => {});
+// Override the terminal clear handler to also handle __SCROLL_TESTS__
+// (already handled via the cmds object above)
+// === AI CHATBOT ===
+let chatWin = null;
+function openChatBot() {
+    if (chatWin && !chatWin.closed) { chatWin.focus(); return; }
+    const w = 420, h = 600;
+    const left = (screen.width - w) / 2 + window.screenX;
+    const top = (screen.height - h) / 2 + window.screenY;
+    chatWin = window.open('', 'QA_Assistant', `width=${w},height=${h},left=${left},top=${top},scrollbars=no,resizable=no`);
+    chatWin.document.write(`<!DOCTYPE html>
+<html lang="ru"><head><meta charset="UTF-8"><title>QA Assistant — Егор Даронько</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#0a1a0a; --card:rgba(255,255,255,0.04); --border:rgba(100,200,100,0.1); --text:#f0f8f0; --dim:rgba(200,240,200,0.5); --green:#6abf69; --green2:#4caf50; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.chat-header{padding:16px 20px;background:rgba(10,30,10,0.6);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.chat-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6abf69,#388e3c);display:flex;align-items:center;justify-content:center;font-weight:800;color:#0a1a0a;font-size:16px}
+.chat-header-info h3{font-size:15px;font-weight:700}
+.chat-header-info p{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:4px}
+.chat-header-info p::before{content:'';width:6px;height:6px;border-radius:50%;background:#4caf50;animation:dp 1.5s infinite}
+@keyframes dp{0%,100%{opacity:1}50%{opacity:0.4}}
+.chat-close{margin-left:auto;background:none;border:none;color:var(--dim);cursor:pointer;font-size:20px;padding:4px 8px;border-radius:6px;transition:all 0.2s}
+.chat-close:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+.msg{max-width:85%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6;animation:msgIn 0.3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.bot{background:rgba(10,30,10,0.6);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.user{background:rgba(106,191,105,0.12);border:1px solid rgba(106,191,105,0.15);align-self:flex-end;border-bottom-right-radius:4px;color:var(--text)}
+.msg code{font-family:'JetBrains Mono',monospace;background:rgba(106,191,105,0.1);padding:2px 6px;border-radius:4px;font-size:12px;color:var(--green)}
+.typing{display:flex;gap:4px;padding:12px 16px;align-self:flex-start}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--dim);animation:tp 1s infinite}
+.typing span:nth-child(2){animation-delay:0.15s}
+.typing span:nth-child(3){animation-delay:0.3s}
+@keyframes tp{0%,100%{opacity:0.3}50%{opacity:1}}
+.chat-input-area{padding:12px 16px;background:rgba(10,30,10,0.4);border-top:1px solid var(--border);display:flex;gap:8px}
+.chat-input{flex:1;background:rgba(10,25,10,0.5);border:1px solid var(--border);border-radius:12px;padding:12px 16px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s}
+.chat-input:focus{border-color:var(--green)}
+.chat-input::placeholder{color:var(--dim)}
+.chat-send{width:44px;height:44px;border-radius:12px;background:var(--green);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.chat-send:hover{box-shadow:0 0 16px rgba(106,191,105,0.4)}
+.chat-send svg{width:20px;height:20px;fill:#0a1a0a}
+.quick-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.quick-btn{padding:6px 12px;border-radius:8px;background:rgba(106,191,105,0.08);border:1px solid rgba(106,191,105,0.1);color:var(--green);font-size:12px;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+.quick-btn:hover{background:rgba(106,191,105,0.15);border-color:rgba(106,191,105,0.3)}
+</style></head><body>
+<div class="chat-header">
+    <div class="chat-avatar">QA</div>
+    <div class="chat-header-info"><h3>QA Assistant</h3><p>Онлайн</p></div>
+    <button class="chat-close" onclick="window.close()">✕</button>
+</div>
+<div class="chat-messages" id="chatMsgs"></div>
+<div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatIn" placeholder="Спросите о Егоре..." autocomplete="off">
+    <button class="chat-send" onclick="sendMsg()"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+</div>
+<script>
+const chatIn=document.getElementById('chatIn');
+const chatBox=document.getElementById('chatMsgs');
+const knowledge={
+    skills:"Егор владеет: Python, Pytest, Selenium, API-тестирование, Pydantic, Allure, ООП, Jira, Trello, Git, Docker, SQL, Page Object, Postman, Poetry, GitHub Actions.",
+    experience:"Егор прошёл курс по тестированию ПО и ищет junior QA позицию. У него есть дипломный проект с UI и API тестами для реального сайта.",
+    projects:"У Егора 4 проекта:\\n1. API-тестирование REST (Pytest + Requests + Pydantic)\\n2. UI-автоматизация сайта (Selenium + POM + Allure)\\n3. Telegram-бот (aiogram + API)\\n4. Allure-отчёт с метриками",
+    contact:"Связаться с Егором:\\n📧 egor.daronko@mail.ru\\n📱 @egor_321 (Telegram)\\n📞 +375 29 744 78 08",
+    motivation:"Егор очень мотивирован — готов работать усерднее всех, чтобы доказать свою ценность и вырасти в сильного специалиста.",
+    about:"Егор Даронько — QA Engineer / QA Automation. Тестировщик с сильной технической базой. Знает ООП, алгоритмы, типы данных в Python, Pydantic для валидации.",
+    python:"Егор уверенно работает с Python: ООП, типы данных, декораторы, контекстные менеджеры. Использует Python как основной язык для автоматизации тестов.",
+    api:"Егор тестирует REST API: проверяет статус-коды, валидирует ответы через Pydantic, параметризует тесты через Pytest.",
+    selenium:"Егор работает с Selenium для UI-автоматизации: Page Object Model, явные/неявные ожидания, работа с формами, навигация, скриншоты при падении."
+};
+const greetings=["Привет! Я QA-ассистент Егора. Чем могу помочь? 😊","Здравствуйте! Спросите меня о навыках, проектах или опыте Егора.","Приветствую! Задайте вопрос о QA-инженере Егоре Даронько."];
+const fallback=["Интересный вопрос! Попробуйте спросить о навыках, проектах или контактах Егора.","Я пока учусь 😅 Пока могу рассказать о: навыках, проектах, опыте, контактах Егора.","Спросите меня: «какие навыки у Егора?», «какие проекты?» или «как связаться?»"];
+function addMsg(text,cls){const d=document.createElement('div');d.className='msg '+cls;d.innerHTML=text.replace(/\\n/g,'<br>');chatBox.appendChild(d);chatBox.scrollTop=chatBox.scrollHeight;}
+function showTyping(){const d=document.createElement('div');d.className='typing';d.id='typingIndicator';d.innerHTML='<span></span><span></span><span></span>';chatBox.appendChild(d);chatBox.scrollTop=chatBox.scrollHeight;}
+function hideTyping(){const t=document.getElementById('typingIndicator');if(t)t.remove();}
+function respond(text){showTyping();setTimeout(()=>{hideTyping();addMsg(text,'bot');},600+Math.random()*800);}
+function matchQuery(q){q=q.toLowerCase();for(const[k,v]of Object.entries(knowledge)){if(q.includes(k))return v;}if(q.match(/привет|здравствуй|хай|hello|hi/))return greetings[Math.floor(Math.random()*greetings.length)];if(q.match(/навык|стек|технолог|умеет|знает|skill/))return knowledge.skills;if(q.match(/проект|portfolio|work/))return knowledge.projects;if(q.match(/контакт|связ|почт|телефон|telegram|mail/))return knowledge.contact;if(q.match(/мотивац|хот|цел|goal/))return knowledge.motivation;if(q.match(/опыт|курс|учил|изучал/))return knowledge.experience;if(q.match(/python|питон/))return knowledge.python;if(q.match(/api|rest|запрос/))return knowledge.api;if(q.match(/selenium|ui|тест.*интер/))return knowledge.selenium;if(q.match(/тест|test|qa|quality/))return "Егор специализируется на QA-тестировании: ручное, автоматизация UI (Selenium), API-тестирование (Requests/Postman), нагрузочное тестирование, отчёты (Allure).";return null;}
+function sendMsg(){const input=document.getElementById('chatIn');const q=input.value.trim();if(!q)return;input.value='';addMsg(q,'user');const r=matchQuery(q);respond(r||fallback[Math.floor(Math.random()*fallback.length)]);}
+chatIn.addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
+addMsg(greetings[0],'bot');
+setTimeout(()=>{addMsg('<div class="quick-btns"><button class="quick-btn" onclick="askQ(this)">Навыки</button><button class="quick-btn" onclick="askQ(this)">Проекты</button><button class="quick-btn" onclick="askQ(this)">Контакты</button><button class="quick-btn" onclick="askQ(this)">Опыт</button><button class="quick-btn" onclick="askQ(this)">Мотивация</button></div>','bot');},500);
+function askQ(btn){document.getElementById('chatIn').value=btn.textContent;sendMsg();}
+<\/script></body></html>`);
+    chatWin.document.close();
+}
+</script>
+</body>
+</html>

@@ -138,8 +138,7 @@ class WebElement(object):
         element = self.find()
 
         if element:
-            return element
-
+            return element.get_attribute(attr_name)
 
     def _set_value(self, web_driver, value, clear=True):
         """ Установить значение для элемента ввода. """
@@ -150,7 +149,6 @@ class WebElement(object):
             element.clear()
 
         element.send_keys(value)
-
 
     def click(self, hold_seconds=0, x_offset=1, y_offset=1):
         """ Подождать и нажать на элемент. """
@@ -168,7 +166,6 @@ class WebElement(object):
         if self._wait_after_click:
             self._page.wait_page_loaded()
 
-
     def right_mouse_click(self, x_offset=0, y_offset=0, hold_seconds=0):
         """ Нажать на элемент правой кнопкой мыши. """
 
@@ -181,7 +178,6 @@ class WebElement(object):
         else:
             msg = 'Element with locator {0} not found'
             raise AttributeError(msg.format(self._locator))
-
 
     def highlight_and_make_screenshot(self, file_name='element.png'):
         """ Выделите элемент и сделайте снимок экрана всей страницы.. """
@@ -196,7 +192,6 @@ class WebElement(object):
 
         # Сделать скрин страницы:
         self._web_driver.save_screenshot(file_name)
-
 
     def scroll_to_element(self):
         """ Прокрутка к элементу. """
@@ -213,7 +208,6 @@ class WebElement(object):
         except Exception as e:
             pass  # Просто проигнорим ошибку, если мы не можем отправить ключи элементу
 
-
     def delete(self):
         """ Удалить элемент. """
 
@@ -222,6 +216,7 @@ class WebElement(object):
         # Удалить элемент:
         self._web_driver.execute_script("arguments[0].remove();", element)
 
+# Many elements______________________________________________________________________________________
 
 class ManyWebElements(WebElement):
 
@@ -262,4 +257,43 @@ class ManyWebElements(WebElement):
     def get_text(self):
         """ Взять текст элементов. """
 
+        elements = self.find()
+        result = []
 
+        for element in elements:
+            text = ''
+
+            try:
+                text = str(element.text)
+            except Exception as e:
+                print('Error: {0}'.format(e))
+
+            result.append(text)
+
+        return result
+
+    def get_attribute(self, attr_name):
+        """ Взять атрибут элементов. """
+
+        results = []
+        elements = self.find()
+
+        for element in elements:
+            results.append(element.get_attribute(attr_name))
+
+        return results
+
+    def highlight_and_make_screenshot(self, file_name='element.png'):
+        """ Выделите элементы и сделайте скриншот всей страницы.. """
+
+        elements = self.find()
+
+        for element in elements:
+            # Прокрутите страницу до элемента:
+            self._web_driver.execute_script("arguments[0].scrollIntoView();", element)
+
+            # Добавьте красную рамку к стилю:
+            self._web_driver.execute_script("arguments[0].style.border='3px solid red'", element)
+
+        # Сделать скрин страницы:
+        self._web_driver.save_screenshot(file_name)
