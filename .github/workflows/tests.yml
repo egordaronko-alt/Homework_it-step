@@ -24,8 +24,11 @@ jobs:
         with:
           chrome-version: stable
 
-      - name: Run tests
-        run: pytest Diplom/tests/ --tb=short -v
+      - name: Run unit tests
+        run: pytest Diplom/tests/unit/ --tb=short -v
+
+      - name: Run UI/API tests
+        run: pytest Diplom/tests/ --ignore=Diplom/tests/unit/ --tb=short -v
         env:
           SELENIUM_HEADLESS: "true"
 
