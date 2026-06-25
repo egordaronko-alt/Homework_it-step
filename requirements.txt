@@ -1,4 +1,7 @@
 pytest
+pytest-asyncio
 selenium
 requests
 allure-pytest
+python-telegram-bot
+termcolor

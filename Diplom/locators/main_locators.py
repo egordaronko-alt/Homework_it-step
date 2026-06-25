@@ -50,3 +50,15 @@ class MainPage(WebPage):
     czao_shop = WebElement(css_selector='li div ul li a[target="_self"][href="https://belgee.by/magazin"]')
     czao_corruption = WebElement(css_selector='li div ul li a[href="https://belgee.by/protivodejstvie-korrupcii"]')
     czao_vacancy = WebElement(css_selector='li div ul li a[href="https://belgee.by/vakansii"]')
+    #Тестирование "Свяжитесь с нами"
+    connect_with_us = WebElement(xpath='//span[@class="dashed" and text()="Свяжитесь с нами"]')
+    #Тестирование "belgee.by"
+    belgee_link = WebElement(xpath='//span[@class="dashed" and text()="Автомобили Geely"]')
+
+    picture1 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/493/w560_h300_66tlpv8cwefrpfwfnqyz.webp")]')
+    picture2 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/485/w560_h300_oomuqfsan93ghpjsdnpo.webp")]')
+    picture3 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/481/w560_h300_d7n01zltd3gthr0bxoqt.webp")]')
+    picture4 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/470/w560_h300_kfguilo2ngw64ma1mrup.webp")]')
+    picture5 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/469/w560_h300_qroylc7xnro8ru8rilml.webp")]')
+    picture6 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/464/w560_h300_ts68jdqjftb4be96qz5a.webp")]')
+    strelka = WebElement(xpath='/html/body/div[1]/section[4]/div/div[2]/div[1]/div/div/div/div[3]/div')
