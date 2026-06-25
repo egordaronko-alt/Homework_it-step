@@ -12,6 +12,8 @@ def test_belgee(driver):
     page.accept_cookie.click()
     page.pop_window.wait_to_be_clickable()
     page.pop_window.click()
+    page.wait_page_loaded(check_images=True, scroll_page=True)
+    time.sleep(3)
 
 # #Test models in models
 #     page.header_models.click()
@@ -112,6 +114,8 @@ def test_belgee(driver):
 
     for i in range(len(list_of_pictures) - 2):
         for j in range(i, i + 3):
+            list_of_pictures[j].scroll_to_element()
+            time.sleep(1)
             assert list_of_pictures[j].is_visible(), f'{j} не отображается'
 
         page.strelka.scroll_to_element()
