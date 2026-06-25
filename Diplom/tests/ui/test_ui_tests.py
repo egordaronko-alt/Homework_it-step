@@ -103,25 +103,20 @@ def test_belgee(driver):
 #     page.go_back()
 
 # #Функциональный тест
-#     list_of_pictures = [page.picture1,
-#                         page.picture2,
-#                         page.picture3,
-#                         page.picture4,
-#                         page.picture5,
-#                         page.picture6]
-    # k = 0
-    # v = 3
-    # time.sleep(3)
-    # page.scroll(page.strelka)
-    # time.sleep(3)
-    # for i in range(3):
-    #     for j in range(k, v):
-    #         assert list_of_pictures[j].is_visible(), f'{list_of_pictures[j]} не отображена'
-    #     page.strelka.click()
-    #     time.sleep(3)
-    #     k+= 1
-    #     v+= 1
+    list_of_pictures = [page.picture1,
+                        page.picture2,
+                        page.picture3,
+                        page.picture4,
+                        page.picture5,
+                        page.picture6]
 
-    page.strelka.scroll_to_element()
-    page.strelka.wait_to_be_clickable()
-    page.strelka.click()
+    for i in range(len(list_of_pictures) - 2):
+        for j in range(i, i + 3):
+            assert list_of_pictures[j].is_visible(), f'{j} не отображается'
+
+        page.strelka.scroll_to_element()
+        page.strelka.click()
+        time.sleep(2)
+
+
+
