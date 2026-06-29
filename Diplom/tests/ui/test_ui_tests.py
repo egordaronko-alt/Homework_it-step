@@ -12,7 +12,7 @@ def test_belgee(driver):
     page.accept_cookie.click()
     page.pop_window.wait_to_be_clickable()
     page.pop_window.click()
-    page.wait_page_loaded(check_images=True, scroll_page=True)
+    page.wait_page_loaded(check_images=True, scroll_page=False)
     time.sleep(3)
 
 # #Test models in models
@@ -104,23 +104,53 @@ def test_belgee(driver):
 #     page.wait_page_loaded()
 #     page.go_back()
 
-# #Функциональный тест
-    list_of_pictures = [page.picture1,
-                        page.picture2,
-                        page.picture3,
-                        page.picture4,
-                        page.picture5,
-                        page.picture6]
+#Функциональный тест 9 изображений
 
-    for i in range(len(list_of_pictures) - 2):
-        for j in range(i, i + 3):
-            list_of_pictures[j].scroll_to_element()
-            time.sleep(1)
-            assert list_of_pictures[j].is_visible(), f'{j} не отображается'
+    while True:
+        start_of_pictures = page.number_of_picture.get_text()
+        if "1 / 9" in start_of_pictures:
+            break
+        else:
+            page.main_arrow_left.click(wait_page=False)
 
-        page.strelka.scroll_to_element()
-        page.strelka.click()
-        time.sleep(2)
+    list_of_images = [page.image_1,
+                      page.image_2,
+                      page.image_3,
+                      page.image_4,
+                      page.image_5,
+                      page.image_6,
+                      page.image_7,
+                      page.image_8,
+                      page.image_9]
+
+    for i in range(len(list_of_images)):
+        print(list_of_images[i].get_attribute("src"))
+        assert list_of_images[i].is_presented(), f'Изображение {i + 1} не отображено'
+
+        # Кликаем на стрелку, только если это НЕ последняя картинка
+        if i < len(list_of_images) - 1:
+            page.main_arrow_right.click()
+
+
+
+
+
+
+
+# #Функциональный тест нижних изображений
+#     list_of_pictures = [page.picture1,
+#                         page.picture2,
+#                         page.picture3,
+#                         page.picture4,
+#                         page.picture5,
+#                         page.picture6]
+#
+#     page.strelka.scroll_to_element()
+#     for i in range(len(list_of_pictures) - 3):
+#         for j in range(i, i + 3):
+#             assert list_of_pictures[j].is_visible(), f'{j} не отображается'
+#         page.strelka.click()
+#         page.strelka.wait_to_be_clickable()
 
 
 

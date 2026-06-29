@@ -330,3 +330,5 @@ from Diplom.locators.main_locators import MainPage
 #      if i + diff in nums and i + (2 * diff) in nums:
 #         counter += 1
 # print(counter)
+
+

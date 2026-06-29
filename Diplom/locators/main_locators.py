@@ -1,3 +1,5 @@
+from fontTools.subset.svg import xpath
+
 from Diplom.pages.elements import WebElement, ManyWebElements
 from Diplom.pages.base_page import WebPage
 import os
@@ -54,7 +56,24 @@ class MainPage(WebPage):
     connect_with_us = WebElement(xpath='//span[@class="dashed" and text()="Свяжитесь с нами"]')
     #Тестирование "belgee.by"
     belgee_link = WebElement(xpath='//span[@class="dashed" and text()="Автомобили Geely"]')
+    #Функциональное тестирование стрелок 1/9
 
+    number_of_picture = WebElement(xpath='//div[@class="_js-index-slider-counter slider-counter bold"]')
+    main_arrow_left = WebElement(css_selector='div._js-b-index-owl-slider-prev.arrow')
+    main_arrow_right = WebElement(css_selector='div._js-b-index-owl-slider-next.arrow')
+
+    image_1 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/390/w576_h700_8rgiktcijqfvgvl25lfn.png"')
+    image_2 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/360/w1920_h1080_ae9fogdrhfcs1vklpakr.png"]')
+    image_3 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/376/w1920_h1080_ydhwsfukrt0ballieils.png"]')
+    image_4 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/377/w1920_h1080_xeebjqnwqxuph5iy95pv.png"]')
+    image_5 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/378/w1920_h1080_njvbeminloyctfri6eab.png"]')
+    image_6 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/379/w1920_h1080_taxjautg3kvm3skhn7sr.png"]')
+    image_7 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/177/w1920_h1080_bz9kylpwvvcydderkjzw.png"]')
+    image_8 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/145/w1920_h1080_2neg7hjaz3glwkrytnro.png"]')
+    image_9 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/21/w1920_h1080_es4l2ixthmqduscysvdd.png"]')
+
+
+    #Функциональное тестирование стрелок из 6 картинок
     picture1 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/493/w560_h300_66tlpv8cwefrpfwfnqyz.webp")]')
     picture2 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/485/w560_h300_oomuqfsan93ghpjsdnpo.webp")]')
     picture3 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/481/w560_h300_d7n01zltd3gthr0bxoqt.webp")]')
