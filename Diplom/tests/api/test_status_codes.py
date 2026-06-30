@@ -16,7 +16,7 @@ class TestApiActivities():
         (200, "https://belgee.by/magazin", "Магазин"),
         (200, "https://belgee.by/gostinica", "Гостиница"),
         (200, "https://belgee.by/promo", "Акции"),
-        (200, "https://belgee.by/sovety-po-ekspluatacii-avtomobilya-belgee", "Советы по эксплуатац"),
+        (200, "https://belgee.by/sovety-po-ekspluatacii-avtomobilya-belgee", "Советы по эксплуатации"),
         (200, "https://belgee.by/infoliniya-belgee", "Инфолиния"),
         (200, "https://belgee.by/pomosh-na-dorogah-kruglosutochnaya-podderzhka-vladelcev-belgee", "Помощь на дорогах"),
         (200, "https://belgee.by/news", "Новости"),
