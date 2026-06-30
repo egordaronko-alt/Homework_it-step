@@ -150,20 +150,22 @@ class WebElement(object):
 
         element.send_keys(value)
 
-    def click(self, hold_seconds=0, x_offset=1, y_offset=1):
+    def click(self, hold_seconds=0, x_offset=1, y_offset=1, wait_page=True):
         """ Подождать и нажать на элемент. """
-
         element = self.wait_to_be_clickable()
 
         if element:
             action = ActionChains(self._web_driver)
-            action.move_to_element_with_offset(element, x_offset, y_offset). \
-                pause(hold_seconds).click(on_element=element).perform()
+            action.move_to_element_with_offset(element, x_offset, y_offset) \
+                .pause(hold_seconds) \
+                .click(on_element=element) \
+                .perform()
         else:
             msg = 'Element with locator {0} not found'
             raise AttributeError(msg.format(self._locator))
 
-        if self._wait_after_click:
+        # Добавляем флаг, чтобы можно было отключить ожидание
+        if self._wait_after_click and wait_page:
             self._page.wait_page_loaded()
 
     def right_mouse_click(self, x_offset=0, y_offset=0, hold_seconds=0):
