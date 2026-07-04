@@ -140,6 +140,7 @@ class WebElement(object):
         if element:
             return element.get_attribute(attr_name)
 
+
     def _set_value(self, web_driver, value, clear=True):
         """ Установить значение для элемента ввода. """
 
@@ -218,6 +219,7 @@ class WebElement(object):
         # Удалить элемент:
         self._web_driver.execute_script("arguments[0].remove();", element)
 
+
 # Many elements______________________________________________________________________________________
 
 class ManyWebElements(WebElement):
@@ -284,6 +286,7 @@ class ManyWebElements(WebElement):
             results.append(element.get_attribute(attr_name))
 
         return results
+
 
     def highlight_and_make_screenshot(self, file_name='element.png'):
         """ Выделите элементы и сделайте скриншот всей страницы.. """

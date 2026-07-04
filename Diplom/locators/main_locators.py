@@ -56,28 +56,36 @@ class MainPage(WebPage):
     connect_with_us = WebElement(xpath='//span[@class="dashed" and text()="Свяжитесь с нами"]')
     #Тестирование "belgee.by"
     belgee_link = WebElement(xpath='//span[@class="dashed" and text()="Автомобили Geely"]')
-    #Функциональное тестирование стрелок 1/9
+    #Функциональное тестирование стрелок 1/8
 
     number_of_picture = WebElement(xpath='//div[@class="_js-index-slider-counter slider-counter bold"]')
     main_arrow_left = WebElement(css_selector='div._js-b-index-owl-slider-prev.arrow')
     main_arrow_right = WebElement(css_selector='div._js-b-index-owl-slider-next.arrow')
 
-    image_1 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/390/w576_h700_8rgiktcijqfvgvl25lfn.png"')
-    image_2 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/360/w1920_h1080_ae9fogdrhfcs1vklpakr.png"]')
-    image_3 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/376/w1920_h1080_ydhwsfukrt0ballieils.png"]')
-    image_4 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/377/w1920_h1080_xeebjqnwqxuph5iy95pv.png"]')
-    image_5 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/378/w1920_h1080_njvbeminloyctfri6eab.png"]')
-    image_6 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/379/w1920_h1080_taxjautg3kvm3skhn7sr.png"]')
-    image_7 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/177/w1920_h1080_bz9kylpwvvcydderkjzw.png"]')
-    image_8 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/145/w1920_h1080_2neg7hjaz3glwkrytnro.png"]')
-    image_9 = WebElement(css_selector='img[src="https://belgee.by/storage/thumbs/index_slides/21/w1920_h1080_es4l2ixthmqduscysvdd.png"]')
+    image_1 = WebElement(css_selector='img[alt="Главная - слайд 1"][title="Главная - слайд 1"]')
+    image_2 = WebElement(css_selector='img[alt="Главная - слайд 2"][title="Главная - слайд 2"]')
+    image_3 = WebElement(css_selector='img[alt="Главная - слайд 3"][title="Главная - слайд 3"]')
+    image_4 = WebElement(css_selector='img[alt="Главная - слайд 4"][title="Главная - слайд 4"]')
+    image_5 = WebElement(css_selector='img[alt="Главная - слайд 5"][title="Главная - слайд 5"]')
+    image_6 = WebElement(css_selector='img[alt="Главная - слайд 6"][title="Главная - слайд 6"]')
+    image_7 = WebElement(css_selector='img[alt="Главная - слайд 7"][title="Главная - слайд 7"]')
+    image_8 = WebElement(css_selector='img[alt="Главная - слайд 8"][title="Главная - слайд 8"]')
 
 
     #Функциональное тестирование стрелок из 6 картинок
-    picture1 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/493/w560_h300_66tlpv8cwefrpfwfnqyz.webp")]')
-    picture2 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/485/w560_h300_oomuqfsan93ghpjsdnpo.webp")]')
-    picture3 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/481/w560_h300_d7n01zltd3gthr0bxoqt.webp")]')
-    picture4 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/470/w560_h300_kfguilo2ngw64ma1mrup.webp")]')
-    picture5 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/469/w560_h300_qroylc7xnro8ru8rilml.webp")]')
-    picture6 = WebElement(xpath='//div[contains(@style, "https://belgee.by/storage/thumbs/news/464/w560_h300_ts68jdqjftb4be96qz5a.webp")]')
-    strelka = WebElement(xpath='/html/body/div[1]/section[4]/div/div[2]/div[1]/div/div/div/div[3]/div')
+    picture1 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/502/w560_h300_t8uppsnqrl61rwq1vcud.png"]')
+    picture2 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/493/w560_h300_66tlpv8cwefrpfwfnqyz.png"]')
+    picture3 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/485/w560_h300_oomuqfsan93ghpjsdnpo.png"]')
+    picture4 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/481/w560_h300_d7n01zltd3gthr0bxoqt.png"]')
+    picture5 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/470/w560_h300_kfguilo2ngw64ma1mrup.jpg"]')
+    picture6 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/469/w560_h300_qroylc7xnro8ru8rilml.png"]')
+    arrow = WebElement(css_selector='div._js-b-index-news-slider-next.arrow')
+
+    #Перемещение изображений на главной странице сайта
+    move_picture1 = WebElement(xpath='/html/body/div/section[3]/div/div[1]/div/div[3]/div/div/a/div/div/div/div[2]/picture/img')
+    move_picture2 = WebElement(xpath='/html/body/div[1]/section[3]/div/div[1]/div/div[1]/div/div/a/div/div/div/div[2]/picture/img')
+    owl_dots = ManyWebElements(xpath='//div[contains(@class,"owl-dots")]//div')
+
+    #Проверка анимаций CSS футера
+    site_developer = WebElement(css_selector='.developer .w-icon-left>.icon')
+    developer = WebElement(css_selector='a[href="https://zmitroc.by"]')

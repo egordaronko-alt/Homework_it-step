@@ -14,6 +14,10 @@ class WebPage(object):
         self._web_driver = web_driver
         self.get(url)
 
+    @property
+    def driver(self):
+        return self._web_driver
+
     def __setattr__(self, name, value):
         if not name.startswith('_'):
             self.__getattribute__(name)._set_value(self._web_driver, value)
