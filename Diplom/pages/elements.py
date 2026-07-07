@@ -48,7 +48,7 @@ class WebElement(object):
             print(colored('Element not clickable!', 'red'))
 
         if check_visibility:
-            self.wait_until_not_visible()
+            self.wait_until_visible()
 
         return element
 
@@ -74,7 +74,7 @@ class WebElement(object):
 
         return False
 
-    def wait_until_not_visible(self, timeout=10):
+    def wait_until_visible(self, timeout=10):
 
         element = None
 
@@ -219,6 +219,30 @@ class WebElement(object):
         # Удалить элемент:
         self._web_driver.execute_script("arguments[0].remove();", element)
 
+    def scroll_to_element_with_offset(self, offset=150):
+        """
+        Прокрутка к элементу с отступом от верха (для обхода фиксированного хедера)
+
+        Args:
+            offset: отступ от верха в пикселях (обычно высота хедера)
+
+        Returns:
+            self (для цепочки вызовов)
+        """
+        element = self.find()
+        if element:
+            self._web_driver.execute_script("""
+                   var element = arguments[0];
+                   var offset = arguments[1];
+                   var rect = element.getBoundingClientRect();
+                   var scrollY = window.pageYOffset + rect.top - offset;
+                   window.scrollTo({
+                       top: scrollY,
+                       behavior: 'smooth'
+                   });
+               """, element, offset)
+            time.sleep(0.5)
+        return self
 
 # Many elements______________________________________________________________________________________
 

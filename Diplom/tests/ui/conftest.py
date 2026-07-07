@@ -42,3 +42,24 @@ def page(driver):
         """)
 
     return page
+
+
+@pytest.fixture
+def model_page(driver):
+    def _create_model_page(model_name):
+        url = f"https://belgee.by/models/{model_name}"
+        page = MainPage(driver, url)
+
+        page.accept_cookie.click()
+
+        try:
+            page.pop_window.wait_to_be_clickable().click()
+        except TimeoutException:
+            page.execute_script("""
+                var el = document.querySelector('.close._js-pop-close');
+                if (el) el.click();
+            """)
+
+        return page
+
+    return _create_model_page
