@@ -22,25 +22,25 @@ class MainPage(WebPage):
 #close pop window
     pop_window = WebElement(css_selector='.close._js-pop-close')
 
-#Тестирование хедера Belgee.by
-#Локаторы моделей
+    #Тестирование хедера Belgee.by
+    #Локаторы моделей
     models_switcher = WebElement(css_selector='div.w-header-inset-dropper._js-header-inset-dropper')
     header_models = WebElement(css_selector='span.dashed')
     many_models = ManyWebElements(css_selector='.col-md-3.col-sm-3.col-4.pb-10')
-#Локаторы ссылок на модели
+    #Локаторы ссылок на модели
     model_S50_link = WebElement(css_selector='img[src*="w300_h200_dzylmn18v0ls4xg1bgep.png"]')
     model_X50_link = WebElement(css_selector='img[src*="w300_h200_uogzrfwzjdl9svcpzj57.png"]')
     model_X50plus_link = WebElement(css_selector='img[src*="w300_h200_44a9oqstp6l9jkoe7kui.png"]')
     model_X70_link = WebElement(css_selector='img[src*="w300_h200_m9xovvg3ffjp3bh9xmjl.png"]')
     model_X80_link = WebElement(css_selector="img[src*='w300_h200_f5y8il8onsgrnqplsmeg.png']")
 
-#Тестирование футера "Специальные предложения"
+    #Тестирование футера "Специальные предложения"
     special_deal_menu = WebElement(xpath='//span[text()="Специальные предложения"]')
     special_deal_promo = WebElement(xpath='//a[@href="https://belgee.by/promo" and text()="Акции"]')
     special_deal_leasing = WebElement(xpath='//a[@href="https://belgee.by/lizing" and text()="Лизинг"]')
     special_deal_kredit = WebElement(xpath='//a[@href="https://belgee.by/kredit" and text()="Кредит"]')
 
-#Тестирование "Владельцу"
+    #Тестирование "Владельцу"
     owner_main_link = WebElement(xpath='//li/a/span[text()="Владельцу"]')
     owner_user_manual = WebElement(css_selector='a[href="https://belgee.by/manual"][class="__link"]')
     owner_hundred_belgee = WebElement(css_selector='a[href="https://belgee.by/sto"][class="__link"]')
@@ -49,7 +49,7 @@ class MainPage(WebPage):
     owner_info_line = WebElement(css_selector='a[href="https://belgee.by/infoliniya-belgee"][class="__link"]')
     owner_road_help = WebElement(css_selector='a[href="https://belgee.by/pomosh-na-dorogah-kruglosutochnaya-podderzhka-vladelcev-belgee"][class="__link"]')
 
-#Тестирование "СЗАО БЕЛДЖИ"
+    #Тестирование "СЗАО БЕЛДЖИ"
     czao_main_link = WebElement(xpath='//li/a/span[text()="СЗАО БЕЛДЖИ"]')
     czao_news = WebElement(css_selector='li div ul li a[target="_self"][href="https://belgee.by/news"]')
     czao_about = WebElement(css_selector='li div ul li a[target="_self"][href="https://belgee.by/about"]')
@@ -59,11 +59,11 @@ class MainPage(WebPage):
     czao_shop = WebElement(css_selector='li div ul li a[target="_self"][href="https://belgee.by/magazin"]')
     czao_corruption = WebElement(css_selector='li div ul li a[href="https://belgee.by/protivodejstvie-korrupcii"]')
     czao_vacancy = WebElement(css_selector='li div ul li a[href="https://belgee.by/vakansii"]')
-#Тестирование "Свяжитесь с нами"
+    #Тестирование "Свяжитесь с нами"
     connect_with_us = WebElement(xpath='//span[@class="dashed" and text()="Свяжитесь с нами"]')
-#Тестирование "belgee.by"
+    #Тестирование "belgee.by"
     belgee_link = WebElement(xpath='//span[@class="dashed" and text()="Автомобили Geely"]')
-#Функциональное тестирование стрелок 1/8
+    #Функциональное тестирование стрелок 1/8
 
     number_of_picture = WebElement(xpath='//div[@class="_js-index-slider-counter slider-counter bold"]')
     main_arrow_left = WebElement(css_selector='div._js-b-index-owl-slider-prev.arrow')
@@ -79,7 +79,7 @@ class MainPage(WebPage):
     image_8 = WebElement(css_selector='img[alt="Главная - слайд 8"][title="Главная - слайд 8"]')
 
 
-#Функциональное тестирование стрелок из 6 картинок
+    #Функциональное тестирование стрелок из 6 картинок
     picture1 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/505/w560_h300_uzboexnbuwzixg6uacl4.jpg"]')
     picture2 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/502/w560_h300_asfqwwfjyyeoutq5f2vv.png"]')
 
@@ -89,12 +89,12 @@ class MainPage(WebPage):
     picture6 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/470/w560_h300_kfguilo2ngw64ma1mrup.jpg"]')
     arrow = WebElement(css_selector='div._js-b-index-news-slider-next.arrow')
 
-#Перемещение изображений на главной странице сайта
+    #Перемещение изображений на главной странице сайта
     move_picture1 = WebElement(xpath='/html/body/div/section[3]/div/div[1]/div/div[3]/div/div/a/div/div/div/div[2]/picture/img')
     move_picture2 = WebElement(xpath='/html/body/div[1]/section[3]/div/div[1]/div/div[1]/div/div/a/div/div/div/div[2]/picture/img')
     owl_dots = ManyWebElements(xpath='//div[contains(@class,"owl-dots")]//div')
 
-#Проверка анимаций CSS футера
+    #Проверка анимаций CSS футера
     #Website creator
     site_developer = WebElement(css_selector='.developer .w-icon-left>.icon')
     developer = WebElement(css_selector='a[href="https://zmitroc.by"]')
@@ -105,7 +105,7 @@ class MainPage(WebPage):
     icon_of_tiktok = WebElement(css_selector="a.social-colored-icon__link.tt")
 
 
-#S50 page test
+    #S50 page test
     new_s50_button = WebElement(xpath='//a[text()="Новый S50" and @class="tab__link _js-b-ancor"]')
     rows_visible = WebElement(css_selector='._js-image-aside-slider-counter1.slider-counter.bold')
     comfort_button = WebElement(xpath='//a[text()="Комфорт" and @class="tab__link _js-b-ancor"]')
@@ -115,19 +115,19 @@ class MainPage(WebPage):
     bid_button = WebElement(xpath='//a[@class="button orange block _js-b-ancor" and normalize-space(text())="Оставить заявку"]')
 
 
-#S50 canvas exterier test
+    #S50 canvas exterier test
     exterier_button = WebElement(xpath='//a[@data-tabs-id="id-tab-level_001" and normalize-space(text())="Экстерьер"]')
     interier_button = WebElement(xpath='//a[@data-tabs-id="id-tab-level_001" and normalize-space(text())="Интерьер"]')
     canvas_exterier = WebElement()
 
 
-#S50 colors
+    #S50 colors
     all_colors = ManyWebElements(xpath='//a[contains(@data-color-folder, "https://belgee.by/storage/colors/") and contains(@class, "color-switcher__link")]')
 
-#S50 canvas
+    #S50 canvas
     canvas_360 = WebElement(css_selector='#car-model-360 canvas')
 
-#Submit_an_application
+    #Submit_an_application
     submit_image = WebElement(xpath='//img[@alt="Оформить заявку на автомобиль" and @title="Оформить заявку на автомобиль"]')
 
     dealer_dropdown = WebElement(xpath='//span[contains(@class, "select2-container") and contains(@class, "select2-container--default")]')
@@ -135,7 +135,9 @@ class MainPage(WebPage):
 
     equipment_dropdown = WebElement(xpath='//select[@name="equipment_id"]/following-sibling::span[contains(@class, "select2")]')
     equipment_fields = ManyWebElements(css_selector='li.select2-results__option')
-    # full_name_field =
-    # phone_field =
-    # email_field =
-    # personal_information_field =
+    full_name_field = WebElement(css_selector='div div input[name="name"].input__default')
+    phone_field = WebElement(css_selector='div div [name="phone"].input__default.mask_phone')
+    email_field = WebElement(css_selector='input[name="email"][type="text"]')
+    personal_information_field = WebElement(css_selector='input[name="i_agree"]')
+    agree_button = WebElement(xpath='//button[text()="Получить предложение"]')
+    success_popup = WebElement(css_selector='.swal2-popup.swal2-modal.swal2-icon-success')

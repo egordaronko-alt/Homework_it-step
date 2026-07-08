@@ -5,7 +5,7 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-
+from selenium.common.exceptions import TimeoutException
 
 class WebElement(object):
     _locator = ('', '')
@@ -243,6 +243,16 @@ class WebElement(object):
                """, element, offset)
             time.sleep(0.5)
         return self
+
+    def wait_until_not_visible(self, timeout=10):
+        try:
+            WebDriverWait(self._web_driver, timeout).until(
+                EC.invisibility_of_element_located(self._locator)
+            )
+            return True
+        except TimeoutException:
+            return False
+
 
 # Many elements______________________________________________________________________________________
 

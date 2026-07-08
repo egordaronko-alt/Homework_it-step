@@ -1,7 +1,8 @@
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
-
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 class TestBasePage:
 
@@ -379,3 +380,289 @@ class Test_submit_an_application:
 
             if i < len(equipment):
                 equipment[i].click()
+
+
+    def test_agreement_dropdown(self, model_page):
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+        time.sleep(1)
+
+        # Находим скрытый чекбокс
+        checkbox = page.personal_information_field.find()
+
+        # Кликаем через JavaScript (гарантированно работает)
+        page.driver.execute_script("arguments[0].click();", checkbox)
+        time.sleep(2)
+
+        # Проверяем, что выбран
+        assert checkbox.is_selected(), "Чекбокс не выбран"
+        print("Чекбокс согласия выбран")
+
+
+class Test_submit_an_application2:
+    """Класс для тестирования формы заявки на странице S50"""
+
+    def test_positive_submit_form(self, model_page):
+        """
+        TC-13: Успешная отправка формы с валидными данными
+        """
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+
+        # Заполняем поля
+        page.full_name_field.find().send_keys("Иванов Иван Иванович")
+        page.phone_field.find().send_keys("291234567")
+        page.email_field.find().send_keys("test@mail.ru")
+
+        # Согласие
+        consent = page.personal_information_field.find()
+        if not consent.is_selected():
+            page.driver.execute_script("arguments[0].click();", consent)
+
+        # Отправка
+        page.agree_button.find().click()
+
+        # Ждём появления сообщения
+        success = page.success_popup.wait_until_visible(timeout=5)
+
+        assert success is not None, "Сообщение об успехе не появилось"
+        assert "отправлен" in success.text.lower() or "свяжутся" in success.text.lower(), \
+            f"Неожиданный текст: {success.text}"
+
+        # Ждём исчезновения сообщения
+        page.success_popup.wait_until_not_visible(timeout=5)
+
+    def test_submit_empty_form(self, model_page):
+        """
+        TC-14: Отправка пустой формы
+        """
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+        time.sleep(1)
+
+        # Отправляем пустую форму
+        page.agree_button.find().click()
+        time.sleep(1)
+
+        # Проверяем, что у каждого обязательного поля появился класс _error
+        name_class = page.full_name_field.get_attribute('class')
+        phone_class = page.phone_field.get_attribute('class')
+        consent_class = page.personal_information_field.get_attribute('class')
+
+        # Проверяем наличие ошибок
+        assert "_error" in name_class, f"Нет ошибки для поля Ф.И.О. Класс: {name_class}"
+        assert "_error" in phone_class, f"Нет ошибки для поля Телефон. Класс: {phone_class}"
+        assert "_error" in consent_class, f"Нет ошибки для поля Согласие. Класс: {consent_class}"
+
+        print("Все поля подсвечены ошибкой (класс _error присутствует)")
+
+    def test_submit_without_name(self, model_page):
+        """
+        TC-15: Отправка формы без заполнения Ф.И.О
+        """
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+        time.sleep(1)
+
+        # Заполняем только телефон и email
+        phone = page.phone_field.find()
+        phone.clear()
+        phone.send_keys("291234567")
+
+        email = page.email_field.find()
+        email.clear()
+        email.send_keys("test@mail.ru")
+
+        # Согласие
+        consent = page.personal_information_field.find()
+        if not consent.is_selected():
+            page.driver.execute_script("arguments[0].click();", consent)
+
+        # Отправляем
+        submit = page.agree_button.find()
+        submit.click()
+        time.sleep(1)
+
+        # Проверяем, что у поля Ф.И.О появился класс _error
+        name_class = page.full_name_field.get_attribute('class')
+        assert "_error" in name_class, f"Нет ошибки для поля Ф.И.О. Класс: {name_class}"
+
+        # Проверяем, что у других полей нет ошибки
+        phone_class = page.phone_field.get_attribute('class')
+        consent_class = page.personal_information_field.get_attribute('class')
+
+        assert "_error" not in phone_class, "Поле Телефон не должно иметь ошибку"
+        assert "_error" not in consent_class, "Поле Согласие не должно иметь ошибку"
+
+        print("Только поле Ф.И.О подсвечено ошибкой")
+
+    def test_submit_without_phone(self, model_page):
+        """
+        TC-16: Отправка формы без заполнения телефона
+        """
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+        time.sleep(1)
+
+        # Заполняем только Ф.И.О и email
+        name = page.full_name_field.find()
+        name.clear()
+        name.send_keys("Иванов Иван Иванович")
+
+        email = page.email_field.find()
+        email.clear()
+        email.send_keys("test@mail.ru")
+
+        # Согласие
+        consent = page.personal_information_field.find()
+        if not consent.is_selected():
+            page.driver.execute_script("arguments[0].click();", consent)
+
+        # Отправляем
+        submit = page.agree_button.find()
+        submit.click()
+        time.sleep(1)
+
+        # Проверяем, что у поля Телефон появился класс _error
+        phone_class = page.phone_field.get_attribute('class')
+        assert "_error" in phone_class, f"Нет ошибки для поля Телефон. Класс: {phone_class}"
+
+        # Проверяем, что у других обязательных полей нет ошибки
+        name_class = page.full_name_field.get_attribute('class')
+        consent_class = page.personal_information_field.get_attribute('class')
+
+        assert "_error" not in name_class, "Поле Ф.И.О не должно иметь ошибку"
+        assert "_error" not in consent_class, "Поле Согласие не должно иметь ошибку"
+
+        print("Только поле Телефон подсвечено ошибкой")
+
+    def test_submit_invalid_phone(self, model_page):
+        """
+        TC-17: Отправка формы с невалидным номером телефона
+        """
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+        time.sleep(1)
+
+        # Заполняем все поля, но телефон – слишком короткий
+        name = page.full_name_field.find()
+        name.clear()
+        name.send_keys("Иванов Иван Иванович")
+
+        phone = page.phone_field.find()
+        phone.clear()
+        phone.send_keys("1")  # невалидный
+
+        email = page.email_field.find()
+        email.clear()
+        email.send_keys("test@mail.ru")
+
+        # Согласие
+        consent = page.personal_information_field.find()
+        if not consent.is_selected():
+            page.driver.execute_script("arguments[0].click();", consent)
+
+        # Отправляем
+        submit = page.agree_button.find()
+        submit.click()
+        time.sleep(1)
+
+        # Проверяем, что у поля Телефон появился класс _error
+        phone_class = page.phone_field.get_attribute('class')
+        assert "_error" in phone_class, f"Нет ошибки для поля Телефон. Класс: {phone_class}"
+
+        # Проверяем, что у других обязательных полей нет ошибки
+        name_class = page.full_name_field.get_attribute('class')
+        consent_class = page.personal_information_field.get_attribute('class')
+
+        assert "_error" not in name_class, "Поле Ф.И.О не должно иметь ошибку"
+        assert "_error" not in consent_class, "Поле Согласие не должно иметь ошибку"
+
+        print("Только поле Телефон подсвечено ошибкой")
+
+    def test_submit_invalid_email(self, model_page):
+        """
+        TC-18: Отправка формы с невалидным email
+        """
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+        time.sleep(1)
+
+        # Заполняем все поля, но email – невалидный
+        name = page.full_name_field.find()
+        name.clear()
+        name.send_keys("Иванов Иван Иванович")
+
+        phone = page.phone_field.find()
+        phone.clear()
+        phone.send_keys("291234567")
+
+        email = page.email_field.find()
+        email.clear()
+        email.send_keys("invalid-email")  # невалидный
+
+        # Согласие
+        consent = page.personal_information_field.find()
+        if not consent.is_selected():
+            page.driver.execute_script("arguments[0].click();", consent)
+
+        # Отправляем
+        submit = page.agree_button.find()
+        submit.click()
+        time.sleep(1)
+
+        # Проверяем, что у поля Email появился класс _error (если поле обязательное)
+        email_class = page.email_field.get_attribute('class')
+        assert "_error" in email_class, f"Нет ошибки для поля Email. Класс: {email_class}"
+
+        # Проверяем, что у других обязательных полей нет ошибки
+        name_class = page.full_name_field.get_attribute('class')
+        phone_class = page.phone_field.get_attribute('class')
+        consent_class = page.personal_information_field.get_attribute('class')
+
+        assert "_error" not in name_class, "Поле Ф.И.О не должно иметь ошибку"
+        assert "_error" not in phone_class, "Поле Телефон не должно иметь ошибку"
+        assert "_error" not in consent_class, "Поле Согласие не должно иметь ошибку"
+
+        print("Только поле Email подсвечено ошибкой")
+
+    def test_submit_without_consent(self, model_page):
+        """
+        TC-19: Отправка формы без согласия на обработку данных
+        """
+        page = model_page('S50')
+        page.submit_image.scroll_to_element()
+        time.sleep(1)
+
+        # Заполняем все поля, но НЕ ставим галочку согласия
+        name = page.full_name_field.find()
+        name.clear()
+        name.send_keys("Иванов Иван Иванович")
+
+        phone = page.phone_field.find()
+        phone.clear()
+        phone.send_keys("291234567")
+
+        email = page.email_field.find()
+        email.clear()
+        email.send_keys("test@mail.ru")
+
+        # Пропускаем согласие
+
+        # Отправляем
+        submit = page.agree_button.find()
+        submit.click()
+        time.sleep(1)
+
+        # Проверяем, что у поля Согласие появился класс _error
+        consent_class = page.personal_information_field.get_attribute('class')
+        assert "_error" in consent_class, f"Нет ошибки для поля Согласие. Класс: {consent_class}"
+
+        # Проверяем, что у других обязательных полей нет ошибки
+        name_class = page.full_name_field.get_attribute('class')
+        phone_class = page.phone_field.get_attribute('class')
+
+        assert "_error" not in name_class, "Поле Ф.И.О не должно иметь ошибку"
+        assert "_error" not in phone_class, "Поле Телефон не должно иметь ошибку"
+
+        print("Только поле Согласие подсвечено ошибкой")
