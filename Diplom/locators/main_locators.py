@@ -80,13 +80,12 @@ class MainPage(WebPage):
 
 
     #Функциональное тестирование стрелок из 6 картинок
-    picture1 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/505/w560_h300_uzboexnbuwzixg6uacl4.jpg"]')
-    picture2 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/502/w560_h300_asfqwwfjyyeoutq5f2vv.png"]')
-
-    picture3 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/493/w560_h300_66tlpv8cwefrpfwfnqyz.png"]')
-    picture4 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/485/w560_h300_oomuqfsan93ghpjsdnpo.png"]')
-    picture5 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/481/w560_h300_d7n01zltd3gthr0bxoqt.png"]')
-    picture6 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/470/w560_h300_kfguilo2ngw64ma1mrup.jpg"]')
+    picture1 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/506/w560_h300_j7ts8qzln08pabqzgcax.jpeg"]')
+    picture2 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/505/w560_h300_hu46w9dgu6lekuh4euwb.jpeg"]')
+    picture3 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/502/w560_h300_asfqwwfjyyeoutq5f2vv.png"]')
+    picture4 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/493/w560_h300_66tlpv8cwefrpfwfnqyz.png"]')
+    picture5 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/485/w560_h300_oomuqfsan93ghpjsdnpo.png"]')
+    picture6 = WebElement(css_selector='div.r-box div.r-img[style*="https://belgee.by/storage/thumbs/news/481/w560_h300_d7n01zltd3gthr0bxoqt.png"]')
     arrow = WebElement(css_selector='div._js-b-index-news-slider-next.arrow')
 
     #Перемещение изображений на главной странице сайта

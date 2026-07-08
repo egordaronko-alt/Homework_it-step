@@ -17,21 +17,25 @@ def driver():
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
 
-    # ← ИЗМЕНЕНО: используем WebDriver Manager
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     yield driver
     driver.quit()
 
+
 @pytest.fixture
 def page(driver):
     page = MainPage(driver)
 
     page.accept_cookie.click()
+    page.wait_page_loaded()
 
     try:
-        page.pop_window.wait_to_be_clickable().click()
+        popup = page.pop_window.wait_to_be_clickable(timeout=10)
+        if popup:
+            popup.click()
+            page.wait_page_loaded()
     except TimeoutException:
         page.execute_script("""
             var el = document.querySelector('.close._js-pop-close');
@@ -48,9 +52,13 @@ def model_page(driver):
         page = MainPage(driver, url)
 
         page.accept_cookie.click()
+        page.wait_page_loaded()
 
         try:
-            page.pop_window.wait_to_be_clickable().click()
+            popup = page.pop_window.wait_to_be_clickable(timeout=10)
+            if popup:
+                popup.click()
+                page.wait_page_loaded()
         except TimeoutException:
             page.execute_script("""
                 var el = document.querySelector('.close._js-pop-close');
