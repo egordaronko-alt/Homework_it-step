@@ -1,7 +1,7 @@
 import pytest
 import asyncio
 from unittest.mock import MagicMock, patch, AsyncMock
-from Diplom.my_bot import execute_command, run_api_test, help_command1, help_command2
+from Diplom.my_bot import execute_command, run_api_test
 
 
 class TestExecuteCommand:
@@ -78,22 +78,3 @@ class TestRunApiTest:
                        if "Результат" in str(call)]
         assert len(reply_calls) > 0
 
-
-class TestHelpCommands:
-    @pytest.mark.asyncio
-    async def test_help_command2(self):
-        mock_update = MagicMock()
-        mock_update.message = AsyncMock()
-        mock_context = MagicMock()
-
-        await help_command2(mock_update, mock_context)
-        mock_update.message.reply_text.assert_called_once_with("Как у вас дела!13213213")
-
-    @pytest.mark.asyncio
-    async def test_help_command1(self):
-        mock_update = MagicMock()
-        mock_update.message = AsyncMock()
-        mock_context = MagicMock()
-
-        await help_command1(mock_update, mock_context)
-        mock_update.message.reply_text.assert_called_once_with("Как у вас 3213213213214235634дела!")

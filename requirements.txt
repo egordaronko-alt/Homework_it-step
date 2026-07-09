@@ -5,3 +5,9 @@ requests
 allure-pytest
 python-telegram-bot
 termcolor
+flask
+webdriver-manager
+
+#allure serve Diplom/results
+#http://localhost:5000
+#python Diplom/app.py

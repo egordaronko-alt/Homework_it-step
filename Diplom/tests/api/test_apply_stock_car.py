@@ -8,17 +8,16 @@ BASE_URL = "https://belgee.by"
 API_URL = f"{BASE_URL}/api/apply-stock-car"
 
 
-def get_session_with_csrf():
-    session = requests.Session()
-    r = session.get(BASE_URL)
-    csrf_match = re.search(r'csrf-token.*?content="(.*?)"', r.text)
+def get_session_with_csrf(api_session):
+    r = api_session.get(BASE_URL, timeout=15)
+    csrf_match = re.search('csrf-token.*?content="(.*?)"', r.text)
     csrf = csrf_match.group(1) if csrf_match else ""
     headers = {
         "X-CSRF-TOKEN": csrf,
         "X-Requested-With": "XMLHttpRequest",
         "Referer": BASE_URL + "/",
     }
-    return session, headers
+    return headers
 
 
 @allure.feature("Тесты API")
@@ -26,19 +25,19 @@ def get_session_with_csrf():
 class TestApplyStockCar:
 
     @allure.title("GET запрос возвращает 405 Method Not Allowed")
-    def test_get_method_not_allowed(self):
-        with allure.step("Выполн GET запрос к API"):
-            response = requests.get(url=API_URL)
+    def test_get_method_not_allowed(self, api_session):
+        with allure.step("Выполнен GET запрос к API"):
+            response = api_session.get(url=API_URL, timeout=15)
 
         with allure.step("Проверка статус кода 405"):
             assert response.status_code == 405
 
     @allure.title("POST запрос с пустым телом возвращает 422")
-    def test_post_empty_body(self):
-        session, headers = get_session_with_csrf()
+    def test_post_empty_body(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
-        with allure.step("Выполн POST запрос с пустым телом"):
-            response = session.post(url=API_URL, data={}, headers=headers)
+        with allure.step("Выполнен POST запрос с пустым телом"):
+            response = api_session.post(url=API_URL, data={}, headers=headers, timeout=15)
 
         with allure.step("Проверка статус кода 422"):
             assert response.status_code == 422
@@ -51,15 +50,15 @@ class TestApplyStockCar:
             assert "phone" in data["errors"]
 
     @allure.title("POST запрос без i_agree возвращает 422")
-    def test_post_without_i_agree(self):
-        session, headers = get_session_with_csrf()
+    def test_post_without_i_agree(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
         with allure.step("Выполн POST запрос без поля i_agree"):
-            response = session.post(
+            response = api_session.post(
                 url=API_URL,
                 data={"name": "Тест", "phone": "+375291234567"},
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка статус кода 422"):
             assert response.status_code == 422
@@ -69,15 +68,15 @@ class TestApplyStockCar:
             assert "i_agree" in data["errors"]
 
     @allure.title("POST запрос без name возвращает 422")
-    def test_post_without_name(self):
-        session, headers = get_session_with_csrf()
+    def test_post_without_name(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
         with allure.step("Выполн POST запрос без поля name"):
-            response = session.post(
+            response = api_session.post(
                 url=API_URL,
                 data={"phone": "+375291234567", "i_agree": "1"},
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка статус кода 422"):
             assert response.status_code == 422
@@ -87,15 +86,15 @@ class TestApplyStockCar:
             assert "name" in data["errors"]
 
     @allure.title("POST запрос без phone возвращает 422")
-    def test_post_without_phone(self):
-        session, headers = get_session_with_csrf()
+    def test_post_without_phone(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
         with allure.step("Выполн POST запрос без поля phone"):
-            response = session.post(
+            response = api_session.post(
                 url=API_URL,
                 data={"name": "Тест", "i_agree": "1"},
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка статус кода 422"):
             assert response.status_code == 422
@@ -105,15 +104,15 @@ class TestApplyStockCar:
             assert "phone" in data["errors"]
 
     @allure.title("POST запрос с некорректным номером телефона")
-    def test_post_invalid_phone(self):
-        session, headers = get_session_with_csrf()
+    def test_post_invalid_phone(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
         with allure.step("Выполн POST запрос с невалидным номером"):
-            response = session.post(
+            response = api_session.post(
                 url=API_URL,
                 data={"name": "Тест", "phone": "123", "i_agree": "1"},
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка статус кода 422"):
             assert response.status_code == 422
@@ -123,25 +122,25 @@ class TestApplyStockCar:
             assert "phone" in data["errors"]
 
     @allure.title("POST запрос с пустым name возвращает 422")
-    def test_post_empty_name(self):
-        session, headers = get_session_with_csrf()
+    def test_post_empty_name(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
-        with allure.step("Выполн POST запрос с пустым name"):
-            response = session.post(
+        with allure.step("Выполнение POST запроса с пустым name"):
+            response = api_session.post(
                 url=API_URL,
                 data={"name": "", "phone": "+375291234567", "i_agree": "1"},
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка статус кода 422"):
             assert response.status_code == 422
 
     @allure.title("POST запрос с валидными данными")
-    def test_post_valid_data(self):
-        session, headers = get_session_with_csrf()
+    def test_post_valid_data(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
-        with allure.step("Выполн POST запрос с валидными данными"):
-            response = session.post(
+        with allure.step("Выполнение POST запроса с валидными данными"):
+            response = api_session.post(
                 url=API_URL,
                 data={
                     "name": "Тест Тестович",
@@ -149,18 +148,18 @@ class TestApplyStockCar:
                     "i_agree": "1",
                 },
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка что ответ не 422 (валидация пройдена)"):
             assert response.status_code != 422
 
     @allure.title("POST запрос с Content-Type application/json")
-    def test_post_json_content_type(self):
-        session, headers = get_session_with_csrf()
+    def test_post_json_content_type(self, api_session):
+        headers = get_session_with_csrf(api_session)
         headers["Content-Type"] = "application/json"
 
-        with allure.step("Выполн POST запрос с JSON телом"):
-            response = session.post(
+        with allure.step("Выполнение POST запрос с JSON телом"):
+            response = api_session.post(
                 url=API_URL,
                 json={
                     "name": "Тест Тестович",
@@ -168,31 +167,31 @@ class TestApplyStockCar:
                     "i_agree": True,
                 },
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка что сервер обработал запрос"):
             assert response.status_code in [200, 422, 500]
 
     @allure.title("POST запрос с X-Requested-With XMLHttpRequest")
-    def test_post_xhr_header(self):
-        session, headers = get_session_with_csrf()
+    def test_post_xhr_header(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
         with allure.step("Выполн POST запрос с XHR заголовком"):
-            response = session.post(
+            response = api_session.post(
                 url=API_URL,
                 data={"name": "Тест", "phone": "+375291234567", "i_agree": "1"},
                 headers=headers,
-            )
+                timeout=15)
 
         with allure.step("Проверка что ответ содержит JSON"):
             assert "application/json" in response.headers.get("content-type", "")
 
     @allure.title("Ответ API содержит message при ошибке валидации")
-    def test_response_contains_message(self):
-        session, headers = get_session_with_csrf()
+    def test_response_contains_message(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
-        with allure.step("Выполн POST запрос с пустым телом"):
-            response = session.post(url=API_URL, data={}, headers=headers)
+        with allure.step("Выполнение POST запрос с пустым телом"):
+            response = api_session.post(url=API_URL, data={}, headers=headers, timeout=15)
 
         with allure.step("Проверка наличия поля message"):
             data = response.json()
@@ -200,11 +199,11 @@ class TestApplyStockCar:
             assert isinstance(data["message"], str)
 
     @allure.title("Ответ API содержит errors при ошибке валидации")
-    def test_response_contains_errors(self):
-        session, headers = get_session_with_csrf()
+    def test_response_contains_errors(self, api_session):
+        headers = get_session_with_csrf(api_session)
 
-        with allure.step("Выполн POST запрос с пустым телом"):
-            response = session.post(url=API_URL, data={}, headers=headers)
+        with allure.step("Выполнение POST запрос с пустым телом"):
+            response = api_session.post(url=API_URL, data={}, headers=headers, timeout=15)
 
         with allure.step("Проверка наличия поля errors"):
             data = response.json()

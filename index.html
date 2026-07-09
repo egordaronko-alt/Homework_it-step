@@ -1615,98 +1615,22 @@
 <section id="tests">
     <div class="section-tag reveal">Демонстрация</div>
     <h2 class="section-title reveal">Тест-раннер</h2>
-    <p class="section-sub reveal">Нажмите «Запустить» и посмотрите, как проходят тесты</p>
+    <p class="section-sub reveal">Запуск API и UI тестов проекта</p>
     <div class="runner-box reveal">
-        <div class="runner-header"><h3>Test Suite</h3><button class="run-btn" id="runBtn" onclick="runTests()">▶ Запустить</button></div>
+        <div class="runner-controls" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center;">
+            <button class="run-btn" id="btnApi" onclick="runRealTests('api')">▶ API тесты</button>
+            <button class="run-btn" id="btnUi" onclick="runRealTests('ui')">▶ UI тесты</button>
+            <button class="run-btn" id="btnAll" onclick="runRealTests('all')">▶ UI + API тесты</button>
+            <button class="run-btn" id="btnStop" onclick="stopTests()" style="display:none;background:#ef4444;color:#fff;border-color:#ef4444;">■ Стоп</button>
+            <label style="display:flex;align-items:center;gap:8px;margin-left:8px;cursor:pointer;font-size:13px;color:var(--text-dim);">
+                <input type="checkbox" id="allureCheck" style="width:16px;height:16px;accent-color:var(--green);cursor:pointer;">
+                Allure-отчёт
+            </label>
+            <span id="progressPct" style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);display:none;">0%</span>
+        </div>
         <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="test-list" id="testList"></div>
         <div class="test-summary" id="testSummary"></div>
-    </div>
-</section>
-
-<!-- LOAD TEST CONSTRUCTOR -->
-<section id="loadtest">
-    <div class="section-tag reveal">Нагрузочное тестирование</div>
-    <h2 class="section-title reveal">Конструктор тестов</h2>
-    <p class="section-sub reveal">Выберите тесты, браузер и параметры нагрузки</p>
-    <div class="runner-box reveal">
-        <div class="runner-header">
-            <h3>Load Test Builder</h3>
-            <button class="run-btn" id="loadRunBtn" onclick="runLoadTest()">▶ Запустить нагрузку</button>
-        </div>
-        <div class="load-config">
-            <div class="load-section">
-                <h4 class="load-section-title">Тесты API</h4>
-                <div class="load-options">
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_status_codes" checked><span class="checkmark"></span><span>Статус-коды (15 эндпоинтов)</span></label>
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_response_time" checked><span class="checkmark"></span><span>Время ответа API</span></label>
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_concurrent"><span class="checkmark"></span><span>Параллельные запросы</span></label>
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="api_pydantic_valid"><span class="checkmark"></span><span>Валидация Pydantic</span></label>
-                </div>
-            </div>
-            <div class="load-section">
-                <h4 class="load-section-title">Тесты UI</h4>
-                <div class="load-options">
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_navigation" checked><span class="checkmark"></span><span>Навигация по страницам</span></label>
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_login"><span class="checkmark"></span><span>Авторизация</span></label>
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_forms"><span class="checkmark"></span><span>Формы и валидация</span></label>
-                    <label class="load-check"><input type="checkbox" class="load-test-check" value="ui_perf"><span class="checkmark"></span><span>Производительность загрузки</span></label>
-                </div>
-            </div>
-            <div class="load-section">
-                <h4 class="load-section-title">Браузер</h4>
-                <div class="load-options browser-options">
-                    <label class="load-radio active"><input type="radio" name="browser" value="chrome" checked><span class="radio-mark"></span><span>Chrome</span></label>
-                    <label class="load-radio"><input type="radio" name="browser" value="firefox"><span class="radio-mark"></span><span>Firefox</span></label>
-                    <label class="load-radio"><input type="radio" name="browser" value="edge"><span class="radio-mark"></span><span>Edge</span></label>
-                    <label class="load-radio"><input type="radio" name="browser" value="headless"><span class="radio-mark"></span><span>Headless</span></label>
-                </div>
-            </div>
-            <div class="load-section">
-                <h4 class="load-section-title">Параметры нагрузки</h4>
-                <div class="load-sliders">
-                    <div class="slider-group">
-                        <label>Потоки: <span id="threadsVal">5</span></label>
-                        <input type="range" min="1" max="50" value="5" class="load-slider" id="threadsSlider" oninput="document.getElementById('threadsVal').textContent=this.value">
-                    </div>
-                    <div class="slider-group">
-                        <label>Итерации: <span id="iterationsVal">10</span></label>
-                        <input type="range" min="1" max="100" value="10" class="load-slider" id="iterationsSlider" oninput="document.getElementById('iterationsVal').textContent=this.value">
-                    </div>
-                    <div class="slider-group">
-                        <label>Задержка (мс): <span id="delayVal">200</span></label>
-                        <input type="range" min="0" max="2000" value="200" step="50" class="load-slider" id="delaySlider" oninput="document.getElementById('delayVal').textContent=this.value">
-                    </div>
-                </div>
-            </div>
-            <div class="load-section">
-                <h4 class="load-section-title">Allure отчёт</h4>
-                <div class="load-options">
-                    <label class="load-check"><input type="checkbox" id="allureEnabled" checked><span class="checkmark"></span><span>Формировать Allure-отчёт</span></label>
-                    <label class="load-check"><input type="checkbox" id="allureSteps"><span class="checkmark"></span><span>Детализация step-ов</span></label>
-                    <label class="load-check"><input type="checkbox" id="allureScreenshots"><span class="checkmark"></span><span>Скриншоты при падении</span></label>
-                    <label class="load-check"><input type="checkbox" id="allureTags"><span class="checkmark"></span><span>Теги по категориям</span></label>
-                </div>
-                <div class="allure-format-select">
-                    <label class="load-radio active"><input type="radio" name="allureFmt" value="html" checked><span class="radio-mark"></span><span>HTML</span></label>
-                    <label class="load-radio"><input type="radio" name="allureFmt" value="json"><span class="radio-mark"></span><span>JSON</span></label>
-                </div>
-            </div>
-        </div>
-        <div class="progress-bar" id="loadProgressBar"><div class="progress-fill" id="loadProgressFill"></div></div>
-        <div class="load-live-stats" id="loadStats">
-            <div class="live-stat"><span class="live-stat-num" id="liveRps">0</span><span class="live-stat-label">RPS</span></div>
-            <div class="live-stat"><span class="live-stat-num" id="liveAvg">0ms</span><span class="live-stat-label">Среднее</span></div>
-            <div class="live-stat"><span class="live-stat-num" id="liveP95">0ms</span><span class="live-stat-label">P95</span></div>
-            <div class="live-stat"><span class="live-stat-num" id="liveErrors">0</span><span class="live-stat-label">Ошибки</span></div>
-            <div class="live-stat"><span class="live-stat-num" id="livePassed">0</span><span class="live-stat-label">Пройдено</span></div>
-        </div>
-        <div class="test-list" id="loadTestList"></div>
-        <div class="test-summary" id="loadTestSummary"></div>
-        <div class="allure-actions" id="allureActions" style="display:none;">
-            <button class="btn btn-green allure-report-btn" onclick="openAllureReport()">📊 Показать отчёт Allure</button>
-            <button class="btn btn-outline allure-report-btn" onclick="downloadAllureJson()">⬇ Скачать JSON</button>
-        </div>
+        <div class="test-list" id="testList"></div>
     </div>
 </section>
 
@@ -1763,11 +1687,13 @@
 
 <script>
 // === PAGE LOADER ===
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.getElementById('pageLoader').classList.add('hidden');
-    }, 800);
-});
+function hideLoader() {
+    const l = document.getElementById('pageLoader');
+    if (l && !l.classList.contains('hidden')) l.classList.add('hidden');
+}
+window.addEventListener('load', () => setTimeout(hideLoader, 800));
+document.addEventListener('DOMContentLoaded', () => setTimeout(hideLoader, 3000));
+setTimeout(hideLoader, 5000);
 // Hero slider
 const slides = document.querySelectorAll('.slide');
 const dotsContainer = document.getElementById('sliderDots');
@@ -1829,529 +1755,125 @@ const cmds = {
 function addLine(html, cls) { const d = document.createElement('div'); d.innerHTML = html; if (cls) d.className = cls; tb.insertBefore(d, tb.querySelector('.terminal-input-line')); }
 ti.addEventListener('keydown', function(e) { if (e.key === 'Enter') { const c = this.value.trim().toLowerCase(); this.value = ''; addLine(`<span class="prompt">egor@qa:~$</span> ${c}`); if (c === 'clear') { tb.querySelectorAll('div:not(.terminal-input-line)').forEach(l => l.remove()); return; } if (c === 'test') { document.getElementById('tests').scrollIntoView({ behavior: 'smooth' }); addLine(`<span class="output">Прокрутил к секции тестов!</span>`); return; } if (cmds[c]) { cmds[c].split('\n').forEach(l => addLine(`<span class="output">${l}</span>`)); } else if (c) { addLine(`<span class="error">Command not found: ${c}. Type "help"</span>`); } tb.scrollTop = tb.scrollHeight; } });
 
-// Test runner
-const tests = [
-    { name: 'test_api_get_users_returns_200', status: 'pass', time: '0.34s' },
-    { name: 'test_api_post_create_user_valid', status: 'pass', time: '0.52s' },
-    { name: 'test_api_post_create_user_invalid_data', status: 'pass', time: '0.28s' },
-    { name: 'test_api_delete_nonexistent_user_404', status: 'pass', time: '0.19s' },
-    { name: 'test_ui_login_valid_credentials', status: 'pass', time: '1.45s' },
-    { name: 'test_ui_login_wrong_password', status: 'pass', time: '0.87s' },
-    { name: 'test_ui_navigation_links', status: 'pass', time: '1.12s' },
-    { name: 'test_ui_form_validation_empty', status: 'fail', time: '2.31s' },
-    { name: 'test_api_response_pydantic_model', status: 'pass', time: '0.41s' },
-    { name: 'test_search_results_pagination', status: 'skip', time: '—' },
-    { name: 'test_ui_dashboard_widgets_load', status: 'pass', time: '1.78s' },
-    { name: 'test_api_concurrent_requests', status: 'pass', time: '0.95s' },
-];
+// Test runner - streaming pytest via Flask backend (SSE)
 let running = false;
-function runTests() { if (running) return; running = true; const btn = document.getElementById('runBtn'); const bar = document.getElementById('progressBar'); const fill = document.getElementById('progressFill'); const list = document.getElementById('testList'); const summary = document.getElementById('testSummary'); btn.disabled = true; btn.textContent = 'Выполняется...'; bar.classList.add('active'); fill.style.width = '0%'; list.innerHTML = ''; summary.classList.remove('active'); summary.style.display = 'none'; tests.forEach((t, i) => { const div = document.createElement('div'); div.className = 'test-item'; div.id = 'test-' + i; div.innerHTML = `<div class="test-status">○</div><div class="test-name">${t.name}</div><div class="test-time"></div>`; list.appendChild(div); }); let i = 0; function next() { if (i >= tests.length) { btn.disabled = false; btn.textContent = '▶ Запустить'; running = false; showSummary(); return; } const el = document.getElementById('test-' + i); el.className = 'test-item running'; el.querySelector('.test-status').textContent = '◌'; setTimeout(() => { el.className = 'test-item ' + tests[i].status; el.querySelector('.test-status').textContent = tests[i].status === 'pass' ? '✓' : tests[i].status === 'fail' ? '✗' : '—'; el.querySelector('.test-time').textContent = tests[i].time; fill.style.width = ((i + 1) / tests.length * 100) + '%'; i++; next(); }, 250 + Math.random() * 600); } next(); }
-function showSummary() { const s = document.getElementById('testSummary'); s.innerHTML = `<div class="stat pass">✓ ${tests.filter(t=>t.status==='pass').length} passed</div><div class="stat fail">✗ ${tests.filter(t=>t.status==='fail').length} failed</div><div class="stat skip">— ${tests.filter(t=>t.status==='skip').length} skipped</div>`; s.style.display = 'flex'; s.classList.add('active'); }
+let aborted = false;
 
-// Hire
-function showToast(msg) {
-    let t = document.querySelector('.toast-notification');
-    if (!t) { t = document.createElement('div'); t.className = 'toast-notification'; document.body.appendChild(t); }
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
+function showRunning(btnIds) {
+    btnIds.forEach(id => { const b = document.getElementById(id); if(b) { b.disabled = true; b.style.opacity = '0.4'; } });
+    document.getElementById('btnStop').style.display = 'inline-flex';
+    document.getElementById('progressPct').style.display = 'inline';
 }
-function sendHire() { const n = document.getElementById('hireName').value.trim(); const c = document.getElementById('hireCompany').value.trim(); if (n && c) { window.open(`mailto:egor.daronko@mail.ru?subject=Предложение от ${c}&body=Привет, Егор! Меня зовут ${n}, я из компании ${c}. Хотим обсудить сотрудничество.`); showToast('Открываю почтовый клиент...'); } else { showToast('Заполните имя и компанию'); } }
-
-// === MOUSE LEAVES (smooth physics, detailed) ===
-const mouseLeaves = [];
-const LEAF_COUNT = 40;
-let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-let cursorActive = false;
-
-for (let i = 0; i < LEAF_COUNT; i++) {
-    const el = document.createElement('div');
-    el.className = 'mouse-leaf';
-    el.innerHTML = '<div class="mouse-leaf-inner"><div class="mouse-leaf-veins"></div><div class="mouse-leaf-stem"></div></div>';
-    document.body.appendChild(el);
-    mouseLeaves.push({
-        el, x: 0, y: 0, vx: 0, vy: 0,
-        rot: 0, rotSpeed: 0, scale: 1,
-        life: 0, maxLife: 0, active: false,
-        wobblePhase: Math.random() * Math.PI * 2,
-        wobbleAmp: 0.3 + Math.random() * 0.5,
-        wobbleFreq: 0.025 + Math.random() * 0.02,
-        size: 0.5 + Math.random() * 0.7,
-    });
+function hideRunning() {
+    ['btnApi','btnUi','btnAll'].forEach(id => { const b = document.getElementById(id); if(b) { b.disabled = false; b.style.opacity = '1'; } });
+    document.getElementById('btnStop').style.display = 'none';
+    document.getElementById('progressPct').style.display = 'none';
 }
 
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursorActive = true;
-});
-document.addEventListener('mouseleave', () => { cursorActive = false; });
-
-let leafSpawnTimer = 0;
-function spawnMouseLeaf() {
-    const leaf = mouseLeaves.find(l => !l.active);
-    if (!leaf) return;
-    leaf.active = true;
-    leaf.x = mouseX + (Math.random() - 0.5) * 30;
-    leaf.y = mouseY + (Math.random() - 0.5) * 20;
-    leaf.vx = (Math.random() - 0.5) * 1.0;
-    leaf.vy = -0.3 - Math.random() * 1.2;
-    leaf.rot = Math.random() * 360;
-    leaf.rotSpeed = (Math.random() - 0.5) * 5;
-    leaf.scale = leaf.size;
-    leaf.life = 0;
-    leaf.maxLife = 110 + Math.random() * 90;
-    leaf.el.style.opacity = '0';
-    leaf.el.classList.add('active');
+async function stopTests() {
+    aborted = true;
+    try { await fetch('/api/stop-tests', { method: 'POST' }); } catch(e) {}
 }
 
-function animateLeaves() {
-    leafSpawnTimer++;
-    if (cursorActive && leafSpawnTimer % 5 === 0) spawnMouseLeaf();
+async function runRealTests(type) {
+    if (running) return;
+    running = true;
+    aborted = false;
+    const bar = document.getElementById('progressBar');
+    const fill = document.getElementById('progressFill');
+    const list = document.getElementById('testList');
+    const summary = document.getElementById('testSummary');
+    const pctEl = document.getElementById('progressPct');
+    const allure = document.getElementById('allureCheck').checked;
 
-    for (const leaf of mouseLeaves) {
-        if (!leaf.active) continue;
-        leaf.life++;
-        const progress = leaf.life / leaf.maxLife;
-        const fadeIn = Math.min(1, leaf.life / 18);
-        const fadeOut = progress > 0.6 ? 1 - (progress - 0.6) / 0.4 : 1;
-        const opacity = Math.min(fadeIn, fadeOut) * 0.85;
+    const btnMap = { api: 'btnApi', ui: 'btnUi', all: 'btnAll' };
+    showRunning([btnMap[type]]);
+    bar.classList.add('active');
+    fill.style.width = '0%';
+    pctEl.textContent = '0%';
+    list.innerHTML = '';
+    summary.classList.remove('active');
+    summary.style.display = 'none';
 
-        leaf.vy += 0.03;
-        leaf.vx *= 0.992;
-        leaf.vy *= 0.998;
-        leaf.vx += Math.sin(leaf.life * leaf.wobbleFreq + leaf.wobblePhase) * leaf.wobbleAmp * 0.06;
-        leaf.rotSpeed *= 0.998;
+    const labels = { api: 'API тесты', ui: 'UI тесты', all: 'UI + API тесты' };
+    list.innerHTML = '<div class="test-item running"><div class="test-status">◌</div><div class="test-name">Запуск ' + labels[type] + '...</div><div class="test-time"></div></div>';
 
-        leaf.x += leaf.vx;
-        leaf.y += leaf.vy;
-        leaf.rot += leaf.rotSpeed;
-        const s = leaf.scale * (1 - progress * 0.2);
+    let testCount = 0;
+    let totalEstimate = 162;
 
-        leaf.el.style.transform = `translate(${leaf.x - 8}px, ${leaf.y - 10}px) rotate(${leaf.rot}deg) scale(${s})`;
-        leaf.el.style.opacity = Math.max(0, opacity);
-
-        if (leaf.life >= leaf.maxLife) {
-            leaf.active = false;
-            leaf.el.classList.remove('active');
-            leaf.el.style.opacity = '0';
-        }
-    }
-    requestAnimationFrame(animateLeaves);
-}
-animateLeaves();
-
-// === PARALLAX ON MOUSE MOVE (smooth) ===
-let parallaxX = 0, parallaxY = 0;
-let targetPX = 0, targetPY = 0;
-
-document.addEventListener('mousemove', (e) => {
-    targetPX = (e.clientX / window.innerWidth - 0.5) * 2;
-    targetPY = (e.clientY / window.innerHeight - 0.5) * 2;
-});
-
-function animateParallax() {
-    parallaxX += (targetPX - parallaxX) * 0.06;
-    parallaxY += (targetPY - parallaxY) * 0.06;
-
-    const forestPhoto = document.querySelector('.forest-photo');
-    if (forestPhoto) {
-        forestPhoto.style.transform = `translate(${parallaxX * -10}px, ${parallaxY * -6}px) scale(1.08)`;
-    }
-    const fireflies = document.querySelectorAll('.firefly');
-    fireflies.forEach((f, i) => {
-        const speed = (i + 1) * 0.4;
-        f.style.transform = `translate(${parallaxX * speed * 20}px, ${parallaxY * speed * 12}px)`;
-    });
-    const mist = document.querySelector('.mist');
-    if (mist) {
-        mist.style.transform = `translateX(${-10 + parallaxX * 3}%)`;
-    }
-    requestAnimationFrame(animateParallax);
-}
-animateParallax();
-
-// === SMOOTH SCROLL HIGHLIGHT ===
-const navLinks = document.querySelectorAll('nav a');
-navLinks.forEach(link => {
-    link.addEventListener('mouseenter', () => {
-        link.style.textShadow = '0 0 12px rgba(106,191,105,0.5)';
-    });
-    link.addEventListener('mouseleave', () => {
-        link.style.textShadow = 'none';
-    });
-});
-
-// === TILT EFFECT ON CARDS (smooth with easing) ===
-document.querySelectorAll('.why-card, .tool-item, .contact-card, .project-card, .counter-item').forEach(card => {
-    let tiltX = 0, tiltY = 0, targetTiltX = 0, targetTiltY = 0;
-
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        targetTiltX = (y - centerY) / 12;
-        targetTiltY = (centerX - x) / 12;
-
-        const glowX = (x / rect.width) * 100;
-        const glowY = (y / rect.height) * 100;
-        card.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(106,191,105,0.08), transparent 60%), rgba(10,30,10,0.4)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-        targetTiltX = 0;
-        targetTiltY = 0;
-        card.style.background = '';
-    });
-
-    function updateTilt() {
-        tiltX += (targetTiltX - tiltX) * 0.1;
-        tiltY += (targetTiltY - tiltY) * 0.1;
-        card.style.transform = `perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-2px)`;
-        requestAnimationFrame(updateTilt);
-    }
-    updateTilt();
-});
-
-// === MAGNETIC EFFECT ON BUTTONS ===
-document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('mousemove', (e) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px) translateY(-2px)`;
-    });
-    btn.addEventListener('mouseleave', () => {
-        btn.style.transform = '';
-    });
-});
-
-// === TEXT REVEAL ON SCROLL ===
-const textReveals = document.querySelectorAll('.section-title, .section-tag');
-const textObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-            e.target.style.opacity = '1';
-            e.target.style.transform = 'translateY(0)';
-        }
-    });
-}, { threshold: 0.3 });
-textReveals.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    textObserver.observe(el);
-});
-
-// === COUNTER ANIMATION (number count up with easing) ===
-function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
-const counterObserver2 = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            const el = e.target;
-            const target = +el.dataset.target;
-            const duration = 2000;
-            const start = performance.now();
-            function tick(now) {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = easeOutExpo(progress);
-                el.textContent = Math.floor(eased * target) + (target === 100 ? '%' : '+');
-                if (progress < 1) requestAnimationFrame(tick);
-            }
-            requestAnimationFrame(tick);
-            counterObserver2.unobserve(el);
-        }
-    });
-}, { threshold: 0.5 });
-document.querySelectorAll('.counter-num[data-target]').forEach(el => counterObserver2.observe(el));
-
-// === LOAD TEST CONSTRUCTOR ===
-const loadTestDefs = {
-    api_status_codes: [
-        { name: 'GET /lizing → 200', time: '0.12s' },
-        { name: 'GET /kredit → 200', time: '0.15s' },
-        { name: 'GET /manual → 200', time: '0.18s' },
-        { name: 'GET /sto → 200', time: '0.11s' },
-        { name: 'GET /about → 200', time: '0.14s' },
-    ],
-    api_response_time: [
-        { name: 'Response time < 500ms', time: '0.08s' },
-        { name: 'Response time < 1000ms', time: '0.09s' },
-        { name: 'Avg response time check', time: '0.10s' },
-    ],
-    api_concurrent: [
-        { name: '10 concurrent requests', time: '1.20s' },
-        { name: '25 concurrent requests', time: '2.80s' },
-    ],
-    api_pydantic_valid: [
-        { name: 'Validate User model', time: '0.05s' },
-        { name: 'Validate Response schema', time: '0.04s' },
-    ],
-    ui_navigation: [
-        { name: 'Navigate: Главная → О нас', time: '1.40s' },
-        { name: 'Navigate: О нас → Навыки', time: '1.20s' },
-        { name: 'Navigate: Навыки → Проекты', time: '1.10s' },
-    ],
-    ui_login: [
-        { name: 'Login valid credentials', time: '1.80s' },
-        { name: 'Login invalid password', time: '0.90s' },
-    ],
-    ui_forms: [
-        { name: 'Contact form submit', time: '1.50s' },
-        { name: 'Form validation empty', time: '0.60s' },
-    ],
-    ui_perf: [
-        { name: 'Page load < 3s', time: '2.10s' },
-        { name: 'First paint < 1s', time: '0.80s' },
-    ],
-};
-let loadRunning = false;
-let loadResults = [];
-function runLoadTest() {
-    if (loadRunning) return;
-    const checked = document.querySelectorAll('.load-test-check:checked');
-    if (checked.length === 0) { showToast('Выберите хотя бы один тест'); return; }
-    loadRunning = true;
-    loadResults = [];
-    const btn = document.getElementById('loadRunBtn');
-    const bar = document.getElementById('loadProgressBar');
-    const fill = document.getElementById('loadProgressFill');
-    const list = document.getElementById('loadTestList');
-    const summary = document.getElementById('loadTestSummary');
-    const stats = document.getElementById('loadStats');
-    const actions = document.getElementById('allureActions');
-    const browser = document.querySelector('input[name="browser"]:checked').value;
-    const threads = +document.getElementById('threadsSlider').value;
-    const iterations = +document.getElementById('iterationsSlider').value;
-    const delay = +document.getElementById('delaySlider').value;
-    const allureEnabled = document.getElementById('allureEnabled').checked;
-    const allureSteps = document.getElementById('allureSteps').checked;
-    const allureScreenshots = document.getElementById('allureScreenshots').checked;
-    const allureTags = document.getElementById('allureTags').checked;
-    const allureFmt = document.querySelector('input[name="allureFmt"]:checked').value;
-    btn.disabled = true; btn.textContent = 'Выполняется...';
-    bar.classList.add('active'); fill.style.width = '0%';
-    list.innerHTML = ''; summary.classList.remove('active'); summary.style.display = 'none';
-    stats.classList.add('active');
-    actions.style.display = 'none';
-    let allTests = [];
-    checked.forEach(cb => { const def = loadTestDefs[cb.value]; if (def) allTests.push(...def.map(t => ({...t, category: cb.value.split('_')[0], suite: cb.value}))); });
-    const total = allTests.length;
-    let passed = 0, failed = 0, rps = 0;
-    const startTime = Date.now();
-    allTests.forEach((t, i) => {
-        const div = document.createElement('div');
-        div.className = 'test-item'; div.id = 'load-test-' + i;
-        div.innerHTML = `<div class="test-status">○</div><div class="test-name"><small style="color:var(--text-dim);margin-right:6px">[${browser}]</small> ${t.name}</small></div><div class="test-time"></div>`;
-        list.appendChild(div);
-    });
-    let idx = 0;
-    function nextTest() {
-        if (idx >= total) {
-            btn.disabled = false; btn.textContent = '▶ Запустить нагрузку'; loadRunning = false;
-            bar.classList.remove('active');
-            const totalDuration = ((Date.now() - startTime) / 1000).toFixed(1);
-            summary.innerHTML = `<div class="stat pass">✓ ${passed} passed</div><div class="stat fail">✗ ${failed} failed</div><div class="stat skip">— ${total - passed - failed} skipped</div><div class="stat" style="color:var(--teal)">⏱ ${totalDuration}s</div>`;
-            summary.style.display = 'flex'; summary.classList.add('active');
-            if (allureEnabled) actions.style.display = 'flex';
-            return;
-        }
-        const el = document.getElementById('load-test-' + idx);
-        el.className = 'test-item running';
-        el.querySelector('.test-status').textContent = '◌';
-        const testDelay = 100 + Math.random() * 400;
-        setTimeout(() => {
-            const pass = Math.random() > 0.08;
-            const status = pass ? 'passed' : 'failed';
-            const timeMs = Math.floor(parseFloat(allTests[idx].time) * 1000);
-            el.className = 'test-item ' + (pass ? 'pass' : 'fail');
-            el.querySelector('.test-status').textContent = pass ? '✓' : '✗';
-            el.querySelector('.test-time').textContent = allTests[idx].time;
-            if (pass) passed++; else failed++;
-            loadResults.push({
-                name: allTests[idx].name,
-                suite: allTests[idx].suite,
-                category: allTests[idx].category,
-                status: status,
-                duration: timeMs,
-                browser: browser,
-                timestamp: new Date().toISOString(),
-                steps: allureSteps ? generateSteps(allTests[idx].name, status) : [],
-                tags: allureTags ? [allTests[idx].category, browser, 'load-test'] : [],
-                description: `Нагрузочный тест: ${allTests[idx].name}\\nПотоки: ${threads}, Итерации: ${iterations}, Задержка: ${delay}мс`,
-                screenshot: allureScreenshots && !pass ? 'data:image/svg+xml,...' : null
-            });
-            rps = Math.floor(1000 / testDelay * threads);
-            document.getElementById('liveRps').textContent = rps;
-            document.getElementById('liveAvg').textContent = Math.floor(200 + Math.random() * 300) + 'ms';
-            document.getElementById('liveP95').textContent = Math.floor(500 + Math.random() * 500) + 'ms';
-            document.getElementById('liveErrors').textContent = failed;
-            document.getElementById('livePassed').textContent = passed;
-            fill.style.width = ((idx + 1) / total * 100) + '%';
-            idx++; nextTest();
-        }, testDelay);
-    }
-    nextTest();
-}
-function generateSteps(testName, status) {
-    const steps = [];
-    steps.push({ name: 'Инициализация браузера', status: 'passed', duration: Math.floor(Math.random() * 500) });
-    steps.push({ name: 'Навигация к целевой странице', status: 'passed', duration: Math.floor(200 + Math.random() * 800) });
-    steps.push({ name: 'Выполнение запроса / проверка элементов', status: status, duration: Math.floor(100 + Math.random() * 1500) });
-    if (status === 'failed') {
-        steps.push({ name: 'Проверка断言', status: 'failed', duration: Math.floor(50 + Math.random() * 200), message: 'AssertionError: Expected 200 but got 500' });
-    }
-    steps.push({ name: 'Завершение', status: 'passed', duration: Math.floor(50 + Math.random() * 200) });
-    return steps;
-}
-let allureWin = null;
-function openAllureReport() {
-    if (allureWin && !allureWin.closed) { allureWin.focus(); return; }
-    const w = 1100, h = 750;
-    const left = (screen.width - w) / 2 + window.screenX;
-    const top = (screen.height - h) / 2 + window.screenY;
-    allureWin = window.open('', 'AllureReport', `width=${w},height=${h},left=${left},top=${top}`);
-    const pCount = loadResults.filter(r => r.status === 'passed').length;
-    const fCount = loadResults.filter(r => r.status === 'failed').length;
-    const totalDur = loadResults.reduce((s, r) => s + r.duration, 0);
-    const suites = [...new Set(loadResults.map(r => r.suite))];
-    let suiteRows = '';
-    suites.forEach(s => {
-        const st = loadResults.filter(r => r.suite === s);
-        const sp = st.filter(r => r.status === 'passed').length;
-        const sf = st.filter(r => r.status === 'failed').length;
-        suiteRows += `<tr class="allure-suite-row" onclick="toggleSuite('${s}')"><td class="allure-suite-name">📁 ${s}</td><td>${st.length}</td><td class="allure-pass">${sp}</td><td class="allure-fail">${sf}</td><td>${st.reduce((a,b)=>a+b.duration,0)}ms</td></tr>`;
-        let testRows = '';
-        st.forEach((t, i) => {
-            const icon = t.status === 'passed' ? '✅' : '❌';
-            const stepsHtml = t.steps.map(st2 => `<div class="allure-step"><span class="allure-step-icon">${st2.status==='passed'?'✓':'✗'}</span><span class="allure-step-name">${st2.name}</span><span class="allure-step-dur">${st2.duration}ms</span></div>`).join('');
-            testRows += `<tr class="allure-test-row suite-${s}" style="display:none"><td>${icon} ${t.name}</td><td>${t.duration}ms</td><td><span class="allure-status-badge ${t.status}">${t.status}</span></td><td>${t.browser}</td><td>${t.tags.map(tg=>'<span class="allure-tag">'+tg+'</span>').join(' ')}</td></tr>`;
-            if (t.steps.length > 0) {
-                testRows += `<tr class="allure-test-detail suite-${s}" style="display:none"><td colspan="5"><div class="allure-steps">${stepsHtml}</div></td></tr>`;
-            }
+    try {
+        const resp = await fetch('/api/run-tests', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, allure }),
         });
-        suiteRows += testRows;
-    });
-    allureWin.document.write(`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>Allure Report — Load Test</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh}
-.allure-header{background:linear-gradient(135deg,#16213e,#0f3460);padding:24px 32px;border-bottom:2px solid #533483;display:flex;align-items:center;justify-content:space-between}
-.allure-logo{font-size:24px;font-weight:800;color:#e94560;letter-spacing:-1px}
-.allure-logo span{color:#e0e0e0;font-weight:400}
-.allure-meta{font-size:12px;color:#8892b0}
-.allure-container{max-width:1200px;margin:0 auto;padding:24px 32px}
-.allure-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-.allure-stat-card{background:#16213e;border:1px solid #1a1a4e;border-radius:12px;padding:20px;text-align:center}
-.allure-stat-card .num{font-size:36px;font-weight:900;font-family:'JetBrains Mono',monospace}
-.allure-stat-card .label{font-size:12px;color:#8892b0;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
-.allure-stat-card.pass .num{color:#4caf50}
-.allure-stat-card.fail .num{color:#ef5350}
-.allure-stat-card.dur .num{color:#64b5f6}
-.allure-stat-card.total .num{color:#e94560}
-.allure-chart{background:#16213e;border:1px solid #1a1a4e;border-radius:12px;padding:20px;margin-bottom:32px}
-.allure-chart h3{font-size:14px;color:#8892b0;margin-bottom:12px}
-.allure-bar-container{height:24px;background:#0f0f23;border-radius:6px;overflow:hidden;display:flex}
-.allure-bar-pass{background:#4caf50;height:100%;transition:width 0.6s ease;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
-.allure-bar-fail{background:#ef5350;height:100%;transition:width 0.6s ease;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
-.allure-table{width:100%;border-collapse:collapse;margin-bottom:24px}
-.allure-table th{text-align:left;padding:10px 14px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#8892b0;border-bottom:1px solid #1a1a4e}
-.allure-table td{padding:10px 14px;border-bottom:1px solid #1a1a4e;font-size:13px}
-.allure-suite-row{cursor:pointer;transition:background 0.2s}
-.allure-suite-row:hover{background:#16213e}
-.allure-suite-name{font-weight:700;color:#64b5f6}
-.allure-test-row td{padding-left:30px}
-.allure-pass{color:#4caf50}
-.allure-fail{color:#ef5350}
-.allure-status-badge{padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600}
-.allure-status-badge.passed{background:rgba(76,175,80,0.15);color:#4caf50}
-.allure-status-badge.failed{background:rgba(239,83,80,0.15);color:#ef5350}
-.allure-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;background:rgba(100,181,246,0.1);color:#64b5f6;margin-right:4px}
-.allure-steps{padding:8px 14px 8px 30px}
-.allure-step{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:12px}
-.allure-step-icon{color:#4caf50;font-weight:700;width:14px}
-.allure-step-name{color:#b0b0b0}
-.allure-step-dur{color:#666;font-family:'JetBrains Mono',monospace;margin-left:auto}
-.allure-timeline{display:flex;gap:16px;margin-top:24px}
-.allure-timeline-item{flex:1;background:#16213e;border:1px solid #1a1a4e;border-radius:10px;padding:14px;text-align:center}
-.allure-timeline-item .dur{font-size:20px;font-weight:800;color:#64b5f6;font-family:'JetBrains Mono',monospace}
-.allure-timeline-item .tl-label{font-size:11px;color:#8892b0;margin-top:4px}
-</style></head><body>
-<div class="allure-header">
-    <div><div class="allure-logo">Allure <span>Report</span></div><div class="allure-meta">Generated: ${new Date().toLocaleString('ru-RU')} · Browser: ${loadResults[0]?.browser || 'Chrome'} · Threads: ${document.getElementById('threadsSlider').value}</div></div>
-</div>
-<div class="allure-container">
-    <div class="allure-overview">
-        <div class="allure-stat-card total"><div class="num">${loadResults.length}</div><div class="label">Всего тестов</div></div>
-        <div class="allure-stat-card pass"><div class="num">${pCount}</div><div class="label">Пройдено</div></div>
-        <div class="allure-stat-card fail"><div class="num">${fCount}</div><div class="label">Провалено</div></div>
-        <div class="allure-stat-card dur"><div class="num">${(totalDur/1000).toFixed(1)}s</div><div class="label">Общее время</div></div>
-    </div>
-    <div class="allure-chart"><h3>Результаты</h3><div class="allure-bar-container"><div class="allure-bar-pass" style="width:${(pCount/loadResults.length*100).toFixed(1)}%">${(pCount/loadResults.length*100).toFixed(0)}%</div><div class="allure-bar-fail" style="width:${(fCount/loadResults.length*100).toFixed(1)}%">${fCount>0?(fCount/loadResults.length*100).toFixed(0)+'%':''}</div></div></div>
-    <div class="allure-timeline"><div class="allure-timeline-item"><div class="dur">${Math.min(...loadResults.map(r=>r.duration))}ms</div><div class="tl-label">Мин. время</div></div><div class="allure-timeline-item"><div class="dur">${Math.floor(loadResults.reduce((a,b)=>a+b.duration,0)/loadResults.length)}ms</div><div class="tl-label">Среднее</div></div><div class="allure-timeline-item"><div class="dur">${Math.max(...loadResults.map(r=>r.duration))}ms</div><div class="tl-label">Макс. время</div></div><div class="allure-timeline-item"><div class="dur">${totalDur}ms</div><div class="tl-label">Суммарно</div></div></div>
-    <table class="allure-table"><thead><tr><th>Тест</th><th>Время</th><th>Статус</th><th>Браузер</th><th>Теги</th></tr></thead><tbody>${suiteRows}</tbody></table>
-</div>
-<script>function toggleSuite(s){const rows=document.querySelectorAll('.suite-'+s);rows.forEach(r=>{r.style.display=r.style.display==='none'?'table-row':'none';});}<\/script></body></html>`);
-    allureWin.document.close();
-}
-function downloadAllureJson() {
-    const allureData = {
-        reportName: 'Load Test Report',
-        timestamp: new Date().toISOString(),
-        environment: { browser: loadResults[0]?.browser, threads: document.getElementById('threadsSlider').value },
-        statistics: { total: loadResults.length, passed: loadResults.filter(r=>r.status==='passed').length, failed: loadResults.filter(r=>r.status==='failed').length },
-        testResults: loadResults.map(r => ({
-            name: r.name, suite: r.suite, status: r.status, duration: r.duration,
-            steps: r.steps, tags: r.tags, description: r.description
-        }))
-    };
-    const blob = new Blob([JSON.stringify(allureData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'allure-report-' + Date.now() + '.json';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('JSON-отчёт скачан');
+
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop();
+
+            for (const line of lines) {
+                if (!line.trim()) continue;
+                try {
+                    const msg = JSON.parse(line);
+                    if (msg.type === 'line') {
+                        const m = msg.text.trim().match(/^(.+?)\s+(PASSED|FAILED|ERROR|SKIPPED)/);
+                        if (m) {
+                            testCount++;
+                            const shortName = m[1].split('::').pop();
+                            const st = m[2] === 'PASSED' ? 'pass' : m[2] === 'SKIPPED' ? 'skip' : 'fail';
+                            const icon = st === 'pass' ? '✓' : st === 'fail' ? '✗' : '—';
+                            const div = document.createElement('div');
+                            div.className = 'test-item ' + st;
+                            div.innerHTML = '<div class="test-status">' + icon + '</div><div class="test-name">' + shortName + '</div><div class="test-time">' + m[1] + '</div>';
+                            list.appendChild(div);
+                            const pct = Math.min(99, Math.round((testCount / totalEstimate) * 100));
+                            fill.style.width = pct + '%';
+                            pctEl.textContent = pct + '%';
+                        }
+                        const cm = msg.text.match(/collected (\d+) items/);
+                        if (cm) totalEstimate = parseInt(cm[1]);
+                    } else if (msg.type === 'done') {
+                        fill.style.width = '100%';
+                        pctEl.textContent = '100%';
+
+                        if (msg.stopped) {
+                            list.innerHTML += '<div class="test-item skip"><div class="test-status">■</div><div class="test-name">Тесты остановлены</div><div class="test-time"></div></div>';
+                        } else if (msg.error) {
+                            list.innerHTML = '<div class="test-item fail"><div class="test-status">✗</div><div class="test-name">Ошибка: ' + msg.error + '</div><div class="test-time"></div></div>';
+                        } else {
+                            const s = msg.stats || {};
+                            const failedCount = (s.failed || 0) + (s.errors || 0);
+                            summary.innerHTML = '<div class="stat pass">✓ ' + (s.passed || 0) + ' passed</div><div class="stat fail">✗ ' + failedCount + ' failed</div><div class="stat skip">— ' + (s.skipped || 0) + ' skipped</div>' + (s.duration ? '<div class="stat" style="color:var(--teal)">⏱ ' + s.duration + '</div>' : '');
+                            summary.style.display = 'flex';
+                            summary.classList.add('active');
+                            if (allure) showToast('Allure-отчёт сформирован в Diplom/results/');
+                        }
+                    }
+                } catch(e) {}
+            }
+        }
+
+    } catch (e) {
+        const msg = 'Ошибка: ' + e.message + '. Запустите: python Diplom/app.py';
+        list.innerHTML = '<div class="test-item fail"><div class="test-status">✗</div><div class="test-name">' + msg + '</div><div class="test-time"></div></div>';
+    }
+
+    hideRunning();
+    running = false;
+    bar.classList.remove('active');
 }
 
-// === ACTIVE NAV HIGHLIGHTING ===
-const sections = document.querySelectorAll('section[id], .skills-section[id], .hero-slider[id]');
-const navLinksAll = document.querySelectorAll('#mainNav a');
-function updateActiveNav() {
-    let current = '';
-    sections.forEach(sec => {
-        const rect = sec.getBoundingClientRect();
-        if (rect.top <= 150 && rect.bottom >= 150) current = sec.id;
-    });
-    navLinksAll.forEach(link => {
-        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-    });
-}
-window.addEventListener('scroll', updateActiveNav, { passive: true });
-updateActiveNav();
-
-// === MOBILE NAV TOGGLE ===
-const navToggle = document.getElementById('navToggle');
-const mainNav = document.getElementById('mainNav');
-navToggle.addEventListener('click', () => {
-    navToggle.classList.toggle('open');
-    mainNav.classList.toggle('open');
-});
-mainNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-        navToggle.classList.remove('open');
-        mainNav.classList.remove('open');
-    });
-});
-
-// === TERMINAL SCROLL TO TESTS ===
-document.querySelectorAll('.terminal-input').forEach(() => {});
-// Override the terminal clear handler to also handle __SCROLL_TESTS__
-// (already handled via the cmds object above)
 // === AI CHATBOT ===
 let chatWin = null;
 function openChatBot() {
