@@ -1,0 +1,1 @@
+{"name": "Проверка моделей в выпадающем меню", "status": "skipped", "start": 1783696062599, "stop": 1783696062599, "uuid": "4b66b6f1-4dec-43be-8352-da9351a3d3ca", "testCaseId": "51d02401c891c6b84615c4b607ca9147", "fullName": "Diplom.tests.ui.test_ui_main_page.TestBasePage#test_models", "titlePath": ["Diplom", "tests", "ui", "test_ui_main_page.py", "TestBasePage"]}
